@@ -5,4 +5,4 @@ os:
 language: cpp
 sudo: required
 
-install: . scripts/$TRAVIS_OS_NAME/install.sh
+script: . scripts/$TRAVIS_OS_NAME/install.sh
