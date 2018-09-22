@@ -2,32 +2,43 @@
 #include "ofMain.h"
 #include "session.h"
 
-namespace ofxLiveSet {
-    namespace clip {
-        class base {
-            public:
-                base() {
+namespace ofxLiveSet
+{
+namespace clip
+{
+class base
+{
+public:
+    base(std::string name = "")
+	{
+	}
+	virtual void update()
+	{
+		ofLogNotice("clip") << "update";
+	}
+	virtual void draw()
+	{
+		ofLogNotice("clip") << "draw";
+	}
+	void start()
+	{
+		ofLogNotice("clip") << "start";
+	}
+	void pause()
+	{
+		ofLogNotice("clip") << "pause";
+	}
+	void stop()
+	{
+		ofLogNotice("clip") << "stop";
+	}
+	ofParameterGroup _parameters;
+	ofParameter<std::string> _name;
+	ofParameter<bool> _active;
 
-                }
-                virtual void update() {
-                    ofLogNotice("clip") << "update";
-                }
-                void start() {
-                    ofLogNotice("clip") << "start";
-                }
-                void pause() {
-                    ofLogNotice("clip") << "pause";
-                }
-                void stop() {
-                    ofLogNotice("clip") << "stop";
-                }
-                ofParameterGroup _parameters;
-                ofParameter<std::string> _name;
-                ofParameter<bool> _active;
-
-                // ofEvent _started;
-                // ofEvent _finished;
-                // ofEvent _stopped;
-        };
-    };
+	// ofEvent _started;
+	// ofEvent _finished;
+	// ofEvent _stopped;
 };
+}; // namespace clip
+}; // namespace ofxLiveSet

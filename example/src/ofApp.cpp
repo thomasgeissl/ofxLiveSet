@@ -1,81 +1,102 @@
 #include "ofApp.h"
 
-ofApp::ofApp() {
+ofApp::ofApp()
+{
 	_session = _project._session;
 	_session->addTrack(new ofxLiveSet::track::graphic());
-	_session->addTrack(new ofxLiveSet::track::graphic());
-	_session->addTrack(new ofxLiveSet::track::audio());
-	_session->addTrack(new ofxLiveSet::track::audio());
-	_session->_tracks[0]->addClip(new ofxLiveSet::clip::graphic());
-	_session->_tracks[2]->addClip(new ofxLiveSet::clip::audio("/Users/thomasgeissl/Desktop/29032013.mp3"));
+    _session->addTrack(new ofxLiveSet::track::graphic());
+//    _session->addTrack(new ofxLiveSet::track::audio());
+//    _session->addTrack(new ofxLiveSet::track::audio());
+    _session->_tracks[0]->addClip(new visuals::lines());
+    _session->_tracks[0]->addClip(new visuals::rects());
+    _session->_tracks[1]->addClip(new ofxLiveSet::clip::graphic("graphic clip 0"));
+    _session->_tracks[1]->addClip(new visuals::lines());
+//    _session->_tracks[2]->addClip(new ofxLiveSet::clip::audio("/Users/thomasgeissl/Desktop/untitled_134.mp3"));
+//    _session->_tracks[3]->addClip(new ofxLiveSet::clip::audio("/Users/thomasgeissl/Desktop/untitled_134.mp3"));
+
+    _session->_tracks[0]->setClip(_session->_tracks[0]->_clips[1]);
+    _session->_tracks[1]->setClip(_session->_tracks[1]->_clips[1]);
 }
 
-void ofApp::setup(){
-}
-
-//--------------------------------------------------------------
-void ofApp::exit(){
-}
-
-//--------------------------------------------------------------
-void ofApp::update(){
-	if(_session) {
-		_session->update();
-	}
-}
-
-//--------------------------------------------------------------
-void ofApp::draw(){
+void ofApp::setup()
+{
+//    _gui.setup(_session);
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-
+void ofApp::exit()
+{
 }
 
 //--------------------------------------------------------------
-void ofApp::keyReleased(int key){
+void ofApp::update()
+{
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y){
-
+void ofApp::draw()
+{
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
+void ofApp::keyPressed(int key)
+{
+    switch(key){
+        case '0':
+            _session->_tracks[0]->setClip(_session->_tracks[0]->_clips[0]);
+            break;
+        case '1':
+            _session->_tracks[0]->setClip(_session->_tracks[0]->_clips[1]);
+            break;
+    }
 }
 
 //--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
+void ofApp::keyReleased(int key)
+{
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
+void ofApp::mouseMoved(int x, int y)
+{
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
+void ofApp::mouseDragged(int x, int y, int button)
+{
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
+void ofApp::mousePressed(int x, int y, int button)
+{
 }
 
 //--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
+void ofApp::mouseReleased(int x, int y, int button)
+{
 }
 
 //--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
+void ofApp::mouseEntered(int x, int y)
+{
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){
+void ofApp::mouseExited(int x, int y)
+{
+}
 
+//--------------------------------------------------------------
+void ofApp::windowResized(int w, int h)
+{
+}
+
+//--------------------------------------------------------------
+void ofApp::gotMessage(ofMessage msg)
+{
+}
+
+//--------------------------------------------------------------
+void ofApp::dragEvent(ofDragInfo dragInfo)
+{
 }

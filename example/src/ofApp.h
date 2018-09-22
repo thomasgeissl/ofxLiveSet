@@ -6,8 +6,10 @@
 #include "tracks/audio.h"
 #include "clips/graphic.h"
 #include "clips/audio.h"
+#include "gui/session.h"
 
 #include "visuals/rects.h"
+#include "visuals/lines.h"
 
 class ofApp : public ofBaseApp {
 	public:
@@ -31,4 +33,6 @@ class ofApp : public ofBaseApp {
 	private:
 		ofxLiveSet::project _project;
 		ofxLiveSet::session *_session;
+    
+    ofxLiveSet::gui::session _gui;
 };
