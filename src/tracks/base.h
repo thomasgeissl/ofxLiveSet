@@ -13,8 +13,8 @@ public:
 	{
         _name.set("name", name);
 	}
-	void update()
-	{
+    virtual void setup(){}
+	virtual void update(){
 		if (_clip)
 		{
             _clip->update();
@@ -29,12 +29,20 @@ public:
 	}
 	void start()
 	{
+        if (_clip)
+        {
+            _clip->start();
+        }
 	}
 	void pause()
 	{
 	}
 	void stop()
 	{
+        if (_clip)
+        {
+            _clip->stop();
+        }
 	}
 	void addClip(clip::base *clip)
 	{
@@ -42,6 +50,10 @@ public:
 	}
     void setClip(clip::base *clip){
         _clip = clip;
+    }
+    void trigger(int index){
+        stop();
+        _clip = _clips[index];
     }
 	std::vector<clip::base *> _clips;
 	clip::base *_clip;

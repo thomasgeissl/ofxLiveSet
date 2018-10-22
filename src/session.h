@@ -38,6 +38,10 @@ public:
 
 	void start()
 	{
+        for (auto track : _tracks)
+        {
+            track->start();
+        }
 	}
 	void pause()
 	{
@@ -49,10 +53,19 @@ public:
 			track->stop();
 		}
 	}
-	void addTrack(track::base *track)
+    track::base * addTrack(track::base *track)
 	{
 		_tracks.push_back(track);
+        return track;
 	}
+    
+    void triggerScence(int index){
+        for (auto track : _tracks)
+        {
+            track->stop();
+            track->trigger(index);
+        }
+    }
 	std::vector<track::base *> _tracks;
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;

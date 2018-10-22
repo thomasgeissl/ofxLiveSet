@@ -1,15 +1,26 @@
 #pragma once
+#define USEDMX
 
 #include "ofMain.h"
 #include "project.h"
 #include "tracks/graphic.h"
 #include "tracks/audio.h"
+
 #include "clips/graphic.h"
 #include "clips/audio.h"
+
+#ifdef USEDMX
+#include "tracks/dmx.h"
+#include "clips/dmx.h"
+#include "ofxDmx.h"
+#endif
+
 #include "gui/session.h"
 
 #include "visuals/rects.h"
 #include "visuals/lines.h"
+
+
 
 class ofApp : public ofBaseApp {
 	public:
@@ -34,5 +45,8 @@ class ofApp : public ofBaseApp {
 		ofxLiveSet::project _project;
 		ofxLiveSet::session *_session;
     
-    ofxLiveSet::gui::session _gui;
+        ofxLiveSet::gui::session _gui;
+#ifdef USEDMX
+        ofxDmx _dmx;
+#endif
 };

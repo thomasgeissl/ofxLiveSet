@@ -37,8 +37,6 @@ public:
 		ofLogNotice("clip::graphic") << "stop";
 	}
 	ofFbo _fbo;
-	ofParameterGroup _parameters;
-	ofParameter<std::string> _name;
 };
 }; // namespace clip
 }; // namespace ofxLiveSet

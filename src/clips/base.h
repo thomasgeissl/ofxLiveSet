@@ -12,6 +12,10 @@ public:
     base(std::string name = "")
 	{
 	}
+    virtual void setup()
+    {
+        ofLogNotice("clip") << "setup";
+    }
 	virtual void update()
 	{
 		ofLogNotice("clip") << "update";

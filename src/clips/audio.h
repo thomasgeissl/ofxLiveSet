@@ -34,8 +34,6 @@ public:
 		ofLogNotice("clip::audio") << "stop";
 	}
 	ofSoundPlayer _player;
-	ofParameterGroup _parameters;
-	ofParameter<std::string> _name;
 };
 }; // namespace clip
 }; // namespace ofxLiveSet
