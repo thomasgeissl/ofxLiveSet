@@ -17,8 +17,9 @@
 
 #include "gui/session.h"
 
-#include "visuals/rects.h"
-#include "visuals/lines.h"
+#include "./clips/graphic/rects.h"
+#include "./clips/graphic/lines.h"
+#include "./clips/dmx/sin.h"
 
 
 

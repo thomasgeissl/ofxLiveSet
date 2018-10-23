@@ -11,10 +11,10 @@ void ofApp::setup(){
     //    _session->addTrack(new ofxLiveSet::track::audio());
     //    _session->addTrack(new ofxLiveSet::track::audio());
 
-    _session->_tracks[0]->addClip(new visuals::lines());
-    _session->_tracks[0]->addClip(new visuals::rects());
+    _session->_tracks[0]->addClip(new clips::lines());
+    _session->_tracks[0]->addClip(new clips::rects());
     _session->_tracks[1]->addClip(new ofxLiveSet::clip::graphic("graphic clip 0"));
-    _session->_tracks[1]->addClip(new visuals::lines());
+    _session->_tracks[1]->addClip(new clips::lines());
     //    _session->_tracks[2]->addClip(new ofxLiveSet::clip::audio("/Users/thomasgeissl/Desktop/untitled_134.mp3"));
     //    _session->_tracks[3]->addClip(new ofxLiveSet::clip::audio("/Users/thomasgeissl/Desktop/untitled_134.mp3"));
     
@@ -31,8 +31,8 @@ void ofApp::setup(){
     ofxLiveSet::track::dmx* firstDmxTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx()));
     ofxLiveSet::track::dmx* secondDmxTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx()));
     
-    firstDmxTrack->addClip(new ofxLiveSet::clip::dmx());
-    secondDmxTrack->addClip(new ofxLiveSet::clip::dmx());
+    firstDmxTrack->addClip(new clips::sin());
+    secondDmxTrack->addClip(new clips::sin());
     
     firstDmxTrack->trigger(0);
     secondDmxTrack->trigger(0);
