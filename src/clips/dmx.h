@@ -12,6 +12,7 @@ namespace ofxLiveSet
             dmx(std::string name = "") : base(name)
             {
             }
+            void draw(){}
             ofEvent<std::pair<int, int>> _valueChangeEvent;
         };
     }; // namespace clip

@@ -6,8 +6,8 @@ ofApp::ofApp(){
 
 void ofApp::setup(){
 //    _gui.setup(_session);
-    auto firstVisualTrack = _session->addTrack(new ofxLiveSet::track::graphic());
-    auto secondVisualTrack = _session->addTrack(new ofxLiveSet::track::graphic());
+    auto firstGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 0"));
+    auto secondGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 1"));
     //    _session->addTrack(new ofxLiveSet::track::audio());
     //    _session->addTrack(new ofxLiveSet::track::audio());
 
@@ -19,8 +19,8 @@ void ofApp::setup(){
     //    _session->_tracks[3]->addClip(new ofxLiveSet::clip::audio("/Users/thomasgeissl/Desktop/untitled_134.mp3"));
     
 
-    firstVisualTrack->trigger(1);
-    secondVisualTrack->trigger(1);
+    firstGraphicTrack->trigger(1);
+    secondGraphicTrack->trigger(1);
     
     
 #ifdef USEDMX
@@ -28,19 +28,29 @@ void ofApp::setup(){
     _dmx.setChannels(16);
     _dmx.setLevel(1, 255);
     
-    ofxLiveSet::track::dmx* firstDmxTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx()));
-    ofxLiveSet::track::dmx* secondDmxTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx()));
+    ofxLiveSet::track::dmx* firstDmxTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMX 0")));
+    ofxLiveSet::track::dmx* secondDmxTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMW 1")));
     
-    firstDmxTrack->addClip(new clips::sin());
-    secondDmxTrack->addClip(new clips::sin());
-    
-    firstDmxTrack->trigger(0);
+    firstDmxTrack->addClip(new clips::sin(1));
+    secondDmxTrack->addClip(new clips::sin(2));
+    firstDmxTrack->addClip(new clips::rand(1));
+    secondDmxTrack->addClip(new clips::rand(2));
+    firstDmxTrack->trigger(1);
     secondDmxTrack->trigger(0);
     
     firstDmxTrack->setup(_dmx);
     secondDmxTrack->setup(_dmx);
 #endif
 
+    auto x = 20;
+    auto y = 20;
+    for(auto track : _session->_tracks){
+        auto panel = new ofxPanel();
+        panel->setup(track->_parameters);
+        panel->setPosition(x, y);
+        x += panel->getWidth();
+        _panels.push_back(panel);
+    }
 }
 
 void ofApp::exit(){}
@@ -49,15 +59,19 @@ void ofApp::update(){
 //    _dmx.update();
 }
 
-void ofApp::draw(){}
+void ofApp::draw(){
+    for(auto panel : _panels){
+        panel->draw();
+    }
+}
 
 void ofApp::keyPressed(int key){
     switch(key){
         case '0':
-            _session->_tracks[0]->setClip(_session->_tracks[0]->_clips[0]);
+            _session->_tracks[0]->trigger(0);
             break;
         case '1':
-            _session->_tracks[0]->setClip(_session->_tracks[0]->_clips[1]);
+            _session->_tracks[0]->trigger(1);
             break;
     }
 }

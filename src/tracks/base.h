@@ -12,6 +12,12 @@ public:
     base(std::string name = "") : _clip(nullptr)
 	{
         _name.set("name", name);
+        _mute.set("mute", false);
+        _solo.set("solo", false);
+        _parameters.add(_name);
+        _parameters.add(_solo);
+        _parameters.add(_mute);
+
 	}
     virtual void setup(){}
 	virtual void update(){
@@ -44,9 +50,10 @@ public:
             _clip->stop();
         }
 	}
-	void addClip(clip::base *clip)
+    clip::base* addClip(clip::base *clip)
 	{
 		_clips.push_back(clip);
+        return clip;
 	}
     void setClip(clip::base *clip){
         _clip = clip;
@@ -59,6 +66,8 @@ public:
 	clip::base *_clip;
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
+    ofParameter<bool> _mute;
+    ofParameter<bool> _solo;
 };
 }; // namespace track
 }; // namespace ofxLiveSet

@@ -4,9 +4,7 @@
 namespace clips {
     class sin : public ofxLiveSet::clip::dmx {
     public:
-        sin(){
-            _amount.set("amount", 32,0,32);
-            _primaryColor = ofColor::blue;
+        sin(int channel) : _channel(channel) {
             _timestamp = ofGetElapsedTimeMillis();
         }
         
@@ -20,10 +18,7 @@ namespace clips {
             _valueChangeEvent.notify(value);
         }
         
-        ofParameter<int> _amount;
-        ofParameter<ofColor> _primaryColor;
-        std::vector<glm::vec2> _positions;
-        
         u_int64_t _timestamp;
+        int _channel;
     };
 };

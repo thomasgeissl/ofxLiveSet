@@ -2,6 +2,7 @@
 #define USEDMX
 
 #include "ofMain.h"
+#include "ofxGui.h"
 #include "project.h"
 #include "tracks/graphic.h"
 #include "tracks/audio.h"
@@ -12,6 +13,8 @@
 #ifdef USEDMX
 #include "tracks/dmx.h"
 #include "clips/dmx.h"
+#include "./clips/dmx/sin.h"
+#include "./clips/dmx/rand.h"
 #include "ofxDmx.h"
 #endif
 
@@ -19,7 +22,7 @@
 
 #include "./clips/graphic/rects.h"
 #include "./clips/graphic/lines.h"
-#include "./clips/dmx/sin.h"
+
 
 
 
@@ -46,8 +49,9 @@ class ofApp : public ofBaseApp {
 		ofxLiveSet::project _project;
 		ofxLiveSet::session *_session;
     
-        ofxLiveSet::gui::session _gui;
+//        ofxLiveSet::gui::session _gui;
 #ifdef USEDMX
         ofxDmx _dmx;
 #endif
+    std::vector<ofxPanel*> _panels;
 };
