@@ -9,9 +9,9 @@ namespace ofxLiveSet
         class videoGrabber : public graphic
         {
         public:
-            videoGrabber(std::string name = "") : base(name)
+            videoGrabber(int deviceId = 0, std::string name = "") : graphic(name)
             {
-                _fbo.allocate(1920, 1080);
+                _grabber.setDeviceID(deviceId);
             }
             void update()
             {

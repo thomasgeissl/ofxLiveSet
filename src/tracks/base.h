@@ -21,7 +21,7 @@ public:
 	}
     virtual void setup(){}
 	virtual void update(){
-		if (_clip)
+		if (_clip != nullptr)
 		{
             _clip->update();
 		}
@@ -60,7 +60,9 @@ public:
     }
     void trigger(int index){
         stop();
-        _clip = _clips[index];
+        if(index < _clips.size()){
+            _clip = _clips[index];
+        }
     }
 	std::vector<clip::base *> _clips;
 	clip::base *_clip;

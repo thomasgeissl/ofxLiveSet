@@ -8,13 +8,20 @@ void ofApp::setup(){
 //    _gui.setup(_session);
     auto firstGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 0"));
     auto secondGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 1"));
+    auto thirdGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 2"));
+
     //    _session->addTrack(new ofxLiveSet::track::audio());
     //    _session->addTrack(new ofxLiveSet::track::audio());
 
-    _session->_tracks[0]->addClip(new clips::lines());
-    _session->_tracks[0]->addClip(new clips::rects());
-    _session->_tracks[1]->addClip(new ofxLiveSet::clip::graphic("graphic clip 0"));
-    _session->_tracks[1]->addClip(new clips::lines());
+    firstGraphicTrack->addClip(new clips::lines());
+    firstGraphicTrack->addClip(new clips::rects());
+    firstGraphicTrack->addClip(new clips::rects());
+
+    secondGraphicTrack->addClip(new clips::lines());
+    secondGraphicTrack->addClip(new clips::lines());
+    secondGraphicTrack->addClip(new clips::lines());
+
+    thirdGraphicTrack->addClip(new ofxLiveSet::clip::videoGrabber(0));
     //    _session->_tracks[2]->addClip(new ofxLiveSet::clip::audio("/Users/thomasgeissl/Desktop/untitled_134.mp3"));
     //    _session->_tracks[3]->addClip(new ofxLiveSet::clip::audio("/Users/thomasgeissl/Desktop/untitled_134.mp3"));
     
@@ -68,10 +75,13 @@ void ofApp::draw(){
 void ofApp::keyPressed(int key){
     switch(key){
         case '0':
-            _session->_tracks[0]->trigger(0);
+            _session->triggerScence(0);
             break;
         case '1':
-            _session->_tracks[0]->trigger(1);
+            _session->triggerScence(1);
+            break;
+        case '2':
+            _session->triggerScence(2);
             break;
     }
 }

@@ -8,23 +8,21 @@
 #include "tracks/audio.h"
 
 #include "clips/graphic.h"
+#include "clips/videoGrabber.h"
 #include "clips/audio.h"
 
 #ifdef USEDMX
+#include "ofxDmx.h"
 #include "tracks/dmx.h"
 #include "clips/dmx.h"
 #include "./clips/dmx/sin.h"
 #include "./clips/dmx/rand.h"
-#include "ofxDmx.h"
 #endif
 
 #include "gui/session.h"
 
 #include "./clips/graphic/rects.h"
 #include "./clips/graphic/lines.h"
-
-
-
 
 class ofApp : public ofBaseApp {
 	public:
