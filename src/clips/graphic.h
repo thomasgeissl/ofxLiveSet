@@ -26,15 +26,15 @@ public:
     }
 	void start()
 	{
-		ofLogNotice("clip::graphic") << "start";
+        base::start();
 	}
 	void pause()
 	{
-		ofLogNotice("clip::grapphic") << "pause";
+        base::pause();
 	}
 	void stop()
 	{
-		ofLogNotice("clip::graphic") << "stop";
+        base::stop();
 	}
 	ofFbo _fbo;
 };

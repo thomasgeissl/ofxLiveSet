@@ -11,6 +11,7 @@ class base
 public:
     base(std::string name = "")
 	{
+        _active.addListener(this, &base::onActiveChange);
 	}
     virtual void setup()
     {
@@ -24,25 +25,34 @@ public:
 	{
 		ofLogNotice("clip") << "draw";
 	}
-	void start()
+	virtual void start()
 	{
-		ofLogNotice("clip") << "start";
+        _active = true;
 	}
-	void pause()
+	virtual void pause()
 	{
 		ofLogNotice("clip") << "pause";
 	}
-	void stop()
+	virtual void stop()
 	{
-		ofLogNotice("clip") << "stop";
+        _active = false;
 	}
+    
+    void onActiveChange(bool & value) {
+        bool valueToBeNotified = true;
+        if(value){
+            ofNotifyEvent(_started, valueToBeNotified, this);
+        } else {
+            ofNotifyEvent(_stopped, valueToBeNotified, this);
+        }
+    }
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
 	ofParameter<bool> _active;
 
-	// ofEvent _started;
-	// ofEvent _finished;
-	// ofEvent _stopped;
+     ofEvent<bool> _started;
+     ofEvent<bool> _finished;
+     ofEvent<bool> _stopped;
 };
 }; // namespace clip
 }; // namespace ofxLiveSet

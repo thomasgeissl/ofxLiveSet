@@ -1,5 +1,5 @@
 #pragma once
-#define USEDMX
+//#define USEDMX
 
 #include "ofMain.h"
 #include "ofxGui.h"

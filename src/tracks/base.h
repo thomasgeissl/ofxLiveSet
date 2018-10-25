@@ -53,6 +53,8 @@ public:
     clip::base* addClip(clip::base *clip)
 	{
 		_clips.push_back(clip);
+        _parameters.add(clip->_active);
+        ofAddListener(clip->_started, this, &base::onClipStarted);
         return clip;
 	}
     void setClip(clip::base *clip){
@@ -62,14 +64,26 @@ public:
         stop();
         if(index < _clips.size()){
             _clip = _clips[index];
+            _clip->start();
         }
     }
+    
+    void onClipStarted(const void* sender, bool & value) {
+        for(auto clip : _clips) {
+            if(clip != sender) {
+                clip->stop();
+            }
+        }
+    }
+    
+   
 	std::vector<clip::base *> _clips;
 	clip::base *_clip;
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
     ofParameter<bool> _mute;
     ofParameter<bool> _solo;
+    ofParameterGroup _clipTriggers;
 };
 }; // namespace track
 }; // namespace ofxLiveSet
