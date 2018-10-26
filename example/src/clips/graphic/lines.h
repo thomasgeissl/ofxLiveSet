@@ -8,6 +8,9 @@ namespace clips {
             _amount.set("amount", 32,0,32);
             _primaryColor = ofColor::blue;
             _timestamp = ofGetElapsedTimeMillis();
+            
+            _parameters.add(_amount);
+            _parameters.add(_primaryColor);
         }
         
         void update(){
@@ -32,7 +35,6 @@ namespace clips {
             _fbo.end();
         }
         
-        ofParameterGroup _parameters;
         ofParameter<int> _amount;
         ofParameter<ofColor> _primaryColor;
         std::vector<glm::vec2> _positions;

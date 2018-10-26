@@ -22,10 +22,14 @@ namespace ofxLiveSet
             }
             void update(){
                 base::update();
-                _dmx.update();
+                if(!_mute){
+                    _dmx.update();
+                }
             }
             void onValueChange(std::pair<int, int> &value){
-                _dmx.setLevel(value.first, value.second);
+                if(!_mute){
+                    _dmx.setLevel(value.first, value.second);
+                }
             }
             ofxDmx _dmx;
         };

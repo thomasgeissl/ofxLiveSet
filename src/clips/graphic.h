@@ -22,7 +22,9 @@ public:
 	}
     void draw()
     {
-        _fbo.draw(0,0);
+//        if(_active){
+//            _fbo.draw(0,0);
+//        }
     }
 	void start()
 	{

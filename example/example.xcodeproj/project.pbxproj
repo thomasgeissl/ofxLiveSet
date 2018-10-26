@@ -88,7 +88,7 @@
 		B87C60311EC1FE841C1ECD89 /* ofxLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxLabel.h; path = ../../../addons/ofxGui/src/ofxLabel.h; sourceTree = SOURCE_ROOT; };
 		C70D8946940288799E82131E /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = ../../../addons/ofxGui/src/ofxSliderGroup.h; sourceTree = SOURCE_ROOT; };
 		C88333E71C9457E441C33474 /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = ../../../addons/ofxGui/src/ofxButton.cpp; sourceTree = SOURCE_ROOT; };
-		CF30D96621810A5A009CA0EC /* rand1of16.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = rand1of16.h; path = clips/dmx/rand1of16.h; sourceTree = "<group>"; };
+		CF30D96621810A5A009CA0EC /* sines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sines.h; path = clips/dmx/sines.h; sourceTree = "<group>"; };
 		CF7A9F6B2180403300B5FC87 /* videoGrabber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = videoGrabber.h; path = ../src/clips/videoGrabber.h; sourceTree = "<group>"; };
 		DE85B5F19DF8E00D0BC10339 /* audio.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = audio.h; path = ../../../addons/ofxLiveSet/src/clips/audio.h; sourceTree = SOURCE_ROOT; };
 		E112B3AEBEA2C091BF2B40AE /* ofxPanel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxPanel.cpp; path = ../../../addons/ofxGui/src/ofxPanel.cpp; sourceTree = SOURCE_ROOT; };
@@ -165,7 +165,7 @@
 			children = (
 				49508319AA55F4CD3F73D597 /* rand.h */,
 				56E872D68885C3503A8B6C6F /* sin.h */,
-				CF30D96621810A5A009CA0EC /* rand1of16.h */,
+				CF30D96621810A5A009CA0EC /* sines.h */,
 			);
 			name = dmx;
 			sourceTree = "<group>";

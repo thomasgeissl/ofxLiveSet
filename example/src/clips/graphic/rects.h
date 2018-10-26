@@ -5,8 +5,11 @@ namespace clips {
     class rects : public ofxLiveSet::clip::graphic {
     public:
         rects(){
-            _amount.set("amount", 16,0,32);
+            _amount.set("amount", 16,0,64);
             _primaryColor = ofColor::red;
+            
+            _parameters.add(_amount);
+            _parameters.add(_primaryColor);
             _timestamp = ofGetElapsedTimeMillis();
         }
 
@@ -31,8 +34,6 @@ namespace clips {
             }
             _fbo.end();
         }
-
-        ofParameterGroup _parameters;
         ofParameter<int> _amount;
         ofParameter<ofColor> _primaryColor;
         

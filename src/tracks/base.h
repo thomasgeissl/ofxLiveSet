@@ -26,7 +26,7 @@ public:
             _clip->update();
 		}
 	}
-	void draw()
+	virtual void draw()
 	{
 		if (_clip)
 		{
@@ -55,6 +55,8 @@ public:
 		_clips.push_back(clip);
         _parameters.add(clip->_active);
         ofAddListener(clip->_started, this, &base::onClipStarted);
+        ofAddListener(clip->_stopped, this, &base::onClipStopped);
+
         return clip;
 	}
     void setClip(clip::base *clip){
@@ -74,8 +76,14 @@ public:
                 clip->stop();
             }
         }
+        _clip = (clip::base *) (sender);
     }
-    
+    void onClipStopped(const void* sender, bool & value) {
+        if(_clip == sender) {
+            _clip->stop();
+            _clip = nullptr;
+        }
+    }
    
 	std::vector<clip::base *> _clips;
 	clip::base *_clip;

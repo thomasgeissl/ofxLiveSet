@@ -12,6 +12,11 @@ public:
     base(std::string name = "")
 	{
         _active.addListener(this, &base::onActiveChange);
+        _name.set("name", name);
+        _active.set("active", false);
+        
+        _parameters.add(_name);
+        _parameters.add(_active);
 	}
     virtual void setup()
     {

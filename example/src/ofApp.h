@@ -1,8 +1,7 @@
 #pragma once
-//#define USEDMX
+#define USEDMX
 
 #include "ofMain.h"
-#include "ofxGui.h"
 #include "project.h"
 #include "tracks/graphic.h"
 #include "tracks/audio.h"
@@ -12,10 +11,12 @@
 #include "clips/audio.h"
 
 #ifdef USEDMX
+
 #include "ofxDmx.h"
 #include "tracks/dmx.h"
 #include "clips/dmx.h"
 #include "./clips/dmx/sin.h"
+#include "./clips/dmx/sines.h"
 #include "./clips/dmx/rand.h"
 #endif
 
@@ -43,13 +44,11 @@ class ofApp : public ofBaseApp {
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-	private:
+    
 		ofxLiveSet::project _project;
 		ofxLiveSet::session *_session;
     
-//        ofxLiveSet::gui::session _gui;
 #ifdef USEDMX
         ofxDmx _dmx;
 #endif
-    std::vector<ofxPanel*> _panels;
 };

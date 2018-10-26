@@ -5,7 +5,6 @@ ofApp::ofApp(){
 }
 
 void ofApp::setup(){
-//    _gui.setup(_session);
     auto firstGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 0"));
     auto secondGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 1"));
     auto thirdGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 2"));
@@ -21,7 +20,7 @@ void ofApp::setup(){
     secondGraphicTrack->addClip(new clips::lines());
     secondGraphicTrack->addClip(new clips::lines());
 
-    thirdGraphicTrack->addClip(new ofxLiveSet::clip::videoGrabber(0));
+//    thirdGraphicTrack->addClip(new ofxLiveSet::clip::videoGrabber(0));
     //    _session->_tracks[2]->addClip(new ofxLiveSet::clip::audio("/Users/thomasgeissl/Desktop/untitled_134.mp3"));
     //    _session->_tracks[3]->addClip(new ofxLiveSet::clip::audio("/Users/thomasgeissl/Desktop/untitled_134.mp3"));
     
@@ -39,25 +38,19 @@ void ofApp::setup(){
     ofxLiveSet::track::dmx* secondDmxTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMW 1")));
     
     firstDmxTrack->addClip(new clips::sin(1));
-    secondDmxTrack->addClip(new clips::sin(2));
     firstDmxTrack->addClip(new clips::rand(1));
+    firstDmxTrack->addClip(new clips::sines());
+
+    secondDmxTrack->addClip(new clips::sin(2));
     secondDmxTrack->addClip(new clips::rand(2));
+    
     firstDmxTrack->trigger(1);
     secondDmxTrack->trigger(0);
     
     firstDmxTrack->setup(_dmx);
     secondDmxTrack->setup(_dmx);
 #endif
-
-    auto x = 20;
-    auto y = 20;
-    for(auto track : _session->_tracks){
-        auto panel = new ofxPanel();
-        panel->setup(track->_parameters);
-        panel->setPosition(x, y);
-        x += panel->getWidth();
-        _panels.push_back(panel);
-    }
+    _session->setup();
 }
 
 void ofApp::exit(){}
@@ -67,9 +60,7 @@ void ofApp::update(){
 }
 
 void ofApp::draw(){
-    for(auto panel : _panels){
-        panel->draw();
-    }
+
 }
 
 void ofApp::keyPressed(int key){
@@ -82,6 +73,12 @@ void ofApp::keyPressed(int key){
             break;
         case '2':
             _session->triggerScence(2);
+            break;
+        case '8':
+            _session->showClipGui(0, 0);
+            break;
+        case '9':
+            _session->showClipGui(0, 1);
             break;
     }
 }
