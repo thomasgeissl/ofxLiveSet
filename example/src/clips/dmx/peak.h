@@ -4,9 +4,11 @@
 namespace clips {
     class peak : public ofxLiveSet::clip::dmx {
     public:
-        peak() {
+        peak() : dmx() {
+            _name = "peak";
             _channel.set("channel", 1, 1, 512);
-            _amount.set("amount", 1, 16, 512);
+            _amount.addListener(this, &peak::onAmountChange);
+            _amount.set("amount", 1, 1, 512);
 
             _value.set("value", 0, 0, 255);
             _minValue.set("minValue", 50, 0, 255);
@@ -27,31 +29,38 @@ namespace clips {
         
         void update(){
             auto timestamp = ofGetElapsedTimeMillis();
-            if(timestamp - _timestamp > 1000){
-                return;
-            }
-            _value = ofMap(timestamp, _timestamp, _timestamp + 1000, _maxValue, _minValue);
-            if(_random){
-                std::pair<int, int> value(ofRandom(1, _amount), _value);
-                _valueChangeEvent.notify(value);
-            }else{
-                for(auto i = 0; i < _amount; i++) {
-                    std::pair<int, int> value(_channel+i, _value);
+
+            for(auto i = 0; i < _amount; i++) {
+                if(timestamp - _timestamps[i] < 1000){
+                    _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + 1000, _maxValue, _minValue);
+                    std::pair<int, int> value(_channel+i, _values[i]);
                     _valueChangeEvent.notify(value);
                 }
             }
-
-  
         }
         
         void bang(float value) {
-            _timestamp = ofGetElapsedTimeMillis();
-            _value = _maxValue*value;
+            if(_random){
+                auto i = ofRandom(_amount);
+                _timestamps[i] = ofGetElapsedTimeMillis();
+                _values[i] = _maxValue*value;
+            }else{
+                for(auto i = 0; i < _amount; i++){
+                    _timestamps[i] = ofGetElapsedTimeMillis();
+                    _values[i] = _maxValue*value;
+                }
+            }
+        }
+        
+        void onAmountChange(int & value){
+            _values.resize(value);
+            _timestamps.resize(value);
         }
         
         ofParameter<int> _channel;
         ofParameter<int> _amount;
         ofParameter<int> _value;
+        std::vector<int> _values;
         ofParameter<int> _minValue;
         ofParameter<int> _maxValue;
         
@@ -59,5 +68,7 @@ namespace clips {
         ofParameter<bool> _random;
 
         u_int64_t _timestamp;
+        std::vector<u_int64_t> _timestamps;
+
     };
 };

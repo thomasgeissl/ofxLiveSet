@@ -4,7 +4,8 @@
 namespace clips {
     class sin : public ofxLiveSet::clip::dmx {
     public:
-        sin(int channel) : _channel(channel) {
+        sin(int channel) : dmx(), _channel(channel) {
+            _name = "sin";
             _channel.set("channel", channel, 1, 512);
             _minValue.set("minValue", 50, 0, 255);
             _maxValue.set("maxValue", 100, 0, 255);

@@ -4,7 +4,8 @@
 namespace clips {
     class rand : public ofxLiveSet::clip::dmx {
     public:
-        rand(int channel) : _channel(channel) {
+        rand(int channel) : dmx(), _channel(channel) {
+            _name = "rand";
             _channel.set("channel", channel, 1, 512);
             _parameters.add(_channel);
         }

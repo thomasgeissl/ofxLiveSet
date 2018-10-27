@@ -2,7 +2,6 @@
 #define USEDMX
 
 #include "ofMain.h"
-#include "ofxOsc.h"
 #include "project.h"
 #include "tracks/graphic.h"
 #include "tracks/audio.h"
@@ -10,6 +9,8 @@
 #include "clips/graphic.h"
 #include "clips/videoGrabber.h"
 #include "clips/audio.h"
+
+#include "./soundAnalyser.h"
 
 #ifdef USEDMX
 #include "ofxDmx.h"
@@ -19,6 +20,7 @@
 #include "./clips/dmx/sines.h"
 #include "./clips/dmx/rand.h"
 #include "./clips/dmx/peak.h"
+#include "./clips/dmx/frozen.h"
 #endif
 
 #include "gui/session.h"
@@ -45,11 +47,13 @@ class ofApp : public ofBaseApp {
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-    
+        void onPeakEnergy(std::pair<int, float> & value);
+
 		ofxLiveSet::project _project;
 		ofxLiveSet::session *_session;
     
-        ofxOscReceiver _oscReceiver;
+        soundAnalyser _soundAnalyser;
+    
     
 #ifdef USEDMX
         ofxDmx _dmx;

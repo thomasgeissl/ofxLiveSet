@@ -4,7 +4,8 @@
 namespace clips {
     class sines : public ofxLiveSet::clip::dmx {
     public:
-        sines() {
+        sines() : dmx() {
+            _name = "sines";
             _channel.set("channel", 1, 1, 512);
             _amount.set("amount", 16, 1, 512);
             _minValue.set("minValue", 0, 0, 255);
