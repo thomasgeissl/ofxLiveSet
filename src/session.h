@@ -1,7 +1,8 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxGui.h"
-#include "tracks/base.h"
+//#include "mqttSynchroniser.h"
+#include "./tracks/base.h"
 
 namespace ofxLiveSet
 {
@@ -14,8 +15,8 @@ public:
 		ofAddListener(ofEvents().update, this, &session::onUpdate, OF_EVENT_ORDER_AFTER_APP);
 	}
     void setup() {
-        auto x = 20;
-        auto y = 20;
+        auto x = 0;
+        auto y = 0;
         for(auto track : _tracks){
             auto panel = new ofxPanel();
             panel->setup(track->_parameters);
@@ -23,6 +24,8 @@ public:
             x += panel->getWidth();
             _panels.push_back(panel);
         }
+        
+//        _mqttSynchroniser.setup();
     }
     
 	void update()
@@ -31,6 +34,7 @@ public:
 		{
 			track->update();
 		}
+//        _mqttSynchroniser.update();
 	}
 	void draw()
 	{
@@ -93,6 +97,7 @@ public:
             ofLogNotice() << "show clip gui";
         }
         _panel.setup(clip->_parameters);
+        _panel.setPosition(0, ofGetHeight()/2);
     }
 	std::vector<track::base *> _tracks;
 	ofParameterGroup _parameters;
@@ -100,6 +105,8 @@ public:
     
     std::vector<ofxPanel*> _panels;
     ofxPanel _panel;
+    
+//    mqttSynchroniser _mqttSynchroniser;
 
 };
 }; // namespace ofxLiveSet

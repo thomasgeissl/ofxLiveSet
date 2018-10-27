@@ -2,6 +2,7 @@
 #define USEDMX
 
 #include "ofMain.h"
+#include "ofxOsc.h"
 #include "project.h"
 #include "tracks/graphic.h"
 #include "tracks/audio.h"
@@ -11,13 +12,13 @@
 #include "clips/audio.h"
 
 #ifdef USEDMX
-
 #include "ofxDmx.h"
 #include "tracks/dmx.h"
 #include "clips/dmx.h"
 #include "./clips/dmx/sin.h"
 #include "./clips/dmx/sines.h"
 #include "./clips/dmx/rand.h"
+#include "./clips/dmx/peak.h"
 #endif
 
 #include "gui/session.h"
@@ -47,6 +48,8 @@ class ofApp : public ofBaseApp {
     
 		ofxLiveSet::project _project;
 		ofxLiveSet::session *_session;
+    
+        ofxOscReceiver _oscReceiver;
     
 #ifdef USEDMX
         ofxDmx _dmx;

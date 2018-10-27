@@ -5,23 +5,22 @@ namespace clips {
     class sines : public ofxLiveSet::clip::dmx {
     public:
         sines() {
-            _channel.set("channel", 1);
-            _amount.set("amount", 16, 1, 16);
-
+            _channel.set("channel", 1, 1, 512);
+            _amount.set("amount", 16, 1, 512);
+            _minValue.set("minValue", 0, 0, 255);
+            _maxValue.set("maxValue", 255, 0, 255);
+            _speed.set("speed", .1, 0, 1);
+            
             _parameters.add(_channel);
-            _parameters.add(_amount);
-
-            _timestamp = ofGetElapsedTimeMillis();
+            _parameters.add(_minValue);
+            _parameters.add(_maxValue);
+            _parameters.add(_speed);
         }
         
         void update(){
-            auto timestamp = ofGetElapsedTimeMillis();
-            if(timestamp - _timestamp < 50){
-                return;
-            }
-            _timestamp = timestamp;
             for(auto i = 0; i < _amount; i++){
-                std::pair<int, int> value(_channel + i, ofMap(std::sin(ofGetElapsedTimef() + 1), 0, 1, 0, 255));
+                int dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)), 0, 1, _minValue, _maxValue);
+                std::pair<int, int> value(_channel+i, dmxValue);
                 _valueChangeEvent.notify(value);
             }
       
@@ -29,8 +28,8 @@ namespace clips {
         
         ofParameter<int> _channel;
         ofParameter<int> _amount;
-
-        
-        u_int64_t _timestamp;
+        ofParameter<int> _minValue;
+        ofParameter<int> _maxValue;
+        ofParameter<float> _speed;
     };
 };

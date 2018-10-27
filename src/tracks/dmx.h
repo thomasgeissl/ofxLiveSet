@@ -26,6 +26,7 @@ namespace ofxLiveSet
                     _dmx.update();
                 }
             }
+            void draw(){}
             void onValueChange(std::pair<int, int> &value){
                 if(!_mute){
                     _dmx.setLevel(value.first, value.second);
