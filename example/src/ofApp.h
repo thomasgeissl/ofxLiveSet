@@ -49,7 +49,10 @@ class ofApp : public ofBaseApp {
 		void gotMessage(ofMessage msg);
         void onPeakEnergy(std::pair<int, float> & value);
         void onPitch(std::pair<int, float> & value);
-
+        void onRootMeanSquare(std::pair<int, float> & value);
+        void onFftMagnitudeSpectrum(std::pair<int, std::vector<float>> & value);
+        void onMelFrequencySpectrum(std::pair<int, std::vector<float>> & value);
+    
 		ofxLiveSet::project _project;
 		ofxLiveSet::session *_session;
     

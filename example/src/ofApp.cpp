@@ -28,6 +28,9 @@ void ofApp::setup(){
     
     ofAddListener(_soundAnalyser._peakEnergyEvent, this, &ofApp::onPeakEnergy);
     ofAddListener(_soundAnalyser._pitchEvent, this, &ofApp::onPitch);
+    ofAddListener(_soundAnalyser._rootMeanSquareEvent, this, &ofApp::onRootMeanSquare);
+    ofAddListener(_soundAnalyser._fftMagnitudeSpectrumEvent, this, &ofApp::onFftMagnitudeSpectrum);
+    ofAddListener(_soundAnalyser._melFrequencySpectrumEvent, this, &ofApp::onMelFrequencySpectrum);
 
     _soundAnalyser.setup();
     
@@ -133,8 +136,13 @@ void ofApp::onPeakEnergy(std::pair<int, float> & value){
 }
 void ofApp::onPitch(std::pair<int, float> & value){
     ofLogNotice()<<"pitch "<<value.first<<" "<<std::round((value.second > 0 ? 17.3123405046 * log(.12231220585 * value.second) : -1500));
-;
-//    if(value.first == 1 && value.second > .5){
-//        ((clips::peak *)(_session->_tracks[3]->_clips[1]))->bang(value.second);
-//    }
+}
+void ofApp::onRootMeanSquare(std::pair<int, float> & value){
+    ofLogNotice()<<"rms "<<value.first<<" "<<value.second;
+}
+void ofApp::onFftMagnitudeSpectrum(std::pair<int, std::vector<float>> & value){
+    ofLogNotice()<<"fft "<<value.first;
+}
+void ofApp::onMelFrequencySpectrum(std::pair<int, std::vector<float>> & value){
+    ofLogNotice()<<"mel "<<value.first;
 }
