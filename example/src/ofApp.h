@@ -48,6 +48,7 @@ class ofApp : public ofBaseApp {
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
         void onPeakEnergy(std::pair<int, float> & value);
+        void onPitch(std::pair<int, float> & value);
 
 		ofxLiveSet::project _project;
 		ofxLiveSet::session *_session;

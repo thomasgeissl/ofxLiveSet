@@ -12,12 +12,21 @@ public:
         while(_oscReceiver.hasWaitingMessages()) {
             ofxOscMessage m;
             _oscReceiver.getNextMessage(m);
+//            ofLogNotice() << m.getAddress() << " " << m.;
+            
 //        TODO: regex capture id
             if(m.getAddress() == "/1/peakEnergy") {
                 auto peakEnergy = m.getArgAsFloat(0);
                 auto id = 1;
                 std::pair<int, float> value(id, peakEnergy);
                 _peakEnergyEvent.notify(value);
+            }
+            
+            if(m.getAddress() == "/1/pitch") {
+                auto pitch = m.getArgAsFloat(0);
+                auto id = 1;
+                std::pair<int, float> value(id, pitch);
+                _pitchEvent.notify(value);
             }
         }
     }

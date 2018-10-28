@@ -14,7 +14,7 @@ namespace ofxLiveSet
             dmx(std::string name = "") : base(name)
             {
             }
-            void setup(ofxDmx &dmx){
+            void setup(ofxDmx *dmx){
                 _dmx = dmx;
                 for(auto clip : _clips){
                     ofAddListener(((ofxLiveSet::clip::dmx *)(clip))->_valueChangeEvent, this, &ofxLiveSet::track::dmx::onValueChange);
@@ -22,17 +22,14 @@ namespace ofxLiveSet
             }
             void update(){
                 base::update();
-                if(!_mute){
-                    _dmx.update();
-                }
             }
             void draw(){}
             void onValueChange(std::pair<int, int> &value){
                 if(!_mute){
-                    _dmx.setLevel(value.first, value.second);
+                    _dmx->setLevel(value.first, value.second);
                 }
             }
-            ofxDmx _dmx;
+            ofxDmx * _dmx;
         };
     }; // namespace track
 }; // namespace ofxLiveSet

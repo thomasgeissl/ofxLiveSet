@@ -1,10 +1,10 @@
 #pragma once
-#include "clips/dmx.h"
+#include "./soundReactiveDmx.h"
 
 namespace clips {
-    class sines : public ofxLiveSet::clip::dmx {
+    class sines : public soundReactiveDmx {
     public:
-        sines() : dmx() {
+        sines() : soundReactiveDmx() {
             _name = "sines";
             _channel.set("channel", 1, 1, 512);
             _amount.set("amount", 16, 1, 512);

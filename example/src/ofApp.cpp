@@ -5,6 +5,7 @@ ofApp::ofApp(){
 }
 
 void ofApp::setup(){
+    ofSetBackgroundColor(0, 0, 0);
 //    auto firstGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 0"));
 //    auto secondGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 1"));
 //    auto thirdGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 2"));
@@ -26,6 +27,8 @@ void ofApp::setup(){
     
     
     ofAddListener(_soundAnalyser._peakEnergyEvent, this, &ofApp::onPeakEnergy);
+    ofAddListener(_soundAnalyser._pitchEvent, this, &ofApp::onPitch);
+
     _soundAnalyser.setup();
     
 #ifdef USEDMX
@@ -33,20 +36,26 @@ void ofApp::setup(){
     _dmx.setChannels(16);
     _dmx.setLevel(1, 255);
     
-    ofxLiveSet::track::dmx* firstDmxTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMX 0")));
-//    ofxLiveSet::track::dmx* secondDmxTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMX 1")));
+    ofxLiveSet::track::dmx* dmxAllTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMX ALL")));
+    ofxLiveSet::track::dmx* dmxFrontLeftTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMX FRONT LEFT")));
+    ofxLiveSet::track::dmx* dmxFrontRightTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMX FRONT RIGHT")));
+    ofxLiveSet::track::dmx* dmxRearLeftTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMX REAR LEFT")));
+    ofxLiveSet::track::dmx* dmxRearRightTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMX REAR RIGHT")));
     
-    firstDmxTrack->addClip(new clips::sin(1));
-    firstDmxTrack->addClip(new clips::peak());
-    firstDmxTrack->addClip(new clips::rand(1));
-    firstDmxTrack->addClip(new clips::sines());
-    firstDmxTrack->addClip(new clips::frozen());
+    dmxAllTrack->addClip(new clips::sin(1));
+    dmxAllTrack->addClip(new clips::peak());
+    dmxAllTrack->addClip(new clips::rand(1));
+    dmxAllTrack->addClip(new clips::sines());
+    dmxAllTrack->addClip(new clips::frozen());
 
 //    secondDmxTrack->addClip(new clips::sin(2));
 //    secondDmxTrack->addClip(new clips::rand(2));
     
-    firstDmxTrack->setup(_dmx);
-//    secondDmxTrack->setup(_dmx);
+    dmxAllTrack->setup(&_dmx);
+    dmxFrontLeftTrack->setup(&_dmx);
+    dmxFrontRightTrack->setup(&_dmx);
+    dmxRearLeftTrack->setup(&_dmx);
+    dmxRearRightTrack->setup(&_dmx);
 #endif
     _session->setup();
     _session->triggerScence(1);
@@ -56,11 +65,31 @@ void ofApp::setup(){
 void ofApp::exit(){}
 
 void ofApp::update(){
+    _dmx.update();
     _soundAnalyser.update();
 }
 
 void ofApp::draw(){
-
+    auto offset = 100;
+    auto radius = 20;
+    auto x = ofGetWidth()/2;
+    auto y = ofGetHeight()/2;
+    for(auto row = 0; row < 2; row++){
+        for(auto column = 0; column < 2; column++){
+            int channel = (row * 2 + column) * 4 +1;
+            ofSetColor(255,255,255, _dmx.getLevel(channel));
+            ofDrawCircle(x,y,radius);
+            ofSetColor(255,255,255, _dmx.getLevel(channel+1));
+            ofDrawCircle(x+offset,y,radius);
+            ofSetColor(255,255,255, _dmx.getLevel(channel+2));
+            ofDrawCircle(x,y+offset,radius);
+            ofSetColor(255,255,255, _dmx.getLevel(channel+3));
+            ofDrawCircle(x+offset,y+offset,radius);
+            x += ofGetWidth()/4;
+        }
+        y += ofGetHeight()/4;
+        x = ofGetWidth()/2;
+    }
 }
 
 void ofApp::keyPressed(int key){
@@ -102,4 +131,10 @@ void ofApp::onPeakEnergy(std::pair<int, float> & value){
         ((clips::peak *)(_session->_tracks[3]->_clips[1]))->bang(value.second);
     }
 }
-
+void ofApp::onPitch(std::pair<int, float> & value){
+    ofLogNotice()<<"pitch "<<value.first<<" "<<std::round((value.second > 0 ? 17.3123405046 * log(.12231220585 * value.second) : -1500));
+;
+//    if(value.first == 1 && value.second > .5){
+//        ((clips::peak *)(_session->_tracks[3]->_clips[1]))->bang(value.second);
+//    }
+}
