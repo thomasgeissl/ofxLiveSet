@@ -48,7 +48,7 @@ public:
             if(m.getAddress() == "/1/mel") {
                 for(auto i = 0; i < m.getNumArgs(); i++){
                     std::vector<float> mel;
-                    fft.push_back(m.getArgAsFloat(i));
+                    mel.push_back(m.getArgAsFloat(i));
                     auto id = 1;
                     std::pair<int, std::vector<float>> value(id, mel);
                     _melFrequencySpectrumEvent.notify(value);

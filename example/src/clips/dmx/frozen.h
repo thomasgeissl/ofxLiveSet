@@ -1,10 +1,10 @@
 #pragma once
-#include "clips/dmx.h"
+#include "./soundReactiveDmx.h"
 
 namespace clips {
-    class frozen : public ofxLiveSet::clip::dmx {
+    class frozen : public soundReactiveDmx {
     public:
-        frozen(int channel = 1, int amount = 16) : dmx(), _amount(amount) {
+        frozen(int channel = 1, int amount = 16) : soundReactiveDmx(), _amount(amount) {
             _name ="frozen";
             _channel.set("channel", channel, 1, 512);
             _parameters.add(_channel);

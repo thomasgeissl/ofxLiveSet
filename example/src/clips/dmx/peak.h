@@ -1,20 +1,21 @@
 #pragma once
-#include "clips/dmx.h"
+#include "./soundReactiveDmx.h"
 
 namespace clips {
-    class peak : public ofxLiveSet::clip::dmx {
+    class peak : public soundReactiveDmx {
     public:
-        peak() : dmx() {
+        peak() : soundReactiveDmx() {
             _name = "peak";
             _channel.set("channel", 1, 1, 512);
             _amount.addListener(this, &peak::onAmountChange);
-            _amount.set("amount", 1, 1, 512);
+            _amount.set("amount", 16, 1, 16);
 
             _value.set("value", 0, 0, 255);
             _minValue.set("minValue", 50, 0, 255);
             _maxValue.set("maxValue", 100, 0, 255);
             _speed.set("speed", 1, 0, 1);
             _random.set("random", false);
+            _threshold.set("threshold", .5, 0, 1);
 
             _parameters.add(_channel);
             _parameters.add(_amount);
@@ -23,6 +24,7 @@ namespace clips {
             _parameters.add(_maxValue);
             _parameters.add(_speed);
             _parameters.add(_random);
+            _parameters.add(_threshold);
 
             _timestamp = ofGetElapsedTimeMillis();
         }
@@ -39,7 +41,11 @@ namespace clips {
             }
         }
         
-        void bang(float value) {
+        void setPeakEnergy(float value) {
+            if(value < _threshold){
+                return;
+            }
+
             if(_random){
                 auto i = ofRandom(_amount);
                 _timestamps[i] = ofGetElapsedTimeMillis();
@@ -66,6 +72,7 @@ namespace clips {
         
         ofParameter<float> _speed;
         ofParameter<bool> _random;
+        ofParameter<float> _threshold;
 
         u_int64_t _timestamp;
         std::vector<u_int64_t> _timestamps;

@@ -176,6 +176,7 @@
 		C70D8946940288799E82131E /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = ../../../addons/ofxGui/src/ofxSliderGroup.h; sourceTree = SOURCE_ROOT; };
 		C88333E71C9457E441C33474 /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = ../../../addons/ofxGui/src/ofxButton.cpp; sourceTree = SOURCE_ROOT; };
 		C90283FB210D559D7FFEB9A4 /* mqtt3_protocol.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = mqtt3_protocol.h; path = ../../../addons/ofxMQTT/libs/mosquitto/src/mqtt3_protocol.h; sourceTree = SOURCE_ROOT; };
+		CF4E7319218610860009ED41 /* midiReactiveDmx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = midiReactiveDmx.h; path = clips/dmx/midiReactiveDmx.h; sourceTree = "<group>"; };
 		CF7BDF922184C1FE00FA6C91 /* frozen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = frozen.h; path = clips/dmx/frozen.h; sourceTree = "<group>"; };
 		CF7BDF932184DE4B00FA6C91 /* soundAnalyser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = soundAnalyser.h; sourceTree = "<group>"; };
 		CF7BDF94218537D200FA6C91 /* soundReactiveDmx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = soundReactiveDmx.h; path = clips/dmx/soundReactiveDmx.h; sourceTree = "<group>"; };
@@ -354,6 +355,7 @@
 				D958814904DCB8ACF34BA605 /* peak.h */,
 				CF7BDF922184C1FE00FA6C91 /* frozen.h */,
 				CF7BDF94218537D200FA6C91 /* soundReactiveDmx.h */,
+				CF4E7319218610860009ED41 /* midiReactiveDmx.h */,
 			);
 			name = dmx;
 			sourceTree = "<group>";
