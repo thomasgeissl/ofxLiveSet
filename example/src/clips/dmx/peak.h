@@ -41,7 +41,7 @@ namespace clips {
             }
         }
         
-        void setPeakEnergy(float value) {
+        void setPeakEnergy(int analyserId, float value) {
             if(value < _threshold){
                 return;
             }

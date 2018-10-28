@@ -25,11 +25,14 @@ namespace clips {
             _valueChangeEvent.notify(value);
         }
         
+        void setPeakEnergy(int analyserId, float value) {
+            _energy = value;
+        }
+        
         ofParameter<int> _channel;
         ofParameter<int> _minValue;
         ofParameter<int> _maxValue;
         ofParameter<float> _speed;
-
-
+        float _energy;
     };
 };

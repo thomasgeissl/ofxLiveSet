@@ -50,6 +50,7 @@ void ofApp::setup(){
     dmxAllTrack->addClip(new clips::rand(1));
     dmxAllTrack->addClip(new clips::sines());
     dmxAllTrack->addClip(new clips::frozen());
+    dmxAllTrack->addClip(new clips::strobe());
 
 //    secondDmxTrack->addClip(new clips::sin(2));
 //    secondDmxTrack->addClip(new clips::rand(2));
@@ -112,10 +113,13 @@ void ofApp::keyPressed(int key){
         case '4':
             _session->showClipGui(0,4);
             break;
+        case '5':
+            _session->showClipGui(0,5);
+            break;
         case 'b':
             auto clip = ((clips::peak *)(_session->_tracks[0]->_clips[1]));
             if(clip != nullptr){
-                clip->setPeakEnergy(1);
+                clip->setPeakEnergy(0, 1);
             }
             break;
     }
@@ -132,15 +136,15 @@ void ofApp::windowResized(int w, int h){}
 void ofApp::gotMessage(ofMessage msg){}
 void ofApp::dragEvent(ofDragInfo dragInfo){}
 void ofApp::onPeakEnergy(std::pair<int, float> & value){
-    ofLogNotice()<<"peak "<<value.first<<" "<<value.second;
+//TODO: iterate over tracks
     auto clip = (clips::soundReactiveDmx *)(_session->_tracks[0]->_clip);
     if(clip != nullptr){
         ofLogNotice() << clip->_name;
-        clip->setPeakEnergy(value.second);
+        clip->setPeakEnergy(value.first, value.second);
     }
 }
 void ofApp::onPitch(std::pair<int, float> & value){
-//    ofLogNotice()<<"pitch "<<value.first<<" "<<std::round((value.second > 0 ? 17.3123405046 * log(.12231220585 * value.second) : -1500));
+    ofLogNotice()<<"pitch "<<value.first<<" "<<std::round((value.second > 0 ? 17.3123405046 * log(.12231220585 * value.second) : -1500));
 }
 void ofApp::onRootMeanSquare(std::pair<int, float> & value){
 //    ofLogNotice()<<"rms "<<value.first<<" "<<value.second;

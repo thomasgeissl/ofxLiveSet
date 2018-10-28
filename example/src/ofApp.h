@@ -21,6 +21,7 @@
 #include "./clips/dmx/rand.h"
 #include "./clips/dmx/peak.h"
 #include "./clips/dmx/frozen.h"
+#include "./clips/dmx/strobe.h"
 #endif
 
 #include "gui/session.h"
