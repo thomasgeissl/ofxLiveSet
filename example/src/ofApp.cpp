@@ -65,6 +65,11 @@ void ofApp::setup(){
     _session->setup();
     _session->triggerScence(1);
 //    secondDmxTrack->stop();
+    
+    midiIn.openVirtualPort("ofxLiveSet");
+    midiIn.ignoreTypes(false, false, false);
+    midiIn.addListener(this);
+    midiIn.setVerbose(true);
 }
 
 void ofApp::exit(){}
@@ -170,7 +175,7 @@ void ofApp::onFftMagnitudeSpectrum(std::pair<int, std::vector<float>> & value){
         }
     }
 }
-void ofApp::onMelFrequencySpectrum(std::pair<int, std::vector<float>> & value){
+void ofApp::onMelFrequencySpectrum(std::pair<int, std::vector<float>> & value){ 
     for(auto track : _session->_tracks){
         auto clip = dynamic_cast<clips::soundReactiveDmx *>(track->_clip);
         if (clip != nullptr) {
@@ -178,3 +183,17 @@ void ofApp::onMelFrequencySpectrum(std::pair<int, std::vector<float>> & value){
         }
     }
 }
+void ofApp::newMidiMessage(ofxMidiMessage& message){
+    for(auto track : _session->_tracks){
+        auto clip = dynamic_cast<clips::midiReactiveDmx *>(track->_clip);
+        if (clip != nullptr) {
+            auto status = message.status;
+            if(status == MIDI_NOTE_ON){
+                clip->setNoteOn(message.pitch, message.velocity);
+            }else if(status == MIDI_NOTE_OFF){
+                clip->setNoteOff(message.pitch, message.velocity);
+            }
+        }
+    }
+}
+

@@ -23,15 +23,17 @@
 #include "./clips/dmx/frozen.h"
 #include "./clips/dmx/strobe.h"
 #include "./clips/dmx/midi2dmx.h"
-
 #endif
+
 
 #include "gui/session.h"
 
 #include "./clips/graphic/rects.h"
 #include "./clips/graphic/lines.h"
 
-class ofApp : public ofBaseApp {
+#include "ofxMidi.h"
+
+class ofApp : public ofBaseApp, public ofxMidiListener {
 	public:
 		ofApp();
 		void setup();
@@ -55,11 +57,13 @@ class ofApp : public ofBaseApp {
         void onRootMeanSquare(std::pair<int, float> & value);
         void onFftMagnitudeSpectrum(std::pair<int, std::vector<float>> & value);
         void onMelFrequencySpectrum(std::pair<int, std::vector<float>> & value);
-    
+        void newMidiMessage(ofxMidiMessage& eventArgs);
+
 		ofxLiveSet::project _project;
 		ofxLiveSet::session *_session;
     
         soundAnalyser _soundAnalyser;
+        ofxMidiIn midiIn;
     
     
 #ifdef USEDMX

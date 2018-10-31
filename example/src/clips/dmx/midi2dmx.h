@@ -12,5 +12,9 @@ namespace clips {
             std::pair<int, int> value(note, velocity * 2);
             _valueChangeEvent.notify(value);
         }
+        void setNoteOff(int note, int velocity) {
+            std::pair<int, int> value(note, 0);
+            _valueChangeEvent.notify(value);
+        }
     };
 };
