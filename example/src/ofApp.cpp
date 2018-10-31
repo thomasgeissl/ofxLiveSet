@@ -51,6 +51,7 @@ void ofApp::setup(){
     dmxAllTrack->addClip(new clips::sines());
     dmxAllTrack->addClip(new clips::frozen());
     dmxAllTrack->addClip(new clips::strobe());
+    dmxAllTrack->addClip(new clips::midi2dmx());
 
 //    secondDmxTrack->addClip(new clips::sin(2));
 //    secondDmxTrack->addClip(new clips::rand(2));
@@ -136,22 +137,44 @@ void ofApp::windowResized(int w, int h){}
 void ofApp::gotMessage(ofMessage msg){}
 void ofApp::dragEvent(ofDragInfo dragInfo){}
 void ofApp::onPeakEnergy(std::pair<int, float> & value){
-//TODO: iterate over tracks
-    auto clip = (clips::soundReactiveDmx *)(_session->_tracks[0]->_clip);
-    if(clip != nullptr){
-        ofLogNotice() << clip->_name;
-        clip->setPeakEnergy(value.first, value.second);
+    for(auto track : _session->_tracks){
+        auto clip = dynamic_cast<clips::soundReactiveDmx *>(track->_clip);
+        if (clip != nullptr) {
+            clip->setPeakEnergy(value.first, value.second);
+        }
     }
 }
 void ofApp::onPitch(std::pair<int, float> & value){
-    ofLogNotice()<<"pitch "<<value.first<<" "<<std::round((value.second > 0 ? 17.3123405046 * log(.12231220585 * value.second) : -1500));
+    int note = std::round((value.second > 0 ? 17.3123405046 * log(.12231220585 * value.second) : -1500));
+    
+    for(auto track : _session->_tracks){
+        auto clip = dynamic_cast<clips::soundReactiveDmx *>(track->_clip);
+        if (clip != nullptr) {
+            clip->setPitch(value.first, note);
+        }
+    }
 }
 void ofApp::onRootMeanSquare(std::pair<int, float> & value){
-//    ofLogNotice()<<"rms "<<value.first<<" "<<value.second;
+    for(auto track : _session->_tracks){
+        auto clip = dynamic_cast<clips::soundReactiveDmx *>(track->_clip);
+        if (clip != nullptr) {
+            clip->setRootMeanSquare(value.first, value.second);
+        }
+    }
 }
 void ofApp::onFftMagnitudeSpectrum(std::pair<int, std::vector<float>> & value){
-//    ofLogNotice()<<"fft "<<value.first;
+    for(auto track : _session->_tracks){
+        auto clip = dynamic_cast<clips::soundReactiveDmx *>(track->_clip);
+        if (clip != nullptr) {
+            clip->setFftMagnitudeSpectrum(value.first, value.second);
+        }
+    }
 }
 void ofApp::onMelFrequencySpectrum(std::pair<int, std::vector<float>> & value){
-//    ofLogNotice()<<"mel "<<value.first;
+    for(auto track : _session->_tracks){
+        auto clip = dynamic_cast<clips::soundReactiveDmx *>(track->_clip);
+        if (clip != nullptr) {
+            clip->setMelFrequencySpectrum(value.first, value.second);
+        }
+    }
 }
