@@ -37,6 +37,8 @@ void ofApp::setup(){
     lightBulbsTrack->addClip(new clips::sines());
     lightBulbsTrack->addClip(new clips::strobe());
     
+    strobeTrack->addClip(new clips::externalStrobe(17, 18));
+
     utilsTrack->addClip(new clips::frozen());
     utilsTrack->addClip(new clips::midi2dmx());
 
