@@ -12,11 +12,15 @@ public:
     base(std::string name = "") : _clip(nullptr)
 	{
         _name.set("name", name);
+        _stop.set("stop", false);
         _mute.set("mute", false);
         _solo.set("solo", false);
         _parameters.add(_name);
+        _parameters.add(_stop);
         _parameters.add(_solo);
         _parameters.add(_mute);
+        
+        _stop.addListener(this, &base::onStop);
 
 	}
     virtual void setup(){}
@@ -84,11 +88,16 @@ public:
             _clip = nullptr;
         }
     }
+    void onStop(bool & value) {
+        _stop = false;
+        stop();
+    }
    
 	std::vector<clip::base *> _clips;
 	clip::base *_clip;
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
+    ofParameter<bool> _stop;
     ofParameter<bool> _mute;
     ofParameter<bool> _solo;
     ofParameterGroup _clipTriggers;

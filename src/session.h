@@ -4,10 +4,8 @@
 //#include "mqttSynchroniser.h"
 #include "./tracks/base.h"
 
-namespace ofxLiveSet
-{
-class session
-{
+namespace ofxLiveSet {
+class session {
 public:
 	session()
 	{
@@ -25,6 +23,30 @@ public:
             _panels.push_back(panel);
         }
         
+        _name.set("name", "session");
+        _stop.set("stop", false);
+        _solo.set("solo", false);
+        _mute.set("mute", false);
+        _parameters.add(_name);
+        _parameters.add(_stop);
+        _parameters.add(_solo);
+        _parameters.add(_mute);
+        
+        _stop.addListener(this, &session::onStop);
+
+        
+        auto scenes = 0;
+        for(auto track : _tracks){
+            scenes = std::max(scenes, (int)(track->_clips.size()));
+        }
+        _sceneTriggers.resize(scenes);
+        for(auto sceneTrigger : _sceneTriggers){
+            _parameters.add(sceneTrigger);
+            sceneTrigger.addListener(this, &session::onSceneTrigger);
+        }
+        _scenesPanel.setup(_parameters);
+        _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(), 0);
+
 //        _mqttSynchroniser.setup();
     }
     
@@ -47,7 +69,8 @@ public:
             panel->draw();
         }
         
-        _panel.draw();
+        _clipPanel.draw();
+        _scenesPanel.draw();
 	}
 	void onUpdate(ofEventArgs &e)
 	{
@@ -91,21 +114,50 @@ public:
     }
     
     void showClipGui(int track, int index){
+        if(track >= _tracks.size()){ return; }
+        if(index >= _tracks[track]->_clips.size()){ return; }
+
         auto clip = _tracks[track]->_clips[index];
-        if(clip != nullptr) {
-            clip->_parameters;
-            ofLogNotice() << "show clip gui";
+        if(clip == nullptr){ return; }
+        
+        _clipPanel.setup(clip->_parameters);
+        _clipPanel.setPosition(0, ofGetHeight()/2);
+    }
+    
+    clip::base* getClip(int track, int index){
+        if(track >= _tracks.size()){ return nullptr; }
+        if(index >= _tracks[track]->_clips.size()){ return nullptr; }
+        return _tracks[track]->_clips[index];
+    }
+    void onSceneTrigger(const void* sender, bool & value) {
+        if(!value){ return; }
+        auto i = 0;
+        for(auto sceneTrigger : _sceneTriggers) {
+            if(sceneTrigger){
+                sceneTrigger = false;
+                triggerScence(i);
+            }
+            i++;
         }
-        _panel.setup(clip->_parameters);
-        _panel.setPosition(0, ofGetHeight()/2);
+    }
+    
+    void onStop(bool & value){
+        if(!value){ return; }
+        _stop = false;
+        stop();
     }
 	std::vector<track::base *> _tracks;
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
-    
+    ofParameter<bool> _stop;
+    ofParameter<bool> _solo;
+    ofParameter<bool> _mute;
+    std::vector<ofParameter<bool>> _sceneTriggers;
+
     std::vector<ofxPanel*> _panels;
-    ofxPanel _panel;
-    
+    ofxPanel _clipPanel;
+    ofxPanel _scenesPanel;
+
 //    mqttSynchroniser _mqttSynchroniser;
 
 };

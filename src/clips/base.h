@@ -42,6 +42,9 @@ public:
 	{
         _active = false;
 	}
+    void toggle(){
+        _active = !_active;
+    }
     
     void onActiveChange(bool & value) {
         bool valueToBeNotified = true;

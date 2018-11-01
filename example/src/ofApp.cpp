@@ -6,20 +6,7 @@ ofApp::ofApp(){
 
 void ofApp::setup(){
     ofSetBackgroundColor(0, 0, 0);
-//    auto firstGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 0"));
-//    auto secondGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 1"));
-//    auto thirdGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 2"));
 
-    //    _session->addTrack(new ofxLiveSet::track::audio());
-    //    _session->addTrack(new ofxLiveSet::track::audio());
-
-//    firstGraphicTrack->addClip(new clips::lines());
-//    firstGraphicTrack->addClip(new clips::rects());
-//    firstGraphicTrack->addClip(new clips::rects());
-//
-//    secondGraphicTrack->addClip(new clips::lines());
-//    secondGraphicTrack->addClip(new clips::lines());
-//    secondGraphicTrack->addClip(new clips::lines());
 
 //    thirdGraphicTrack->addClip(new ofxLiveSet::clip::videoGrabber(0));
     //    _session->_tracks[2]->addClip(new ofxLiveSet::clip::audio("/Users/thomasgeissl/Desktop/untitled_134.mp3"));
@@ -39,29 +26,42 @@ void ofApp::setup(){
     _dmx.setChannels(16);
     _dmx.setLevel(1, 255);
     
-    ofxLiveSet::track::dmx* dmxAllTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMX ALL")));
-    ofxLiveSet::track::dmx* dmxFrontLeftTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMX FRONT LEFT")));
-    ofxLiveSet::track::dmx* dmxFrontRightTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMX FRONT RIGHT")));
-    ofxLiveSet::track::dmx* dmxRearLeftTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMX REAR LEFT")));
-    ofxLiveSet::track::dmx* dmxRearRightTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("DMX REAR RIGHT")));
+    ofxLiveSet::track::dmx* lightBulbsTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("light bulbs")));
+    ofxLiveSet::track::dmx* strobeTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("strobe")));
+    ofxLiveSet::track::dmx* utilsTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("utils")));
     
-    dmxAllTrack->addClip(new clips::sin(1));
-    dmxAllTrack->addClip(new clips::peak());
-    dmxAllTrack->addClip(new clips::rand(1));
-    dmxAllTrack->addClip(new clips::sines());
-    dmxAllTrack->addClip(new clips::frozen());
-    dmxAllTrack->addClip(new clips::strobe());
-    dmxAllTrack->addClip(new clips::midi2dmx());
+    
+    lightBulbsTrack->addClip(new clips::sin(1));
+    lightBulbsTrack->addClip(new clips::peak());
+    lightBulbsTrack->addClip(new clips::rand(1));
+    lightBulbsTrack->addClip(new clips::sines());
+    lightBulbsTrack->addClip(new clips::strobe());
+    
+    utilsTrack->addClip(new clips::frozen());
+    utilsTrack->addClip(new clips::midi2dmx());
 
 //    secondDmxTrack->addClip(new clips::sin(2));
 //    secondDmxTrack->addClip(new clips::rand(2));
     
-    dmxAllTrack->setup(&_dmx);
-    dmxFrontLeftTrack->setup(&_dmx);
-    dmxFrontRightTrack->setup(&_dmx);
-    dmxRearLeftTrack->setup(&_dmx);
-    dmxRearRightTrack->setup(&_dmx);
+    lightBulbsTrack->setup(&_dmx);
+    strobeTrack->setup(&_dmx);
+    utilsTrack->setup(&_dmx);
 #endif
+    
+//    auto firstGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 0"));
+//    auto secondGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 1"));
+//    auto thirdGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 2"));
+//    
+//    _session->addTrack(new ofxLiveSet::track::audio());
+//    _session->addTrack(new ofxLiveSet::track::audio());
+//    
+//    firstGraphicTrack->addClip(new clips::lines());
+//    firstGraphicTrack->addClip(new clips::rects());
+//    firstGraphicTrack->addClip(new clips::rects());
+//    
+//    secondGraphicTrack->addClip(new clips::lines());
+//    secondGraphicTrack->addClip(new clips::lines());
+//    secondGraphicTrack->addClip(new clips::lines());
     _session->setup();
     _session->triggerScence(1);
 //    secondDmxTrack->stop();
@@ -70,6 +70,12 @@ void ofApp::setup(){
     midiIn.ignoreTypes(false, false, false);
     midiIn.addListener(this);
     midiIn.setVerbose(true);
+    
+    _focusedTrack.set("focusedTrack", 0);
+    _focusedClip.set("focusedClip", 0);
+
+    _focusedTrack.addListener(this, &ofApp::onFocusChange);
+    _focusedClip.addListener(this, &ofApp::onFocusChange);
 }
 
 void ofApp::exit(){}
@@ -122,12 +128,37 @@ void ofApp::keyPressed(int key){
         case '5':
             _session->showClipGui(0,5);
             break;
-        case 'b':
+        case 'b': {
             auto clip = ((clips::peak *)(_session->_tracks[0]->_clips[1]));
             if(clip != nullptr){
                 clip->setPeakEnergy(0, 1);
             }
             break;
+        }
+        case OF_KEY_LEFT: {
+            _focusedTrack = std::max(0
+                                     , _focusedTrack-1);
+            break;
+        }
+        case OF_KEY_RIGHT: {
+            _focusedTrack = std::min((int)(_session->_tracks.size()), _focusedTrack+1);
+            break;
+        }
+        case OF_KEY_UP: {
+            _focusedClip = std::max(0, _focusedClip-1);
+            break;
+        }
+        case OF_KEY_DOWN: {
+            _focusedClip = std::min((int)(_session->_tracks[_focusedTrack]->_clips.size()), _focusedClip+1);
+            break;
+        }
+        case OF_KEY_RETURN: {
+            auto clip = _session->getClip(_focusedTrack, _focusedClip);
+            if(clip != nullptr){
+                clip->toggle();
+            }
+            break;
+        }
     }
 }
 
@@ -197,3 +228,7 @@ void ofApp::newMidiMessage(ofxMidiMessage& message){
     }
 }
 
+void ofApp::onFocusChange(int & value){
+    ofLogNotice()<<_focusedTrack << " " << _focusedClip;
+    _session->showClipGui(_focusedTrack, _focusedClip);
+}

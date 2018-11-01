@@ -4,8 +4,8 @@
 
 class soundAnalyser {
 public:
-    soundAnalyser(){
-        _oscReceiver.setup(8000);
+    soundAnalyser(int port = 8000){
+        _oscReceiver.setup(port);
     }
     void setup(){}
     void update(){
