@@ -31,12 +31,14 @@ void ofApp::setup(){
     ofxLiveSet::track::dmx* utilsTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("utils")));
     
     
+    lightBulbsTrack->addClip(new clips::within());
+    lightBulbsTrack->addClip(new clips::anchor());
     lightBulbsTrack->addClip(new clips::sin(1));
     lightBulbsTrack->addClip(new clips::peak());
     lightBulbsTrack->addClip(new clips::rand(1));
     lightBulbsTrack->addClip(new clips::sines());
     lightBulbsTrack->addClip(new clips::strobe());
-    
+
     strobeTrack->addClip(new clips::externalStrobe(17, 18));
 
     utilsTrack->addClip(new clips::frozen());
@@ -48,6 +50,8 @@ void ofApp::setup(){
     lightBulbsTrack->setup(&_dmx);
     strobeTrack->setup(&_dmx);
     utilsTrack->setup(&_dmx);
+    utilsTrack->mute(true);
+
 #endif
     
 //    auto firstGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 0"));
@@ -80,7 +84,12 @@ void ofApp::setup(){
     _focusedClip.addListener(this, &ofApp::onFocusChange);
 }
 
-void ofApp::exit(){}
+void ofApp::exit(){
+    for(auto i = 0; i < 512; i++){
+        _dmx.setLevel(i, 0);
+    }
+    _dmx.update();
+}
 
 void ofApp::update(){
     _dmx.update();

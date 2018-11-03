@@ -73,7 +73,9 @@ public:
             _clip->start();
         }
     }
-    
+    void mute(bool value = true){
+        _mute = value;
+    }
     void onClipStarted(const void* sender, bool & value) {
         for(auto clip : _clips) {
             if(clip != sender) {

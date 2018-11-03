@@ -22,6 +22,9 @@
 #include "./clips/dmx/peak.h"
 #include "./clips/dmx/frozen.h"
 #include "./clips/dmx/strobe.h"
+#include "./clips/dmx/within.h"
+#include "./clips/dmx/anchor.h"
+
 #include "./clips/dmx/externalStrobe.h"
 #include "./clips/dmx/midi2dmx.h"
 #endif

@@ -17,9 +17,15 @@ public:
         auto y = 0;
         for(auto track : _tracks){
             auto panel = new ofxPanel();
+            panel->setDefaultWidth(200);
+            panel->setDefaultFillColor(ofColor::red);
+//            panel->setDefaultBorderColor(ofColor::red);
             panel->setup(track->_parameters);
+            panel->setHeaderBackgroundColor(ofColor::red);
+
             panel->setPosition(x, y);
-            x += panel->getWidth();
+            panel->setUseTTF(true);
+            x += panel->getWidth() + 1; //TODO: get border width
             _panels.push_back(panel);
         }
         
@@ -44,10 +50,16 @@ public:
             _parameters.add(sceneTrigger);
             sceneTrigger.addListener(this, &session::onSceneTrigger);
         }
+        _scenesPanel.setDefaultFillColor(ofColor::green);
+//        _scenesPanel.setDefaultBorderColor(ofColor::green);
         _scenesPanel.setup(_parameters);
+        _scenesPanel.setHeaderBackgroundColor(ofColor::green);
+
         _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(), 0);
+        _scenesPanel.setUseTTF(true);
 
 //        _mqttSynchroniser.setup();
+        _clipPanel.setFillColor(ofColor::red);
     }
     
 	void update()
@@ -119,9 +131,12 @@ public:
 
         auto clip = _tracks[track]->_clips[index];
         if(clip == nullptr){ return; }
-        
+        _clipPanel.setDefaultWidth(200);
+        _clipPanel.setDefaultFillColor(ofColor::blue);
+//        _clipPanel.setDefaultBorderColor(ofColor::blue);
         _clipPanel.setup(clip->_parameters);
         _clipPanel.setPosition(0, ofGetHeight()/2);
+        _clipPanel.setHeaderBackgroundColor(ofColor::blue);
     }
     
     clip::base* getClip(int track, int index){
