@@ -60,6 +60,12 @@ public:
 
 //        _mqttSynchroniser.setup();
         _clipPanel.setFillColor(ofColor::red);
+        
+        for(auto track : _tracks){
+            for(auto clip : track->_clips){
+                ofAddListener(clip->_started, this, &session::onClipStarted);
+            }
+        }
     }
     
 	void update()
@@ -130,10 +136,13 @@ public:
         if(index >= _tracks[track]->_clips.size()){ return; }
 
         auto clip = _tracks[track]->_clips[index];
+        showClipGui(clip);
+    }
+    void showClipGui(clip::base * clip){
         if(clip == nullptr){ return; }
         _clipPanel.setDefaultWidth(200);
         _clipPanel.setDefaultFillColor(ofColor::blue);
-//        _clipPanel.setDefaultBorderColor(ofColor::blue);
+        //        _clipPanel.setDefaultBorderColor(ofColor::blue);
         _clipPanel.setup(clip->_parameters);
         _clipPanel.setPosition(0, ofGetHeight()/2);
         _clipPanel.setHeaderBackgroundColor(ofColor::blue);
@@ -160,6 +169,10 @@ public:
         if(!value){ return; }
         _stop = false;
         stop();
+    }
+    void onClipStarted(const void* sender, bool & value) {
+        auto clip = (clip::base *) (sender);
+        showClipGui(clip);
     }
 	std::vector<track::base *> _tracks;
 	ofParameterGroup _parameters;

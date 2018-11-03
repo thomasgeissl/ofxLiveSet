@@ -24,7 +24,8 @@
 #include "./clips/dmx/strobe.h"
 #include "./clips/dmx/within.h"
 #include "./clips/dmx/anchor.h"
-
+#include "./clips/dmx/firn.h"
+#include "./clips/dmx/schwanensee.h"
 #include "./clips/dmx/externalStrobe.h"
 #include "./clips/dmx/midi2dmx.h"
 #endif
@@ -69,13 +70,11 @@ class ofApp : public ofBaseApp, public ofxMidiListener {
     
         soundAnalyser _soundAnalyser;
         ofxMidiIn midiIn;
-    
+#ifdef USEDMX
+    ofxDmx _dmx;
+#endif
         ofParameterGroup _parameters;
         ofParameter<int> _focusedTrack;
         ofParameter<int> _focusedClip;
 
-    
-#ifdef USEDMX
-        ofxDmx _dmx;
-#endif
 };

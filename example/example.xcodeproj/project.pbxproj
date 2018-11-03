@@ -215,6 +215,8 @@
 		CF0494A5218B17D20011EF79 /* externalStrobe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = externalStrobe.h; path = clips/dmx/externalStrobe.h; sourceTree = "<group>"; };
 		CF0494A6218BB87A0011EF79 /* within.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = within.h; path = clips/dmx/within.h; sourceTree = "<group>"; };
 		CF0494A7218E1B7C0011EF79 /* anchor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = anchor.h; path = clips/dmx/anchor.h; sourceTree = "<group>"; };
+		CF0494A8218E1FA10011EF79 /* schwanensee.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = schwanensee.h; path = clips/dmx/schwanensee.h; sourceTree = "<group>"; };
+		CF0494A9218E20340011EF79 /* firn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = firn.h; path = clips/dmx/firn.h; sourceTree = "<group>"; };
 		D48D7AA5DEA50765C94129EA /* soundReactiveDmx.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = soundReactiveDmx.h; path = src/clips/dmx/soundReactiveDmx.h; sourceTree = SOURCE_ROOT; };
 		D958814904DCB8ACF34BA605 /* peak.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = peak.h; path = src/clips/dmx/peak.h; sourceTree = SOURCE_ROOT; };
 		D9BFFBBF4CC43DEE890B3C3E /* OscTypes.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = OscTypes.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscTypes.cpp; sourceTree = SOURCE_ROOT; };
@@ -421,6 +423,8 @@
 				CF0494A5218B17D20011EF79 /* externalStrobe.h */,
 				CF0494A6218BB87A0011EF79 /* within.h */,
 				CF0494A7218E1B7C0011EF79 /* anchor.h */,
+				CF0494A8218E1FA10011EF79 /* schwanensee.h */,
+				CF0494A9218E20340011EF79 /* firn.h */,
 			);
 			name = dmx;
 			sourceTree = "<group>";

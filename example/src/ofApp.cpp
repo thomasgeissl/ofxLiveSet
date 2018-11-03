@@ -33,6 +33,9 @@ void ofApp::setup(){
     
     lightBulbsTrack->addClip(new clips::within());
     lightBulbsTrack->addClip(new clips::anchor());
+    lightBulbsTrack->addClip(new clips::firn());
+    lightBulbsTrack->addClip(new clips::schwanensee());
+
     lightBulbsTrack->addClip(new clips::sin(1));
     lightBulbsTrack->addClip(new clips::peak());
     lightBulbsTrack->addClip(new clips::rand(1));
