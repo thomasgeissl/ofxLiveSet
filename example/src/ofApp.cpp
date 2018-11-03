@@ -36,11 +36,11 @@ void ofApp::setup(){
     lightBulbsTrack->addClip(new clips::firn());
     lightBulbsTrack->addClip(new clips::schwanensee());
 
-    lightBulbsTrack->addClip(new clips::sin(1));
-    lightBulbsTrack->addClip(new clips::peak());
-    lightBulbsTrack->addClip(new clips::rand(1));
-    lightBulbsTrack->addClip(new clips::sines());
-    lightBulbsTrack->addClip(new clips::strobe());
+//    lightBulbsTrack->addClip(new clips::sin(1));
+//    lightBulbsTrack->addClip(new clips::peak());
+//    lightBulbsTrack->addClip(new clips::rand(1));
+//    lightBulbsTrack->addClip(new clips::sines());
+//    lightBulbsTrack->addClip(new clips::strobe());
 
     strobeTrack->addClip(new clips::externalStrobe(17, 18));
 

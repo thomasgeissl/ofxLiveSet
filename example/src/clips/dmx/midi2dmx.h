@@ -6,6 +6,7 @@ namespace clips {
     public:
         midi2dmx() : midiReactiveDmx() {
             _name = "midi2dmx";
+            _active.setName(_name);
         }
         
         void setNoteOn(int note, int velocity) {

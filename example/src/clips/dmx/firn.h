@@ -7,74 +7,81 @@ namespace clips {
         firn() : soundReactiveDmx() {
             _name = "firn";
             _channel.set("channel", 1, 1, 512);
-            _start.set("start", 12, 1, 16);
-            _amount.set("amount", 1, 1, 16);
-            _minValue.set("minValue", 60, 0, 255);
-            _maxValue.set("maxValue", 120, 0, 255);
-            _addPeakEnergy.set("addPeakEnergy", false);
-            _speed.set("speed", .1, 0, 1);
-            _add.set("add");
-            _remove.set("remove");
+            _amount.addListener(this, &firn::onAmountChange);
+            _amount.set("amount", 16, 1, 16);
+            
+            _value.set("value", 0, 0, 255);
+            _minValue.set("minValue", 50, 0, 255);
+            _maxValue.set("maxValue", 100, 0, 255);
+            _speed.set("speed", 1, 0, 1);
+            _random.set("random", false);
+            _threshold.set("threshold", .5, 0, 1);
             _active.setName(_name);
             
-            _parameters.add(_start);
+            _parameters.add(_channel);
             _parameters.add(_amount);
+            _parameters.add(_value);
             _parameters.add(_minValue);
             _parameters.add(_maxValue);
-            _parameters.add(_addPeakEnergy);
             _parameters.add(_speed);
-            _parameters.add(_add);
-            _parameters.add(_remove);
+            _parameters.add(_random);
+            _parameters.add(_threshold);
+            
+            _timestamp = ofGetElapsedTimeMillis();
         }
         
         void update(){
-            for(auto i = 0; i < _amount; i++){
-                auto dmxValue = 0;
-                if(_addPeakEnergy){
-                    dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)) + _peakEnergy, 0, 2, _minValue, _maxValue);
-                    
-                }else{
-                    dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)), 0, 1, _minValue, _maxValue);
-                }
-                std::pair<int, int> value((_start+i)%16+1, dmxValue);
-                _valueChangeEvent.notify(value);
-                
-            }
+            auto timestamp = ofGetElapsedTimeMillis();
             
-        }
-        void stop(){
-            for(auto i = 1; i <= 16; i++){
-                std::pair<int, int> value(i, 0);
-                _valueChangeEvent.notify(value);
+            for(auto i = 0; i < _amount; i++) {
+                if(timestamp - _timestamps[i] < 1000){
+                    _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + 1000, _maxValue, _minValue);
+                    std::pair<int, int> value(_channel+i, _values[i]);
+                    _valueChangeEvent.notify(value);
+                }
             }
-            base::stop();
-        }
-        void setPeakEnergy(int analyserId, float value){
-            _peakEnergy = value;
-        }
-        void setPitch(int analyserId, float value){
-            _pitch = value;
         }
         
-        void onAdd(){
-            _amount.set(_amount + 1);
+        void setPeakEnergy(int analyserId, float value) {
+            if(value < _threshold){
+                return;
+            }
+            auto timestamp = ofGetElapsedTimeMillis();
+            if(timestamp - _timestamp < 50){
+                return;
+            }
+            _timestamp = timestamp;
+
+            if(_random){
+                auto i = ofRandom(_amount);
+                _timestamps[i] = ofGetElapsedTimeMillis();
+                _values[i] = _maxValue*value;
+            }else{
+                for(auto i = 0; i < _amount; i++){
+                    _timestamps[i] = ofGetElapsedTimeMillis();
+                    _values[i] = _maxValue*value;
+                }
+            }
         }
-        void onRemove(){
-            std::pair<int, int> value((_start+_amount-1) % 16 + 1, 0);
-            _valueChangeEvent.notify(value);
-            _amount = _amount-1;
+        
+        void onAmountChange(int & value){
+            _values.resize(value);
+            _timestamps.resize(value);
         }
+        
         ofParameter<int> _channel;
-        ofParameter<int> _start;
         ofParameter<int> _amount;
+        ofParameter<int> _value;
+        std::vector<int> _values;
         ofParameter<int> _minValue;
         ofParameter<int> _maxValue;
-        ofParameter<bool> _addPeakEnergy;
-        ofParameter<float> _speed;
-        ofParameter<void> _add;
-        ofParameter<void> _remove;
         
-        float _peakEnergy;
-        float _pitch;
+        ofParameter<float> _speed;
+        ofParameter<bool> _random;
+        ofParameter<float> _threshold;
+        
+        u_int64_t _timestamp;
+        std::vector<u_int64_t> _timestamps;
+        
     };
 };
