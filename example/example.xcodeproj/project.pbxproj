@@ -224,6 +224,7 @@
 		C90283FB210D559D7FFEB9A4 /* mqtt3_protocol.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = mqtt3_protocol.h; path = ../../../addons/ofxMQTT/libs/mosquitto/src/mqtt3_protocol.h; sourceTree = SOURCE_ROOT; };
 		CF1BB806218F4CC100DB072C /* midi2dmx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = midi2dmx.h; path = clips/dmx/utils/midi2dmx.h; sourceTree = "<group>"; };
 		CF1BB807218F4CC100DB072C /* still.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = still.h; path = clips/dmx/utils/still.h; sourceTree = "<group>"; };
+		CF1BB809218F613D00DB072C /* null.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = null.h; path = ../src/clips/null.h; sourceTree = "<group>"; };
 		D48D7AA5DEA50765C94129EA /* soundReactiveDmx.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = soundReactiveDmx.h; path = src/clips/dmx/soundReactiveDmx.h; sourceTree = SOURCE_ROOT; };
 		D6A0316F28A921892AC814B5 /* ofxMidiMappableInt.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxMidiMappableInt.h; path = ../../../addons/ofxMidiMapper/src/ofxMidiMappableInt.h; sourceTree = SOURCE_ROOT; };
 		D958814904DCB8ACF34BA605 /* peak.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = peak.h; path = src/clips/dmx/peak.h; sourceTree = SOURCE_ROOT; };
@@ -291,6 +292,7 @@
 				F437644B8BF27E6E8A2BD35E /* graphic.h */,
 				382E604B9EC72353CF489DE7 /* dmx.h */,
 				F1207D8C8B6D6DF3C554B13B /* base.h */,
+				CF1BB809218F613D00DB072C /* null.h */,
 			);
 			name = clips;
 			sourceTree = "<group>";

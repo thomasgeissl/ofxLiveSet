@@ -29,17 +29,13 @@ void ofApp::setup(){
     lightBulbsTrack->addClip(new clips::firn());
     lightBulbsTrack->addClip(new clips::schwanensee());
 
-//    lightBulbsTrack->addClip(new clips::sin(1));
-//    lightBulbsTrack->addClip(new clips::peak());
-//    lightBulbsTrack->addClip(new clips::rand(1));
-//    lightBulbsTrack->addClip(new clips::sines());
-//    lightBulbsTrack->addClip(new clips::strobe());
+    strobeTrack->addClip(new clips::externalStrobe(17, 18), 2);
 
-    strobeTrack->addClip(new clips::externalStrobe(17, 18));
-
-    utilsTrack->addClip(new clips::still());
+    utilsTrack->addClip(new clips::still(), 4);
     utilsTrack->addClip(new clips::midi2dmx());
     
+
+
     lightBulbsTrack->setup(&_dmx);
     strobeTrack->setup(&_dmx);
     utilsTrack->setup(&_dmx);
@@ -47,6 +43,10 @@ void ofApp::setup(){
 #endif
     
     _session->setup();
+    _session->renameScene(0, "within");
+    _session->renameScene(1, "anchor");
+    _session->renameScene(2, "firn");
+    _session->renameScene(3, "schwanensee");
     _session->stop();
 
     

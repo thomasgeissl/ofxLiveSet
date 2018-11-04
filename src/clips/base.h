@@ -2,15 +2,11 @@
 #include "ofMain.h"
 #include "session.h"
 
-namespace ofxLiveSet
-{
-namespace clip
-{
-class base
-{
+namespace ofxLiveSet{
+namespace clip{
+class base{
 public:
-    base(std::string name = "")
-	{
+    base(std::string name = ""){
         _active.addListener(this, &base::onActiveChange);
         _name.set("name", name);
         _active.set("active", false);
@@ -18,28 +14,22 @@ public:
 //        _parameters.add(_name);
         _parameters.add(_active);
 	}
-    virtual void setup()
-    {
+    virtual void setup(){
         ofLogNotice("clip") << "setup";
     }
-	virtual void update()
-	{
+	virtual void update(){
 		ofLogNotice("clip") << "update";
 	}
-	virtual void draw()
-	{
+	virtual void draw(){
 		ofLogNotice("clip") << "draw";
 	}
-	virtual void start()
-	{
+	virtual void start(){
         _active = true;
 	}
-	virtual void pause()
-	{
+	virtual void pause(){
 		ofLogNotice("clip") << "pause";
 	}
-	virtual void stop()
-	{
+	virtual void stop(){
         _active = false;
 	}
     void toggle(){

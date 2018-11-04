@@ -1,6 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "../clips/base.h"
+#include "../clips/null.h"
 
 namespace ofxLiveSet
 {
@@ -63,6 +64,19 @@ public:
 
         return clip;
 	}
+    clip::base* addClip(clip::base *clip, int index){
+        while(_clips.size() < index){
+            auto nullClip = new clip::nullClip();
+            _parameters.add(nullClip->_active);
+            _clips.push_back(nullClip);
+        }
+        _clips.push_back(clip);
+        _parameters.add(clip->_active);
+        ofAddListener(clip->_started, this, &base::onClipStarted);
+        ofAddListener(clip->_stopped, this, &base::onClipStopped);
+        
+        return clip;
+    }
     void setClip(clip::base *clip){
         _clip = clip;
     }

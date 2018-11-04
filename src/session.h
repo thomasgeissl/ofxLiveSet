@@ -46,7 +46,9 @@ public:
             scenes = std::max(scenes, (int)(track->_clips.size()));
         }
         _sceneTriggers.resize(scenes);
+        auto i = 0;
         for(auto sceneTrigger : _sceneTriggers){
+            sceneTrigger.set("scene "+ofToString(i++), false);
             _parameters.add(sceneTrigger);
             sceneTrigger.addListener(this, &session::onSceneTrigger);
         }
@@ -161,6 +163,14 @@ public:
         if(index >= _tracks[track]->_clips.size()){ return nullptr; }
         return _tracks[track]->_clips[index];
     }
+    
+    void renameScene(int index, std::string name){
+        if(index >= _sceneTriggers.size()){
+            ofLogError("ofxLiveSet::session") << "cannot rename scene. index (" << index << ") out of bounds. ("<<_sceneTriggers.size()<<")";
+            return;
+        }
+        _sceneTriggers[index].setName(name);
+    }
     void onSceneTrigger(const void* sender, bool & value) {
         if(!value){ return; }
         auto i = 0;
@@ -182,6 +192,8 @@ public:
     }
     void onClipStarted(const void* sender, bool & value) {
         auto clip = (clip::base *) (sender);
+        auto nullClip = dynamic_cast<ofxLiveSet::clip::nullClip *>(clip);
+        if (nullClip != nullptr){return;}
         showClipGui(clip);
         if(!_active){
             _active = true;
