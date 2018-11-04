@@ -61,12 +61,12 @@ namespace clips {
         }
 
         void onAdd(){
-            _amount.set(_amount + 1);
+            _amount.set(ofClamp(_amount + 1, _amount.getMin(), _amount.getMax()));
         }
         void onRemove(){
             std::pair<int, int> value((_start+_amount-1) % 16 + 1, 0);
             _valueChangeEvent.notify(value);
-            _amount = _amount-1;
+            _amount.set(ofClamp(_amount - 1, _amount.getMin(), _amount.getMax()));
         }
         ofParameter<int> _channel;
         ofParameter<int> _start;
@@ -79,7 +79,5 @@ namespace clips {
         ofParameter<void> _remove;
         
         float _peakEnergy;
-
-
     };
 };

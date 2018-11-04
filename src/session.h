@@ -30,15 +30,15 @@ public:
         }
         
         _name.set("name", "session");
-        _stop.set("stop", false);
-        _solo.set("solo", false);
+        _active.set("active", false);
+        _timestampString.set("time", "0");
         _mute.set("mute", false);
         _parameters.add(_name);
-        _parameters.add(_stop);
-        _parameters.add(_solo);
+        _parameters.add(_active);
+        _parameters.add(_timestampString);
         _parameters.add(_mute);
         
-        _stop.addListener(this, &session::onStop);
+        _active.addListener(this, &session::onActive);
 
         
         auto scenes = 0;
@@ -68,12 +68,18 @@ public:
         }
     }
     
-	void update()
-	{
-		for (auto track : _tracks)
-		{
-			track->update();
-		}
+	void update(){
+        if(_active){
+            _timestamp = ofGetElapsedTimeMillis();
+            _timestampString = ofToString((int)((_timestamp - _startedTimestamp)/1000));
+            for (auto track : _tracks)
+            {
+                track->update();
+            }
+        }
+
+
+
 //        _mqttSynchroniser.update();
 	}
 	void draw()
@@ -102,6 +108,7 @@ public:
 
 	void start()
 	{
+        _startedTimestamp = ofGetElapsedTimeMillis();
         for (auto track : _tracks)
         {
             track->start();
@@ -112,6 +119,7 @@ public:
 	}
 	void stop()
 	{
+        _timestampString = "";
 		for (auto track : _tracks)
 		{
 			track->stop();
@@ -165,26 +173,34 @@ public:
         }
     }
     
-    void onStop(bool & value){
-        if(!value){ return; }
-        _stop = false;
-        stop();
+    void onActive(bool & value){
+        if(value){
+            start();
+        }else{
+            stop();
+        }
     }
     void onClipStarted(const void* sender, bool & value) {
         auto clip = (clip::base *) (sender);
         showClipGui(clip);
+        if(!_active){
+            _active = true;
+        }
     }
 	std::vector<track::base *> _tracks;
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
-    ofParameter<bool> _stop;
-    ofParameter<bool> _solo;
+    ofParameter<bool> _active;
+    ofParameter<std::string> _timestampString;
     ofParameter<bool> _mute;
     std::vector<ofParameter<bool>> _sceneTriggers;
 
     std::vector<ofxPanel*> _panels;
     ofxPanel _clipPanel;
     ofxPanel _scenesPanel;
+    
+    u_int64_t _timestamp;
+    u_int64_t _startedTimestamp;
 
 //    mqttSynchroniser _mqttSynchroniser;
 

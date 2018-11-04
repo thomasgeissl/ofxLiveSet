@@ -1,18 +1,11 @@
 #include "ofApp.h"
 
-ofApp::ofApp(){
-	_session = _project._session;
+ofApp::ofApp() : _session(_project._session){
 }
 
 void ofApp::setup(){
     ofSetBackgroundColor(0, 0, 0);
 
-
-//    thirdGraphicTrack->addClip(new ofxLiveSet::clip::videoGrabber(0));
-    //    _session->_tracks[2]->addClip(new ofxLiveSet::clip::audio("/Users/thomasgeissl/Desktop/untitled_134.mp3"));
-    //    _session->_tracks[3]->addClip(new ofxLiveSet::clip::audio("/Users/thomasgeissl/Desktop/untitled_134.mp3"));
-    
-    
     ofAddListener(_soundAnalyser._peakEnergyEvent, this, &ofApp::onPeakEnergy);
     ofAddListener(_soundAnalyser._pitchEvent, this, &ofApp::onPitch);
     ofAddListener(_soundAnalyser._rootMeanSquareEvent, this, &ofApp::onRootMeanSquare);
@@ -44,41 +37,26 @@ void ofApp::setup(){
 
     strobeTrack->addClip(new clips::externalStrobe(17, 18));
 
-    utilsTrack->addClip(new clips::frozen());
+    utilsTrack->addClip(new clips::still());
     utilsTrack->addClip(new clips::midi2dmx());
-
-//    secondDmxTrack->addClip(new clips::sin(2));
-//    secondDmxTrack->addClip(new clips::rand(2));
     
     lightBulbsTrack->setup(&_dmx);
     strobeTrack->setup(&_dmx);
     utilsTrack->setup(&_dmx);
     utilsTrack->mute(true);
-
 #endif
     
-//    auto firstGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 0"));
-//    auto secondGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 1"));
-//    auto thirdGraphicTrack = _session->addTrack(new ofxLiveSet::track::graphic("Graphic 2"));
-//    
-//    _session->addTrack(new ofxLiveSet::track::audio());
-//    _session->addTrack(new ofxLiveSet::track::audio());
-//    
-//    firstGraphicTrack->addClip(new clips::lines());
-//    firstGraphicTrack->addClip(new clips::rects());
-//    firstGraphicTrack->addClip(new clips::rects());
-//    
-//    secondGraphicTrack->addClip(new clips::lines());
-//    secondGraphicTrack->addClip(new clips::lines());
-//    secondGraphicTrack->addClip(new clips::lines());
     _session->setup();
-    _session->triggerScence(1);
-//    secondDmxTrack->stop();
+    _session->stop();
+
     
-    midiIn.openVirtualPort("ofxLiveSet");
-    midiIn.ignoreTypes(false, false, false);
-    midiIn.addListener(this);
-    midiIn.setVerbose(true);
+    _midiIn.openVirtualPort("ofxLiveSet");
+    _midiIn.ignoreTypes(false, false, false);
+    _midiIn.addListener(this);
+    _midiIn.setVerbose(true);
+    
+//    _midiMapper.openMidiPort(0);
+    _midiMapper.openVirtualMidiPort("ofxMidiMapper");
     
     _focusedTrack.set("focusedTrack", 0);
     _focusedClip.set("focusedClip", 0);
@@ -88,7 +66,7 @@ void ofApp::setup(){
 }
 
 void ofApp::exit(){
-    for(auto i = 0; i < 512; i++){
+    for(auto i = 1; i <= 512; i++){
         _dmx.setLevel(i, 0);
     }
     _dmx.update();
@@ -97,6 +75,7 @@ void ofApp::exit(){
 void ofApp::update(){
     _dmx.update();
     _soundAnalyser.update();
+    ofSetWindowTitle("klanglichtstrom :: fps: "+ofToString((int)(ofGetFrameRate())));
 }
 
 void ofApp::draw(){
@@ -150,8 +129,7 @@ void ofApp::keyPressed(int key){
             break;
         }
         case OF_KEY_LEFT: {
-            _focusedTrack = std::max(0
-                                     , _focusedTrack-1);
+            _focusedTrack = std::max(0, _focusedTrack-1);
             break;
         }
         case OF_KEY_RIGHT: {

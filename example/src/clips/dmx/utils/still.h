@@ -1,10 +1,10 @@
 #pragma once
-#include "./soundReactiveDmx.h"
+#include "../soundReactiveDmx.h"
 
 namespace clips {
-    class frozen : public soundReactiveDmx {
+    class still : public soundReactiveDmx {
     public:
-        frozen(int channel = 1, int amount = 16) : soundReactiveDmx(), _amount(amount) {
+        still(int channel = 1, int amount = 16) : soundReactiveDmx(), _amount(amount) {
             _name ="still";
             _channel.set("channel", channel, 1, 512);
             _active.setName(_name);

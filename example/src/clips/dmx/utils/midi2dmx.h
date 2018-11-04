@@ -1,5 +1,5 @@
 #pragma once
-#include "./midiReactiveDmx.h"
+#include "../midiReactiveDmx.h"
 
 namespace clips {
     class midi2dmx : public midiReactiveDmx {
