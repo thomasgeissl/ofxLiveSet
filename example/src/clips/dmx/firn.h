@@ -47,7 +47,6 @@ namespace clips {
             if(value < _threshold){return;}
             auto timestamp = ofGetElapsedTimeMillis();
             if(timestamp - _timestamp < _peakEnergyDebounceTime){
-                ofLogNotice()<<"firn return";
                 return;
             }
             _timestamp = timestamp;
