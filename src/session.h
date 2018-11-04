@@ -107,7 +107,9 @@ public:
 	{
 		draw();
 	}
-
+    void toggle(){
+        _active = !_active;
+    }
 	void start()
 	{
         _startedTimestamp = ofGetElapsedTimeMillis();
@@ -146,6 +148,8 @@ public:
         if(index >= _tracks[track]->_clips.size()){ return; }
 
         auto clip = _tracks[track]->_clips[index];
+        auto nullClip = dynamic_cast<ofxLiveSet::clip::nullClip *>(clip);
+        if (nullClip != nullptr){return;}
         showClipGui(clip);
     }
     void showClipGui(clip::base * clip){

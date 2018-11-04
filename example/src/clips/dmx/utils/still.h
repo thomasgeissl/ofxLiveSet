@@ -1,10 +1,10 @@
 #pragma once
-#include "../soundReactiveDmx.h"
+#include "clips/dmx.h"
 
 namespace clips {
-    class still : public soundReactiveDmx {
+    class still : public ofxLiveSet::clip::dmx {
     public:
-        still(int channel = 1, int amount = 16) : soundReactiveDmx(), _amount(amount) {
+        still(int channel = 1, int amount = 16) : ofxLiveSet::clip::dmx("still"), _amount(amount) {
             _name ="still";
             _channel.set("channel", channel, 1, 512);
             _active.setName(_name);

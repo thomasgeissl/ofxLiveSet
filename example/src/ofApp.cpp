@@ -39,7 +39,6 @@ void ofApp::setup(){
     lightBulbsTrack->setup(&_dmx);
     strobeTrack->setup(&_dmx);
     utilsTrack->setup(&_dmx);
-    utilsTrack->mute(true);
 #endif
     
     _session->setup();
@@ -63,6 +62,11 @@ void ofApp::setup(){
 
     _focusedTrack.addListener(this, &ofApp::onFocusChange);
     _focusedClip.addListener(this, &ofApp::onFocusChange);
+    
+    
+    //hack to show initial focus, focus handling will be moved later to session
+    int value = 0;
+    onFocusChange(value);
 }
 
 void ofApp::exit(){
@@ -88,17 +92,71 @@ void ofApp::draw(){
             int channel = (row * 2 + column) * 4 +1;
             ofSetColor(255,255,255, _dmx.getLevel(channel));
             ofDrawCircle(x,y,radius);
+            ofNoFill();
+            ofSetColor(255,255,255, 32);
+            ofDrawCircle(x,y,radius);
+            ofFill();
+
             ofSetColor(255,255,255, _dmx.getLevel(channel+1));
             ofDrawCircle(x+offset,y,radius);
+            ofNoFill();
+            ofSetColor(255,255,255, 32);
+            ofDrawCircle(x+offset,y,radius);
+            ofFill();
+            
             ofSetColor(255,255,255, _dmx.getLevel(channel+2));
             ofDrawCircle(x,y+offset,radius);
+            ofNoFill();
+            ofSetColor(255,255,255, 32);
+            ofDrawCircle(x,y+offset,radius);
+            ofFill();
+            
             ofSetColor(255,255,255, _dmx.getLevel(channel+3));
             ofDrawCircle(x+offset,y+offset,radius);
+            ofNoFill();
+            ofSetColor(255,255,255, 32);
+            ofDrawCircle(x+offset,y+offset,radius);
+            ofFill();
+            
             x += ofGetWidth()/4;
         }
         y += ofGetHeight()/4;
         x = ofGetWidth()/2;
     }
+    
+//    draw audio
+    x = ofGetWidth()/2 - 100;
+    y = ofGetHeight()/2 - 100;
+    ofSetColor(255, 0, 0, 64);
+    ofDrawRectangle(x, y, 50, 50);
+    ofSetColor(ofColor::white);
+    ofDrawBitmapString("audio", x,y+25);
+    
+//    draw left speaker
+    x = ofGetWidth() - 100;
+    y = ofGetHeight()/2 - 100;
+    ofSetColor(255, 0, 255, 64);
+    ofDrawRectangle(x, y, 50, 50);
+    ofSetColor(ofColor::white);
+    ofDrawBitmapString("left", x,y+25);
+    ofDrawBitmapString("speaker", x,y+45);
+
+//    draw right speaker
+    x = ofGetWidth()/2 - 100;
+    y = ofGetHeight() - 50;
+    ofSetColor(255, 0, 255, 64);
+    ofDrawRectangle(x, y, 50, 50);
+    ofSetColor(ofColor::white);
+    ofDrawBitmapString("right", x,y+25);
+    ofDrawBitmapString("speaker", x,y+45);
+
+//    draw light
+    x = ofGetWidth() - 100;
+    y = ofGetHeight() - 50;
+    ofSetColor(0, 0, 255, 64);
+    ofDrawRectangle(x, y, 50, 50);
+    ofSetColor(ofColor::white);
+    ofDrawBitmapString("light", x,y+25);
 }
 
 void ofApp::keyPressed(int key){
@@ -133,7 +191,7 @@ void ofApp::keyPressed(int key){
             break;
         }
         case OF_KEY_RIGHT: {
-            _focusedTrack = std::min((int)(_session->_tracks.size()), _focusedTrack+1);
+            _focusedTrack = std::min((int)(_session->_tracks.size()), (int)((_focusedTrack+1) % _session->_tracks.size()));
             break;
         }
         case OF_KEY_UP: {
@@ -150,6 +208,9 @@ void ofApp::keyPressed(int key){
                 clip->toggle();
             }
             break;
+        }
+        case ' ': {
+            _session->toggle();
         }
     }
 }
@@ -223,4 +284,11 @@ void ofApp::newMidiMessage(ofxMidiMessage& message){
 void ofApp::onFocusChange(int & value){
     ofLogNotice()<<_focusedTrack << " " << _focusedClip;
     _session->showClipGui(_focusedTrack, _focusedClip);
+    for(auto i = 0; i < _session->_panels.size(); i++){
+        if(i == _focusedTrack){
+            _session->_panels[i]->setHeaderBackgroundColor(ofColor(255, 0, 255));
+        }else{
+            _session->_panels[i]->setHeaderBackgroundColor(ofColor::red);
+        }
+    }
 }

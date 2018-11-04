@@ -11,6 +11,7 @@ namespace ofxLiveSet{
                 _active.addListener(this, &nullClip::onActiveChange);
 
             }
+            void update(){}
             void draw(){}
             void onActiveChange(bool & value) {
                 if(value){

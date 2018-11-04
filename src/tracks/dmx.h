@@ -17,9 +17,9 @@ namespace ofxLiveSet
             void setup(ofxDmx *dmx){
                 _dmx = dmx;
                 for(auto clip : _clips){
-                    auto nullClip = dynamic_cast<ofxLiveSet::clip::nullClip *>(clip);
-                    if (nullClip != nullptr){return;}
-                    ofAddListener(((ofxLiveSet::clip::dmx *)(clip))->_valueChangeEvent, this, &ofxLiveSet::track::dmx::onValueChange);
+                    auto dmxClip = dynamic_cast<ofxLiveSet::clip::dmx *>(clip);
+                    if (dmxClip != nullptr){
+                        ofAddListener(((ofxLiveSet::clip::dmx *)(clip))->_valueChangeEvent, this, &ofxLiveSet::track::dmx::onValueChange);                    }
                 }
             }
             void update(){
