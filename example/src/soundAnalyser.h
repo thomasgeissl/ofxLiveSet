@@ -1,6 +1,8 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxOsc.h"
+#include <regex>
+
 
 class soundAnalyser {
 public:
@@ -13,43 +15,54 @@ public:
             ofxOscMessage m;
             _oscReceiver.getNextMessage(m);
             
-//        TODO: regex capture id
-            if(m.getAddress() == "/1/peakEnergy") {
+            auto peakEnergyRegex = std::regex("/([0-9]+)/peakEnergy");
+            auto pitchRegex = std::regex("/([0-9]+)/pitch");
+            auto rmsRegex = std::regex("/([0-9]+)/rms");
+            auto fftRegex = std::regex("/([0-9]+)/fft");
+            auto melRegex = std::regex("/([0-9]+)/mel");
+
+            smatch peakEnergyResult;
+            smatch pitchResult;
+            smatch rmsResult;
+            smatch fftResult;
+            smatch melResult;
+
+            if(regex_search(m.getAddress(), peakEnergyResult, peakEnergyRegex)) {
                 auto peakEnergy = m.getArgAsFloat(0);
-                auto id = 1;
+                auto id = ofToInt(peakEnergyResult[1]);
                 std::pair<int, float> value(id, peakEnergy);
                 _peakEnergyEvent.notify(value);
             }
             
-            if(m.getAddress() == "/1/pitch") {
+            if(regex_search(m.getAddress(), pitchResult, pitchRegex)) {
                 auto pitch = m.getArgAsFloat(0);
-                auto id = 1;
+                auto id = ofToInt(pitchResult[1]);
                 std::pair<int, float> value(id, pitch);
                 _pitchEvent.notify(value);
             }
             
-            if(m.getAddress() == "/1/rms") {
+            if(regex_search(m.getAddress(), rmsResult, rmsRegex)) {
                 auto rms = m.getArgAsFloat(0);
-                auto id = 1;
+                auto id = ofToInt(rmsResult[1]);
                 std::pair<int, float> value(id, rms);
                 _rootMeanSquareEvent.notify(value);
             }
             
-            if(m.getAddress() == "/1/fft") {
+            if(regex_search(m.getAddress(), fftResult, fftRegex)) {
                 for(auto i = 0; i < m.getNumArgs(); i++){
                     std::vector<float> fft;
                     fft.push_back(m.getArgAsFloat(i));
-                    auto id = 1;
+                    auto id = ofToInt(fftResult[1]);
                     std::pair<int, std::vector<float>> value(id, fft);
                     _fftMagnitudeSpectrumEvent.notify(value);
                 }
             }
             
-            if(m.getAddress() == "/1/mel") {
+            if(regex_search(m.getAddress(), melResult, melRegex)) {
                 for(auto i = 0; i < m.getNumArgs(); i++){
                     std::vector<float> mel;
                     mel.push_back(m.getArgAsFloat(i));
-                    auto id = 1;
+                    auto id = ofToInt(melResult[1]);
                     std::pair<int, std::vector<float>> value(id, mel);
                     _melFrequencySpectrumEvent.notify(value);
                 }

@@ -45,6 +45,7 @@ namespace clips {
         
         void setPeakEnergy(int analyserId, float value) {
             if(value < _threshold){return;}
+            if(analyserId != _soundAnalyserId){return;}
             auto timestamp = ofGetElapsedTimeMillis();
             if(timestamp - _timestamp < _peakEnergyDebounceTime){
                 return;
