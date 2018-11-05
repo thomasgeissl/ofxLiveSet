@@ -29,3 +29,8 @@ git clone https://github.com/thomasgeissl/ofxLiveSet.git
 cd ofxLiveSet
 git checkout f605434a451ca959805695b3786c5bab5c0b1478
 cd ..
+
+git clone https://github.com/thomasgeissl/ofxSoundAnalyser.git
+cd ofxSoundAnalyser
+git checkout 9708ff0759feebfa59935fda1b67f1a4184806d9
+cd ..

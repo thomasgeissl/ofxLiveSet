@@ -6,15 +6,9 @@ ofApp::ofApp() : _session(_project._session){
 void ofApp::setup(){
     ofSetBackgroundColor(16, 16, 16);
 
-    ofAddListener(_soundAnalyser._peakEnergyEvent, this, &ofApp::onPeakEnergy);
-    ofAddListener(_soundAnalyser._pitchEvent, this, &ofApp::onPitch);
-    ofAddListener(_soundAnalyser._rootMeanSquareEvent, this, &ofApp::onRootMeanSquare);
-    ofAddListener(_soundAnalyser._fftMagnitudeSpectrumEvent, this, &ofApp::onFftMagnitudeSpectrum);
-    ofAddListener(_soundAnalyser._melFrequencySpectrumEvent, this, &ofApp::onMelFrequencySpectrum);
-
     _soundAnalyser.setup();
-    
-#ifdef USEDMX
+    _soundAnalyser.addListener(this);
+
     _dmx.connect("tty.usbserial-EN160415");
     _dmx.setChannels(16);
     _dmx.setLevel(1, 255);
@@ -35,11 +29,9 @@ void ofApp::setup(){
     utilsTrack->addClip(new clips::midi2dmx());
     
 
-
     lightBulbsTrack->setup(&_dmx);
     strobeTrack->setup(&_dmx);
     utilsTrack->setup(&_dmx);
-#endif
     
     _session->setup();
     _session->renameScene(0, "within");
@@ -161,24 +153,6 @@ void ofApp::draw(){
 
 void ofApp::keyPressed(int key){
     switch(key){
-        case '0':
-            _session->showClipGui(0,0);
-            break;
-        case '1':
-            _session->showClipGui(0,1);
-            break;
-        case '2':
-            _session->showClipGui(0,2);
-            break;
-        case '3':
-            _session->showClipGui(0,3);
-            break;
-        case '4':
-            _session->showClipGui(0,4);
-            break;
-        case '5':
-            _session->showClipGui(0,5);
-            break;
         case 'b': {
             auto clip = ((clips::peak *)(_session->_tracks[0]->_clips[1]));
             if(clip != nullptr){

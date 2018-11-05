@@ -1,21 +1,15 @@
 #pragma once
-#define USEDMX
 
 #include "ofMain.h"
-#include "project.h"
-#include "tracks/graphic.h"
-#include "tracks/audio.h"
-
-#include "clips/graphic.h"
-#include "clips/videoGrabber.h"
-#include "clips/audio.h"
-
-#include "./soundAnalyser.h"
-
-#ifdef USEDMX
 #include "ofxDmx.h"
+#include "ofxMidi.h"
+#include "ofxMidiMapper.h"
+#include "ofxSoundAnalyser.h"
+
+#include "project.h"
 #include "tracks/dmx.h"
 #include "clips/dmx.h"
+
 #include "./clips/dmx/sin.h"
 #include "./clips/dmx/sines.h"
 #include "./clips/dmx/rand.h"
@@ -28,18 +22,10 @@
 #include "./clips/dmx/externalStrobe.h"
 #include "./clips/dmx/utils/still.h"
 #include "./clips/dmx/utils/midi2dmx.h"
-#endif
-
 
 #include "gui/session.h"
 
-#include "./clips/graphic/rects.h"
-#include "./clips/graphic/lines.h"
-
-#include "ofxMidi.h"
-#include "ofxMidiMapper.h"
-
-class ofApp : public ofBaseApp, public ofxMidiListener {
+class ofApp : public ofBaseApp, public ofxMidiListener, public ofxSoundAnalyserListener {
 public:
     ofApp();
     void setup();
@@ -69,13 +55,11 @@ public:
     ofxLiveSet::project _project;
     ofxLiveSet::session *_session;
     
-    soundAnalyser _soundAnalyser;
+    ofxDmx _dmx;
     ofxMidiIn _midiIn;
     ofxMidiMapper _midiMapper;
-    
-#ifdef USEDMX
-    ofxDmx _dmx;
-#endif
+    ofxSoundAnalyser _soundAnalyser;
+
     ofParameterGroup _parameters;
     ofParameter<int> _focusedTrack;
     ofParameter<int> _focusedClip;
