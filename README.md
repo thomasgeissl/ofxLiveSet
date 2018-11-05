@@ -5,6 +5,8 @@ ofxLiveSet is an openframeworks addon, developed for the *klanglichtstrom* perfo
 
 This is a work in progress and it is very likely that the codebase will change.
 
+![screenshot](./screenshot.png)
+
 ## license
 This project is released under MIT license, please note that dependencies might be released differently.
 
