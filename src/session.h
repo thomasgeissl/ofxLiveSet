@@ -11,6 +11,7 @@ public:
 	{
 		ofAddListener(ofEvents().draw, this, &session::onDraw, OF_EVENT_ORDER_AFTER_APP);
 		ofAddListener(ofEvents().update, this, &session::onUpdate, OF_EVENT_ORDER_AFTER_APP);
+//        ofAddListener(ofEvents().keyPressed, this, &session::onKeyPressed, OF_EVENT_ORDER_AFTER_APP);
 	}
     void setup() {
         auto x = 0;
@@ -68,6 +69,16 @@ public:
                 ofAddListener(clip->_started, this, &session::onClipStarted);
             }
         }
+        
+        _focusedTrack.set("focusedTrack", 0);
+        _focusedClip.set("focusedClip", 0);
+        
+        _focusedTrack.addListener(this, &session::onFocusChange);
+        _focusedClip.addListener(this, &session::onFocusChange);
+        
+
+//        int value = 0;
+//        onFocusChange(value);
     }
     
 	void update(){
@@ -108,6 +119,38 @@ public:
 	{
 		draw();
 	}
+//    void onKeyPressed(ofKeyEventArgs &e){
+    void onKeyPressed(int key){
+//        switch(e.key){
+        switch(key){
+            case OF_KEY_LEFT: {
+                _focusedTrack = std::max(0, _focusedTrack-1);
+                break;
+            }
+            case OF_KEY_RIGHT: {
+                _focusedTrack = std::min((int)(_tracks.size()), (int)((_focusedTrack+1) % _tracks.size()));
+                break;
+            }
+            case OF_KEY_UP: {
+                _focusedClip = std::max(0, _focusedClip-1);
+                break;
+            }
+            case OF_KEY_DOWN: {
+                _focusedClip = std::min((int)(_tracks[_focusedTrack]->_clips.size()), _focusedClip+1);
+                break;
+            }
+            case OF_KEY_RETURN: {
+                auto clip = getClip(_focusedTrack, _focusedClip);
+                if(clip != nullptr){
+                    clip->toggle();
+                }
+                break;
+            }
+            case ' ': {
+                toggle();
+            }
+        }
+    }
     void toggle(){
         _active = !_active;
     }
@@ -204,6 +247,16 @@ public:
             _active = true;
         }
     }
+    void onFocusChange(int & value){
+        showClipGui(_focusedTrack, _focusedClip);
+        for(auto i = 0; i <= _panels.size(); i++){
+            if(i == _focusedTrack){
+                _panels[i]->setHeaderBackgroundColor(ofColor(255, 0, 255));
+            }else{
+                _panels[i]->setHeaderBackgroundColor(ofColor::red);
+            }
+        }
+    }
 	std::vector<track::base *> _tracks;
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
@@ -211,6 +264,8 @@ public:
     ofParameter<std::string> _timestampString;
     ofParameter<bool> _mute;
     std::vector<ofParameter<bool>> _sceneTriggers;
+    ofParameter<int> _focusedTrack;
+    ofParameter<int> _focusedClip;
 
     std::vector<ofxPanel*> _panels;
     ofxPanel _clipPanel;
