@@ -5,10 +5,7 @@
 #include "ofxMidi.h"
 #include "ofxMidiMapper.h"
 #include "ofxSoundAnalyser.h"
-
-#include "project.h"
-#include "tracks/dmx.h"
-#include "clips/dmx.h"
+#include "ofxLiveSet.h"
 
 #include "./clips/dmx/sin.h"
 #include "./clips/dmx/sines.h"
@@ -22,8 +19,6 @@
 #include "./clips/dmx/externalStrobe.h"
 #include "./clips/dmx/utils/still.h"
 #include "./clips/dmx/utils/midi2dmx.h"
-
-#include "gui/session.h"
 
 class ofApp : public ofBaseApp, public ofxMidiListener, public ofxSoundAnalyserListener {
 public:
