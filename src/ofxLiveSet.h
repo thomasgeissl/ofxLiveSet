@@ -1,12 +1,14 @@
-//
-//  ofxLiveSet.h
-//  example-klanglichtstrom
-//
-//  Created by Thomas Geissl on 05.11.18.
-//
-
-#ifndef ofxLiveSet_h
-#define ofxLiveSet_h
-
-
-#endif /* ofxLiveSet_h */
+#pragma once
+#include "./project.h"
+#include "./session.h"
+#include "./tracks/base.h"
+#include "./tracks/audio.h"
+#include "./tracks/midi.h"
+#include "./tracks/graphic.h"
+#include "./tracks/dmx.h"
+#include "./clips/base.h"
+#include "./clips/audio.h"
+// #include "./clips/midi.h"
+#include "./clips/graphic.h"
+#include "./clips/videoGrabber.h"
+#include "./clips/null.h"
