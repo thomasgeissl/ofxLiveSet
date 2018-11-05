@@ -46,7 +46,6 @@ public:
     void onMelFrequencySpectrum(std::pair<int, std::vector<float>> & value);
     void newMidiMessage(ofxMidiMessage& eventArgs);
     
-    void onFocusChange(int & value);
     ofxLiveSet::project _project;
     ofxLiveSet::session *_session;
     
@@ -54,9 +53,5 @@ public:
     ofxMidiIn _midiIn;
     ofxMidiMapper _midiMapper;
     ofxSoundAnalyser _soundAnalyser;
-
-    ofParameterGroup _parameters;
-    ofParameter<int> _focusedTrack;
-    ofParameter<int> _focusedClip;
 };
 

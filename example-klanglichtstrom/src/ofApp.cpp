@@ -48,17 +48,6 @@ void ofApp::setup(){
     
 //    _midiMapper.openMidiPort(0);
     _midiMapper.openVirtualMidiPort("ofxMidiMapper");
-    
-    _focusedTrack.set("focusedTrack", 0);
-    _focusedClip.set("focusedClip", 0);
-
-    _focusedTrack.addListener(this, &ofApp::onFocusChange);
-    _focusedClip.addListener(this, &ofApp::onFocusChange);
-    
-    
-    //hack to show initial focus, focus handling will be moved later to session
-    int value = 0;
-    onFocusChange(value);
 }
 
 void ofApp::exit(){
@@ -152,43 +141,8 @@ void ofApp::draw(){
 }
 
 void ofApp::keyPressed(int key){
-    switch(key){
-        case 'b': {
-            auto clip = ((clips::peak *)(_session->_tracks[0]->_clips[1]));
-            if(clip != nullptr){
-                clip->setPeakEnergy(0, 1);
-            }
-            break;
-        }
-        case OF_KEY_LEFT: {
-            _focusedTrack = std::max(0, _focusedTrack-1);
-            break;
-        }
-        case OF_KEY_RIGHT: {
-            _focusedTrack = std::min((int)(_session->_tracks.size()), (int)((_focusedTrack+1) % _session->_tracks.size()));
-            break;
-        }
-        case OF_KEY_UP: {
-            _focusedClip = std::max(0, _focusedClip-1);
-            break;
-        }
-        case OF_KEY_DOWN: {
-            _focusedClip = std::min((int)(_session->_tracks[_focusedTrack]->_clips.size()), _focusedClip+1);
-            break;
-        }
-        case OF_KEY_RETURN: {
-            auto clip = _session->getClip(_focusedTrack, _focusedClip);
-            if(clip != nullptr){
-                clip->toggle();
-            }
-            break;
-        }
-        case ' ': {
-            _session->toggle();
-        }
-    }
+    _session->onKeyPressed(key);
 }
-
 void ofApp::keyReleased(int key){}
 void ofApp::mouseMoved(int x, int y){}
 void ofApp::mouseDragged(int x, int y, int button){}
@@ -199,6 +153,7 @@ void ofApp::mouseExited(int x, int y){}
 void ofApp::windowResized(int w, int h){}
 void ofApp::gotMessage(ofMessage msg){}
 void ofApp::dragEvent(ofDragInfo dragInfo){}
+
 void ofApp::onPeakEnergy(std::pair<int, float> & value){
     for(auto track : _session->_tracks){
         auto clip = dynamic_cast<clips::soundReactiveDmx *>(track->_clip);
@@ -251,18 +206,6 @@ void ofApp::newMidiMessage(ofxMidiMessage& message){
             }else if(status == MIDI_NOTE_OFF){
                 clip->setNoteOff(message.pitch, message.velocity);
             }
-        }
-    }
-}
-
-void ofApp::onFocusChange(int & value){
-    ofLogNotice()<<_focusedTrack << " " << _focusedClip;
-    _session->showClipGui(_focusedTrack, _focusedClip);
-    for(auto i = 0; i < _session->_panels.size(); i++){
-        if(i == _focusedTrack){
-            _session->_panels[i]->setHeaderBackgroundColor(ofColor(255, 0, 255));
-        }else{
-            _session->_panels[i]->setHeaderBackgroundColor(ofColor::red);
         }
     }
 }
