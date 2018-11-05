@@ -96,6 +96,7 @@ public:
         }
         
         _clipPanel.draw();
+        _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(),0); //TODO: only set position on resize
         _scenesPanel.draw();
 	}
 	void onUpdate(ofEventArgs &e)

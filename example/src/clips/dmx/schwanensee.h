@@ -64,12 +64,14 @@ namespace clips {
             base::stop();
         }
         void setPeakEnergy(int analyserId, float value){
+            if(analyserId != _soundAnalyserId){return;}
             _peakEnergy = value;
             if(value > _pitchThreshold){
                 _timestamp = ofGetElapsedTimeMillis();
             }
         }
         void setPitch(int analyserId, float value){
+            if(analyserId != _soundAnalyserId){return;}
             _pitch = value;
         }
         

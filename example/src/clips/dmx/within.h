@@ -57,6 +57,7 @@ namespace clips {
             base::stop();
         }
         void setPeakEnergy(int analyserId, float value){
+            if(analyserId != _soundAnalyserId){return;}
             _peakEnergy = value;
         }
 

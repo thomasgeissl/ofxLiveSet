@@ -14,21 +14,13 @@ public:
 //        _parameters.add(_name);
         _parameters.add(_active);
 	}
-    virtual void setup(){
-        ofLogNotice("clip") << "setup";
-    }
-	virtual void update(){
-		ofLogNotice("clip") << "update";
-	}
-	virtual void draw(){
-		ofLogNotice("clip") << "draw";
-	}
+    virtual void setup(){}
+	virtual void update(){}
+	virtual void draw(){}
 	virtual void start(){
         _active = true;
 	}
-	virtual void pause(){
-		ofLogNotice("clip") << "pause";
-	}
+	virtual void pause(){}
 	virtual void stop(){
         _active = false;
 	}

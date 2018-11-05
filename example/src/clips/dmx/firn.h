@@ -14,7 +14,7 @@ namespace clips {
             _maxValue.set("maxValue", 100, 0, 255);
             _speed.set("speed", 1, 0, 1);
             _threshold.set("threshold", .5, 0, 1);
-            _peakEnergyDebounceTime.set("debounce", 50, 0, 100);
+            _peakEnergyDebounceTime.set("debounce", 50, 0, 500);
             _minDistance.set("minDistance", 7, 1, 12);
             
             _active.setName(_name);
@@ -50,6 +50,7 @@ namespace clips {
             if(timestamp - _timestamp < _peakEnergyDebounceTime){
                 return;
             }
+            ofLogNotice() << "no debouncing " << timestamp - _timestamp;
             _timestamp = timestamp;
             
             auto i = ofRandom(_amount);

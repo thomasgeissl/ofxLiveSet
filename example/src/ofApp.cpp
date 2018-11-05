@@ -4,7 +4,7 @@ ofApp::ofApp() : _session(_project._session){
 }
 
 void ofApp::setup(){
-    ofSetBackgroundColor(0, 0, 0);
+    ofSetBackgroundColor(16, 16, 16);
 
     ofAddListener(_soundAnalyser._peakEnergyEvent, this, &ofApp::onPeakEnergy);
     ofAddListener(_soundAnalyser._pitchEvent, this, &ofApp::onPitch);
