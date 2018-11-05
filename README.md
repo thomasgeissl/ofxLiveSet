@@ -3,9 +3,11 @@
 ## description
 ofxLiveSet is an openframeworks addon, developed for the *klanglichtstrom* performance. It allows you to structure your performance like an ableton live session. 
 
-This is a work in progress and it is very likely that the codebase changes quite a bit.
+This is a work in progress and it is very likely that the codebase will change.
 
 ## license
+This project is released under MIT license, please note that dependencies might be released differently.
+
 Copyright (c) 2018 Thomas Geissl
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
