@@ -6,10 +6,9 @@ namespace ofxLiveSet{
     namespace clip{
         class nullClip : public base{
         public:
-            nullClip() : base("name"){
+            nullClip() : base("null"){
                 _active.setName("");
                 _active.addListener(this, &nullClip::onActiveChange);
-
             }
             void update(){}
             void draw(){}

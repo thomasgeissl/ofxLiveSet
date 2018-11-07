@@ -1,5 +1,6 @@
 #pragma once
 #include "ofMain.h"
+#include "ofxGui.h"
 #include "../clips/base.h"
 #include "../clips/null.h"
 
@@ -24,7 +25,14 @@ public:
         _stop.addListener(this, &base::onStop);
 
 	}
-    virtual void setup(){}
+    virtual void setup(){
+//        ofxPanel::setDefaultWidth(200);
+        ofxPanel::setDefaultFillColor(ofColor::red);
+        _gui.setup(_parameters);
+        _gui.setHeaderBackgroundColor(ofColor::red);
+        _gui.setUseTTF(true);
+        _gui.setFillColor(ofColor::red);
+    }
 	virtual void update(){
 		if (_clip != nullptr)
 		{
@@ -37,7 +45,9 @@ public:
 		{
             _clip->draw();
 		}
+        _gui.draw();
 	}
+
 	void start()
 	{
         if (_clip)
@@ -117,6 +127,8 @@ public:
     ofParameter<bool> _mute;
     ofParameter<bool> _solo;
     ofParameterGroup _clipTriggers;
+    
+    ofxPanel _gui;
 };
 }; // namespace track
 }; // namespace ofxLiveSet

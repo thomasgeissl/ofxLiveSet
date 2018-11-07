@@ -18,15 +18,15 @@ void ofApp::setup(){
     ofxLiveSet::track::dmx* utilsTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("utils")));
     
     
-    lightBulbsTrack->addClip(new clips::within());
-    lightBulbsTrack->addClip(new clips::anchor());
-    lightBulbsTrack->addClip(new clips::firn());
-    lightBulbsTrack->addClip(new clips::schwanensee());
+    lightBulbsTrack->addClip(new clips::within())->setup();
+    lightBulbsTrack->addClip(new clips::anchor())->setup();
+    lightBulbsTrack->addClip(new clips::firn())->setup();
+    lightBulbsTrack->addClip(new clips::schwanensee())->setup();
 
-    strobeTrack->addClip(new clips::externalStrobe(17, 18), 2);
+    strobeTrack->addClip(new clips::externalStrobe(17, 18), 2)->setup();
 
-    utilsTrack->addClip(new clips::still(), 4);
-    utilsTrack->addClip(new clips::midi2dmx());
+    utilsTrack->addClip(new clips::still(), 4)->setup();
+    utilsTrack->addClip(new clips::midi2dmx())->setup();
     
 
     lightBulbsTrack->setup(&_dmx);
@@ -45,9 +45,6 @@ void ofApp::setup(){
     _midiIn.ignoreTypes(false, false, false);
     _midiIn.addListener(this);
     _midiIn.setVerbose(true);
-    
-//    _midiMapper.openMidiPort(0);
-    _midiMapper.openVirtualMidiPort("ofxMidiMapper");
 }
 
 void ofApp::exit(){

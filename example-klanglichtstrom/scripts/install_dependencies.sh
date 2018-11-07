@@ -17,7 +17,7 @@ cd ..
 
 git clone https://github.com/thomasgeissl/ofxMidiMapper.git
 cd ofxMidiMapper
-git checkout 09cce61158e0e5ce92fc148d8897a67a327a74fc
+git checkout 2af4e6b5a02a9c8acdd37c26f0db2c767980cce9
 cd ..
 
 git clone https://github.com/256dpi/ofxMQTT.git

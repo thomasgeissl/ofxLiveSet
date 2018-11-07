@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxGui.h"
 #include "ofxDmx.h"
 #include "ofxMidi.h"
 #include "ofxMidiMapper.h"
@@ -51,7 +52,6 @@ public:
     
     ofxDmx _dmx;
     ofxMidiIn _midiIn;
-    ofxMidiMapper _midiMapper;
     ofxSoundAnalyser _soundAnalyser;
 };
 

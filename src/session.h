@@ -1,6 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxMidiMapper.h"
 //#include "mqttSynchroniser.h"
 #include "./tracks/base.h"
 
@@ -17,19 +18,13 @@ public:
         auto x = 0;
         auto y = 0;
         for(auto track : _tracks){
-            auto panel = new ofxPanel();
-            panel->setDefaultWidth(200);
-            panel->setDefaultFillColor(ofColor::red);
-//            panel->setDefaultBorderColor(ofColor::red);
-            panel->setup(track->_parameters);
-            panel->setHeaderBackgroundColor(ofColor::red);
-
-            panel->setPosition(x, y);
-            panel->setUseTTF(true);
-            x += panel->getWidth() + 1; //TODO: get border width
-            _panels.push_back(panel);
+            track->setup();
+            track->_gui.setPosition(x, y);
+            x += track->_gui.getWidth() + 1; //TODO: get border width
         }
         
+        
+        _parameters.setName("session");
         _name.set("name", "session");
         _active.set("active", false);
         _timestampString.set("time", "0");
@@ -53,16 +48,14 @@ public:
             _parameters.add(sceneTrigger);
             sceneTrigger.addListener(this, &session::onSceneTrigger);
         }
-        _scenesPanel.setDefaultFillColor(ofColor::green);
+        ofxPanel::setDefaultFillColor(ofColor::green);
 //        _scenesPanel.setDefaultBorderColor(ofColor::green);
         _scenesPanel.setup(_parameters);
         _scenesPanel.setHeaderBackgroundColor(ofColor::green);
-
         _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(), 0);
         _scenesPanel.setUseTTF(true);
 
 //        _mqttSynchroniser.setup();
-        _clipPanel.setFillColor(ofColor::red);
         
         for(auto track : _tracks){
             for(auto clip : track->_clips){
@@ -72,13 +65,24 @@ public:
         
         _focusedTrack.set("focusedTrack", 0);
         _focusedClip.set("focusedClip", 0);
-        
-        _focusedTrack.addListener(this, &session::onFocusChange);
-        _focusedClip.addListener(this, &session::onFocusChange);
-        
 
-//        int value = 0;
-//        onFocusChange(value);
+        _midiMapper.openMidiPort(0);
+        //    _midiMapper.openVirtualMidiPort("ofxMidiMapper");
+        for(auto track : _tracks){
+            for(auto clip : track->_clips){
+                _midiMapper.addParameters(clip->_parameters);
+            }
+            _midiMapper.addParameter(track->_mute);
+        }
+        _midiMapper.getParameters().setName("midi mapper");
+        _midiMapperPanel.setup(_midiMapper.getParameters());
+        _midiMapperPanel.setPosition(_scenesPanel.getPosition().x, _scenesPanel.getPosition().y + _scenesPanel.getHeight());
+        _midiMapperPanel.setHeaderBackgroundColor(ofColor::green);
+        for(auto track : _tracks){
+            for(auto clip : track->_clips){
+                clip->_gui.setPosition(0, ofGetHeight()/2);
+            }
+        }
     }
     
 	void update(){
@@ -102,13 +106,13 @@ public:
             track->draw();
 		}
         
-        for(auto panel : _panels){
-            panel->draw();
-        }
-        
-        _clipPanel.draw();
         _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(),0); //TODO: only set position on resize
         _scenesPanel.draw();
+        _midiMapperPanel.draw();
+        
+        if(_focusedTrack < _tracks.size() && _focusedClip < _tracks[_focusedTrack]->_clips.size()){
+            _tracks[_focusedTrack]->_clips[_focusedClip]->_gui.draw();
+        }
 	}
 	void onUpdate(ofEventArgs &e)
 	{
@@ -123,12 +127,25 @@ public:
     void onKeyPressed(int key){
 //        switch(e.key){
         switch(key){
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                triggerScene(key-48);
+                break;
+
             case OF_KEY_LEFT: {
                 _focusedTrack = std::max(0, _focusedTrack-1);
                 break;
             }
             case OF_KEY_RIGHT: {
-                _focusedTrack = std::min((int)(_tracks.size()), (int)((_focusedTrack+1) % _tracks.size()));
+                _focusedTrack = std::min((int)(_tracks.size())-1, (int)((_focusedTrack+1) % _tracks.size()));
                 break;
             }
             case OF_KEY_UP: {
@@ -136,7 +153,7 @@ public:
                 break;
             }
             case OF_KEY_DOWN: {
-                _focusedClip = std::min((int)(_tracks[_focusedTrack]->_clips.size()), _focusedClip+1);
+                _focusedClip = std::min((int)(_tracks[_focusedTrack]->_clips.size())-1, _focusedClip+1);
                 break;
             }
             case OF_KEY_RETURN: {
@@ -165,8 +182,7 @@ public:
 	void pause()
 	{
 	}
-	void stop()
-	{
+	void stop(){
         _timestampString = "";
 		for (auto track : _tracks)
 		{
@@ -179,31 +195,12 @@ public:
         return track;
 	}
     
-    void triggerScence(int index){
+    void triggerScene(int index){
         for (auto track : _tracks)
         {
             track->stop();
             track->trigger(index);
         }
-    }
-    
-    void showClipGui(int track, int index){
-        if(track >= _tracks.size()){ return; }
-        if(index >= _tracks[track]->_clips.size()){ return; }
-
-        auto clip = _tracks[track]->_clips[index];
-        auto nullClip = dynamic_cast<ofxLiveSet::clip::nullClip *>(clip);
-        if (nullClip != nullptr){return;}
-        showClipGui(clip);
-    }
-    void showClipGui(clip::base * clip){
-        if(clip == nullptr){ return; }
-        _clipPanel.setDefaultWidth(200);
-        _clipPanel.setDefaultFillColor(ofColor::blue);
-        //        _clipPanel.setDefaultBorderColor(ofColor::blue);
-        _clipPanel.setup(clip->_parameters);
-        _clipPanel.setPosition(0, ofGetHeight()/2);
-        _clipPanel.setHeaderBackgroundColor(ofColor::blue);
     }
     
     clip::base* getClip(int track, int index){
@@ -225,7 +222,7 @@ public:
         for(auto sceneTrigger : _sceneTriggers) {
             if(sceneTrigger){
                 sceneTrigger = false;
-                triggerScence(i);
+                triggerScene(i);
             }
             i++;
         }
@@ -242,21 +239,24 @@ public:
         auto clip = (clip::base *) (sender);
         auto nullClip = dynamic_cast<ofxLiveSet::clip::nullClip *>(clip);
         if (nullClip != nullptr){return;}
-        showClipGui(clip);
         if(!_active){
             _active = true;
         }
-    }
-    void onFocusChange(int & value){
-        showClipGui(_focusedTrack, _focusedClip);
-        for(auto i = 0; i <= _panels.size(); i++){
-            if(i == _focusedTrack){
-                _panels[i]->setHeaderBackgroundColor(ofColor(255, 0, 255));
-            }else{
-                _panels[i]->setHeaderBackgroundColor(ofColor::red);
+        auto trackIndex = 0;
+        auto clipIndex = 0;
+        for(auto track : _tracks){
+            for(auto clipToCompareWith : track->_clips){
+                if(clip == clipToCompareWith){
+                    _focusedTrack = trackIndex;
+                    _focusedClip = clipIndex;
+                }
+                clipIndex++;
             }
+            clipIndex = 0;
+            trackIndex++;
         }
     }
+
 	std::vector<track::base *> _tracks;
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
@@ -267,13 +267,13 @@ public:
     ofParameter<int> _focusedTrack;
     ofParameter<int> _focusedClip;
 
-    std::vector<ofxPanel*> _panels;
-    ofxPanel _clipPanel;
     ofxPanel _scenesPanel;
-    
+    ofxPanel _midiMapperPanel;
+
     u_int64_t _timestamp;
     u_int64_t _startedTimestamp;
-
+    
+    ofxMidiMapper _midiMapper;
 //    mqttSynchroniser _mqttSynchroniser;
 
 };

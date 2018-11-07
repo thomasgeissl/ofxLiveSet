@@ -22,10 +22,6 @@ namespace ofxLiveSet
                         ofAddListener(((ofxLiveSet::clip::dmx *)(clip))->_valueChangeEvent, this, &ofxLiveSet::track::dmx::onValueChange);                    }
                 }
             }
-            void update(){
-                base::update();
-            }
-            void draw(){}
             void onValueChange(std::pair<int, int> &value){
                 if(!_mute){
                     _dmx->setLevel(value.first, value.second);
