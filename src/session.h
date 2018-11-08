@@ -30,7 +30,7 @@ public:
         _active.set("active", false);
         _timestampString.set("time", "0");
         _mute.set("mute", false);
-        _parameters.add(_name);
+//        _parameters.add(_name);
         _parameters.add(_active);
         _parameters.add(_timestampString);
         _parameters.add(_mute);
@@ -101,6 +101,12 @@ public:
             {
                 track->update();
             }
+        }
+        auto i = 0;
+        for (auto track : _tracks)
+        {
+            track->_focused = _focusedTrack == i++;
+            track->update();
         }
 
 

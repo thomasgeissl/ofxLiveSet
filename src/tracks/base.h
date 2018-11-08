@@ -11,13 +11,14 @@ namespace track
 class base
 {
 public:
-    base(std::string name = "") : _clip(nullptr)
+    base(std::string name = "") : _clip(nullptr), _focused(false)
 	{
+        _parameters.setName(name);
         _name.set("name", name);
         _stop.set("stop", false);
         _mute.set("mute", false);
         _solo.set("solo", false);
-        _parameters.add(_name);
+//        _parameters.add(_name);
         _parameters.add(_stop);
         _parameters.add(_solo);
         _parameters.add(_mute);
@@ -45,6 +46,11 @@ public:
 		{
             _clip->draw();
 		}
+        if(_focused){
+            _gui.setHeaderBackgroundColor(ofColor::purple);
+        }else{
+            _gui.setHeaderBackgroundColor(ofColor::red);
+        }
         _gui.draw();
 	}
 
@@ -129,6 +135,8 @@ public:
     ofParameterGroup _clipTriggers;
     
     ofxPanel _gui;
+    
+    bool _focused;
 };
 }; // namespace track
 }; // namespace ofxLiveSet
