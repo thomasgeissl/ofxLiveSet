@@ -2,6 +2,7 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxMidiMapper.h"
+#include "ofxKeyMapper.h"
 //#include "mqttSynchroniser.h"
 #include "./tracks/base.h"
 
@@ -71,13 +72,20 @@ public:
         for(auto track : _tracks){
             for(auto clip : track->_clips){
                 _midiMapper.addParameters(clip->_parameters);
+                _keyMapper.addParameters(clip->_parameters);
+
             }
-            _midiMapper.addParameter(track->_mute);
         }
         _midiMapper.getParameters().setName("midi mapper");
         _midiMapperPanel.setup(_midiMapper.getParameters());
         _midiMapperPanel.setPosition(_scenesPanel.getPosition().x, _scenesPanel.getPosition().y + _scenesPanel.getHeight());
         _midiMapperPanel.setHeaderBackgroundColor(ofColor::green);
+        
+        _keyMapper.getParameters().setName("key mapper");
+        _keyMapperPanel.setup(_keyMapper.getParameters());
+        _keyMapperPanel.setPosition(_midiMapperPanel.getPosition().x, _midiMapperPanel.getPosition().y + _midiMapperPanel.getHeight());
+        _keyMapperPanel.setHeaderBackgroundColor(ofColor::green);
+        
         for(auto track : _tracks){
             for(auto clip : track->_clips){
                 clip->_gui.setPosition(0, ofGetHeight()/2);
@@ -109,7 +117,8 @@ public:
         _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(),0); //TODO: only set position on resize
         _scenesPanel.draw();
         _midiMapperPanel.draw();
-        
+        _keyMapperPanel.draw();
+
         if(_focusedTrack < _tracks.size() && _focusedClip < _tracks[_focusedTrack]->_clips.size()){
             _tracks[_focusedTrack]->_clips[_focusedClip]->_gui.draw();
         }
@@ -125,6 +134,7 @@ public:
 	}
 //    void onKeyPressed(ofKeyEventArgs &e){
     void onKeyPressed(int key){
+        _keyMapper.keyPressed(key);
 //        switch(e.key){
         switch(key){
             case '0':
@@ -269,11 +279,13 @@ public:
 
     ofxPanel _scenesPanel;
     ofxPanel _midiMapperPanel;
+    ofxPanel _keyMapperPanel;
+    ofxMidiMapper _midiMapper;
+    ofxKeyMapper _keyMapper;
 
     u_int64_t _timestamp;
     u_int64_t _startedTimestamp;
     
-    ofxMidiMapper _midiMapper;
 //    mqttSynchroniser _mqttSynchroniser;
 
 };

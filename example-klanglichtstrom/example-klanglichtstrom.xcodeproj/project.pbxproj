@@ -50,6 +50,173 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>EA87A811842DD10A4E83F62E</key>
+			<dict>
+				<key>fileRef</key>
+				<string>B2CE36E775E7DD0785E5E75E</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>B2CE36E775E7DD0785E5E75E</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxKeyMapper.cpp</string>
+				<key>path</key>
+				<string>local_addons/ofxKeyMapper/src/ofxKeyMapper.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>2D0498B0068B2D027F339347</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxKeyMappableFloat.h</string>
+				<key>path</key>
+				<string>local_addons/ofxKeyMapper/src/ofxKeyMappableFloat.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>0FB3AF725B552390644C32EC</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxKeyMappableInt.h</string>
+				<key>path</key>
+				<string>local_addons/ofxKeyMapper/src/ofxKeyMappableInt.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>A86408719C4C82E6D12474B0</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxKeyMapper.h</string>
+				<key>path</key>
+				<string>local_addons/ofxKeyMapper/src/ofxKeyMapper.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>A0ED4A758F7EAF12DF43DBC2</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxKeyMappableVoid.h</string>
+				<key>path</key>
+				<string>local_addons/ofxKeyMapper/src/ofxKeyMappableVoid.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>C30F84B94390C3A2815CF96C</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxKeyMappable.h</string>
+				<key>path</key>
+				<string>local_addons/ofxKeyMapper/src/ofxKeyMappable.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>AF0A6E8D571BFF8743E87D9B</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxKeyMappableBool.h</string>
+				<key>path</key>
+				<string>local_addons/ofxKeyMapper/src/ofxKeyMappableBool.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>046419DF9BB922CD6AC3B70B</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>101DDF0A2839F1E5B06A39B4</string>
+					<string>AF0A6E8D571BFF8743E87D9B</string>
+					<string>C30F84B94390C3A2815CF96C</string>
+					<string>A0ED4A758F7EAF12DF43DBC2</string>
+					<string>A86408719C4C82E6D12474B0</string>
+					<string>0FB3AF725B552390644C32EC</string>
+					<string>2D0498B0068B2D027F339347</string>
+					<string>B2CE36E775E7DD0785E5E75E</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>src</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>4DB16977FEABD12A76F1B661</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>046419DF9BB922CD6AC3B70B</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>ofxKeyMapper</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>CD943450E56BC0E8FA77CD2C</key>
+			<dict>
+				<key>fileRef</key>
+				<string>101DDF0A2839F1E5B06A39B4</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>101DDF0A2839F1E5B06A39B4</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxKeyMappable.cpp</string>
+				<key>path</key>
+				<string>local_addons/ofxKeyMapper/src/ofxKeyMappable.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>07FA109EBC01AC30579D0CEB</key>
 			<dict>
 				<key>fileRef</key>
@@ -3286,6 +3453,7 @@
 					<string>CEAF1A26C463987431143B7E</string>
 					<string>75A43A2A9300CAD0761487E1</string>
 					<string>FED79D273312978DF91B53C0</string>
+					<string>4DB16977FEABD12A76F1B661</string>
 					<string>8352EBB19BDA6ED9FB4BAE68</string>
 				</array>
 				<key>isa</key>
@@ -3421,6 +3589,7 @@ fi
 						<string>../../../addons/ofxGui/src</string>
 						<string>../../../addons/ofxLiveSet/src</string>
 						<string>../../../addons/ofxLiveSet/src/clips</string>
+						<string>../../../addons/ofxLiveSet/src/gui</string>
 						<string>../../../addons/ofxLiveSet/src/tracks</string>
 						<string>../../../addons/ofxMidi/libs</string>
 						<string>../../../addons/ofxMidi/libs/pgmidi</string>
@@ -3442,6 +3611,7 @@ fi
 						<string>local_addons/ofxMQTT/libs/mosquitto/src</string>
 						<string>local_addons/ofxMQTT/src</string>
 						<string>local_addons/ofxMidiMapper/src</string>
+						<string>local_addons/ofxKeyMapper/src</string>
 						<string>local_addons/ofxSoundAnalyser/src</string>
 					</array>
 					<key>CONFIGURATION_BUILD_DIR</key>
@@ -3509,6 +3679,7 @@ fi
 						<string>../../../addons/ofxGui/src</string>
 						<string>../../../addons/ofxLiveSet/src</string>
 						<string>../../../addons/ofxLiveSet/src/clips</string>
+						<string>../../../addons/ofxLiveSet/src/gui</string>
 						<string>../../../addons/ofxLiveSet/src/tracks</string>
 						<string>../../../addons/ofxMidi/libs</string>
 						<string>../../../addons/ofxMidi/libs/pgmidi</string>
@@ -3530,6 +3701,7 @@ fi
 						<string>local_addons/ofxMQTT/libs/mosquitto/src</string>
 						<string>local_addons/ofxMQTT/src</string>
 						<string>local_addons/ofxMidiMapper/src</string>
+						<string>local_addons/ofxKeyMapper/src</string>
 						<string>local_addons/ofxSoundAnalyser/src</string>
 					</array>
 					<key>COMBINE_HIDPI_IMAGES</key>
@@ -3737,6 +3909,7 @@ fi
 						<string>../../../addons/ofxGui/src</string>
 						<string>../../../addons/ofxLiveSet/src</string>
 						<string>../../../addons/ofxLiveSet/src/clips</string>
+						<string>../../../addons/ofxLiveSet/src/gui</string>
 						<string>../../../addons/ofxLiveSet/src/tracks</string>
 						<string>../../../addons/ofxMidi/libs</string>
 						<string>../../../addons/ofxMidi/libs/pgmidi</string>
@@ -3758,6 +3931,7 @@ fi
 						<string>local_addons/ofxMQTT/libs/mosquitto/src</string>
 						<string>local_addons/ofxMQTT/src</string>
 						<string>local_addons/ofxMidiMapper/src</string>
+						<string>local_addons/ofxKeyMapper/src</string>
 						<string>local_addons/ofxSoundAnalyser/src</string>
 					</array>
 					<key>CONFIGURATION_BUILD_DIR</key>
@@ -3823,6 +3997,7 @@ fi
 						<string>../../../addons/ofxGui/src</string>
 						<string>../../../addons/ofxLiveSet/src</string>
 						<string>../../../addons/ofxLiveSet/src/clips</string>
+						<string>../../../addons/ofxLiveSet/src/gui</string>
 						<string>../../../addons/ofxLiveSet/src/tracks</string>
 						<string>../../../addons/ofxMidi/libs</string>
 						<string>../../../addons/ofxMidi/libs/pgmidi</string>
@@ -3844,6 +4019,7 @@ fi
 						<string>local_addons/ofxMQTT/libs/mosquitto/src</string>
 						<string>local_addons/ofxMQTT/src</string>
 						<string>local_addons/ofxMidiMapper/src</string>
+						<string>local_addons/ofxKeyMapper/src</string>
 						<string>local_addons/ofxSoundAnalyser/src</string>
 					</array>
 					<key>CONFIGURATION_BUILD_DIR</key>
@@ -3954,6 +4130,8 @@ fi
 					<string>7099DFCD6980112C91932B5D</string>
 					<string>75D5E53067E1EE8D50367361</string>
 					<string>07FA109EBC01AC30579D0CEB</string>
+					<string>CD943450E56BC0E8FA77CD2C</string>
+					<string>EA87A811842DD10A4E83F62E</string>
 				</array>
 				<key>isa</key>
 				<string>PBXSourcesBuildPhase</string>
@@ -4047,6 +4225,7 @@ fi
 						<string>../../../addons/ofxGui/src</string>
 						<string>../../../addons/ofxLiveSet/src</string>
 						<string>../../../addons/ofxLiveSet/src/clips</string>
+						<string>../../../addons/ofxLiveSet/src/gui</string>
 						<string>../../../addons/ofxLiveSet/src/tracks</string>
 						<string>../../../addons/ofxMidi/libs</string>
 						<string>../../../addons/ofxMidi/libs/pgmidi</string>
@@ -4068,6 +4247,7 @@ fi
 						<string>local_addons/ofxMQTT/libs/mosquitto/src</string>
 						<string>local_addons/ofxMQTT/src</string>
 						<string>local_addons/ofxMidiMapper/src</string>
+						<string>local_addons/ofxKeyMapper/src</string>
 						<string>local_addons/ofxSoundAnalyser/src</string>
 					</array>
 					<key>COMBINE_HIDPI_IMAGES</key>
@@ -4120,6 +4300,7 @@ fi
 						<string>../../../addons/ofxGui/src</string>
 						<string>../../../addons/ofxLiveSet/src</string>
 						<string>../../../addons/ofxLiveSet/src/clips</string>
+						<string>../../../addons/ofxLiveSet/src/gui</string>
 						<string>../../../addons/ofxLiveSet/src/tracks</string>
 						<string>../../../addons/ofxMidi/libs</string>
 						<string>../../../addons/ofxMidi/libs/pgmidi</string>
@@ -4141,6 +4322,7 @@ fi
 						<string>local_addons/ofxMQTT/libs/mosquitto/src</string>
 						<string>local_addons/ofxMQTT/src</string>
 						<string>local_addons/ofxMidiMapper/src</string>
+						<string>local_addons/ofxKeyMapper/src</string>
 						<string>local_addons/ofxSoundAnalyser/src</string>
 					</array>
 					<key>COMBINE_HIDPI_IMAGES</key>

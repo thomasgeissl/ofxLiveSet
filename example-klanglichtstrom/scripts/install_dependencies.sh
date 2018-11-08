@@ -20,6 +20,11 @@ cd ofxMidiMapper
 git checkout 2af4e6b5a02a9c8acdd37c26f0db2c767980cce9
 cd ..
 
+git clone https://github.com/thomasgeissl/ofxKeyMapper.git
+cd ofxKeyMapper
+git checkout 8730def5bfc5a587ece1a19b4bf4bb30031eb09c
+cd .. 
+
 git clone https://github.com/256dpi/ofxMQTT.git
 cd ofxMQTT
 git checkout eb916eddadf5e867d78cabbc6ca8d4e8ba3b38d4
