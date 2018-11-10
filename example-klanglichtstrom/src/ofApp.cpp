@@ -11,7 +11,6 @@ void ofApp::setup(){
 
     _dmx.connect("tty.usbserial-EN160415");
     _dmx.setChannels(16);
-    _dmx.setLevel(1, 255);
     
     ofxLiveSet::track::dmx* lightBulbsTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("light bulbs")));
     ofxLiveSet::track::dmx* strobeTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("strobe")));
@@ -55,7 +54,7 @@ void ofApp::exit(){
 }
 
 void ofApp::update(){
-    _dmx.update();
+//    _dmx.update();
     _soundAnalyser.update();
     ofSetWindowTitle("klanglichtstrom :: fps: "+ofToString((int)(ofGetFrameRate())));
 }
@@ -102,39 +101,39 @@ void ofApp::draw(){
         x = ofGetWidth()/2;
     }
     
-//    draw audio
-    x = ofGetWidth()/2 - 100;
-    y = ofGetHeight()/2 - 100;
-    ofSetColor(255, 0, 0, 64);
-    ofDrawRectangle(x, y, 50, 50);
-    ofSetColor(ofColor::white);
-    ofDrawBitmapString("audio", x,y+25);
-    
-//    draw left speaker
-    x = ofGetWidth() - 100;
-    y = ofGetHeight()/2 - 100;
-    ofSetColor(255, 0, 255, 64);
-    ofDrawRectangle(x, y, 50, 50);
-    ofSetColor(ofColor::white);
-    ofDrawBitmapString("left", x,y+25);
-    ofDrawBitmapString("speaker", x,y+45);
-
-//    draw right speaker
-    x = ofGetWidth()/2 - 100;
-    y = ofGetHeight() - 50;
-    ofSetColor(255, 0, 255, 64);
-    ofDrawRectangle(x, y, 50, 50);
-    ofSetColor(ofColor::white);
-    ofDrawBitmapString("right", x,y+25);
-    ofDrawBitmapString("speaker", x,y+45);
-
-//    draw light
-    x = ofGetWidth() - 100;
-    y = ofGetHeight() - 50;
-    ofSetColor(0, 0, 255, 64);
-    ofDrawRectangle(x, y, 50, 50);
-    ofSetColor(ofColor::white);
-    ofDrawBitmapString("light", x,y+25);
+////    draw audio
+//    x = ofGetWidth()/2 - 100;
+//    y = ofGetHeight()/2 - 100;
+//    ofSetColor(255, 0, 0, 64);
+//    ofDrawRectangle(x, y, 50, 50);
+//    ofSetColor(ofColor::white);
+//    ofDrawBitmapString("audio", x,y+25);
+//
+////    draw left speaker
+//    x = ofGetWidth() - 100;
+//    y = ofGetHeight()/2 - 100;
+//    ofSetColor(255, 0, 255, 64);
+//    ofDrawRectangle(x, y, 50, 50);
+//    ofSetColor(ofColor::white);
+//    ofDrawBitmapString("left", x,y+25);
+//    ofDrawBitmapString("speaker", x,y+45);
+//
+////    draw right speaker
+//    x = ofGetWidth()/2 - 100;
+//    y = ofGetHeight() - 50;
+//    ofSetColor(255, 0, 255, 64);
+//    ofDrawRectangle(x, y, 50, 50);
+//    ofSetColor(ofColor::white);
+//    ofDrawBitmapString("right", x,y+25);
+//    ofDrawBitmapString("speaker", x,y+45);
+//
+////    draw light
+//    x = ofGetWidth() - 100;
+//    y = ofGetHeight() - 50;
+//    ofSetColor(0, 0, 255, 64);
+//    ofDrawRectangle(x, y, 50, 50);
+//    ofSetColor(ofColor::white);
+//    ofDrawBitmapString("light", x,y+25);
 }
 
 void ofApp::keyPressed(int key){

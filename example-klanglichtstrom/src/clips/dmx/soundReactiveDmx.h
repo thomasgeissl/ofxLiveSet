@@ -5,7 +5,7 @@ namespace clips {
     class soundReactiveDmx : public ofxLiveSet::clip::dmx {
     public:
         soundReactiveDmx() : dmx(){
-            _soundAnalyserId.set("analyserId", 0, 0, 32);
+            _soundAnalyserId.set("analyserId", 1, 0, 32);
             _parameters.add(_soundAnalyserId);
         }
         virtual void setPeakEnergy(int analyserId, float value){}
