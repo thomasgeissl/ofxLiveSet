@@ -11,8 +11,10 @@ class session {
 public:
 	session()
 	{
-		ofAddListener(ofEvents().draw, this, &session::onDraw, OF_EVENT_ORDER_AFTER_APP);
 		ofAddListener(ofEvents().update, this, &session::onUpdate, OF_EVENT_ORDER_AFTER_APP);
+        ofAddListener(ofEvents().draw, this, &session::onDraw, OF_EVENT_ORDER_AFTER_APP);
+        ofAddListener(ofEvents().exit, this, &session::onExit, OF_EVENT_ORDER_AFTER_APP);
+
 //        ofAddListener(ofEvents().keyPressed, this, &session::onKeyPressed, OF_EVENT_ORDER_AFTER_APP);
 	}
     void setup() {
@@ -91,6 +93,14 @@ public:
                 clip->_gui.setPosition(0, ofGetHeight()/2);
             }
         }
+        
+        if(ofFile::doesFileExist("mapping.midi.json")){
+            _midiMapper.loadMapping(ofToDataPath("mapping.midi.json"));
+        }
+        
+        if(ofFile::doesFileExist("mapping.key.json")){
+            _keyMapper.loadMapping(ofToDataPath("mapping.key.json"));
+        }
     }
     
 	void update(){
@@ -129,15 +139,29 @@ public:
             _tracks[_focusedTrack]->_clips[_focusedClip]->_gui.draw();
         }
 	}
-	void onUpdate(ofEventArgs &e)
-	{
+    void exit(){
+        if(ofFile::doesFileExist("mapping.midi.json")){
+            ofFile::moveFromTo("mapping.midi.json", ofGetTimestampString()+"_mapping.midi.json");
+        }
+        _midiMapper.saveMapping(ofToDataPath("mapping.midi.json"));
+        
+        if(ofFile::doesFileExist("mapping.key.json")){
+            ofFile::moveFromTo("mapping.key.json", ofGetTimestampString()+"_mapping.key.json");
+        }
+        _keyMapper.saveMapping(ofToDataPath("mapping.key.json"));
+    }
+    
+	void onUpdate(ofEventArgs &e){
 		update();
 	}
 
-	void onDraw(ofEventArgs &e)
-	{
+	void onDraw(ofEventArgs &e){
 		draw();
 	}
+    void onExit(ofEventArgs &e)
+    {
+        exit();
+    }
 //    void onKeyPressed(ofKeyEventArgs &e){
     void onKeyPressed(int key){
         _keyMapper.keyPressed(key);

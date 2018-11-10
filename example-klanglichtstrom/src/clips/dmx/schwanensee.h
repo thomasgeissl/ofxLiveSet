@@ -6,29 +6,24 @@ namespace clips {
     public:
         schwanensee() : soundReactiveDmx() {
             _name = "schwanensee";
-            _channel.set("channel", 1, 1, 512);
             _start.set("start", 12, 1, 16);
             _amount.set("amount", 16, 1, 16);
             _minValue.set("minValue", 60, 0, 255);
             _maxValue.set("maxValue", 120, 0, 255);
+            _fadeOutTime.set("fadeOutTime", 300, 0, 3000);
+
             _addPeakEnergy.set("addPeakEnergy", false);
-            _speed.set("speed", .1, 0, 1);
             _pitchThreshold.set("pitchThreshold", .5, 0, 1);
 
-            _add.set("add");
-            _remove.set("remove");
             _active.setName(_name);
             
             _parameters.add(_start);
-            _parameters.add(_amount);
             _parameters.add(_minValue);
             _parameters.add(_maxValue);
+            _parameters.add(_fadeOutTime);
             _parameters.add(_addPeakEnergy);
-            _parameters.add(_speed);
             _parameters.add(_pitchThreshold);
-            _parameters.add(_add);
-            _parameters.add(_remove);
-            
+
             _values.resize(_amount);
             _timestamps.resize(_amount);
         }
@@ -49,9 +44,9 @@ namespace clips {
             }
             
             for(auto i = 0; i < _amount; i++) {
-                if(timestamp - _timestamps[i] < 500){
-                    _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + 500, _maxValue, _minValue);
-                    std::pair<int, int> value(_channel+i, _values[i]);
+                if(timestamp - _timestamps[i] < _fadeOutTime){
+                    _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + _fadeOutTime, _maxValue, _minValue);
+                    std::pair<int, int> value(i+1, _values[i]);
                     _valueChangeEvent.notify(value);
                 }
             }
@@ -75,24 +70,13 @@ namespace clips {
             _pitch = value;
         }
         
-        void onAdd(){
-            _amount.set(_amount + 1);
-        }
-        void onRemove(){
-            std::pair<int, int> value((_start+_amount-1) % 16 + 1, 0);
-            _valueChangeEvent.notify(value);
-            _amount = _amount-1;
-        }
-        ofParameter<int> _channel;
         ofParameter<int> _start;
         ofParameter<int> _amount;
         ofParameter<int> _minValue;
         ofParameter<int> _maxValue;
+        ofParameter<int> _fadeOutTime;
         ofParameter<bool> _addPeakEnergy;
-        ofParameter<float> _speed;
         ofParameter<float> _pitchThreshold;
-        ofParameter<void> _add;
-        ofParameter<void> _remove;
         
         u_int64_t _timestamp;
         std::vector<u_int64_t> _timestamps;

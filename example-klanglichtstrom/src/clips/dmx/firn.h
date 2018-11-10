@@ -19,8 +19,6 @@ namespace clips {
             
             _active.setName(_name);
             
-            _parameters.add(_channel);
-            _parameters.add(_amount);
             _parameters.add(_minValue);
             _parameters.add(_maxValue);
             _parameters.add(_speed);

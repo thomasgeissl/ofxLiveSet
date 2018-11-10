@@ -9,8 +9,8 @@ namespace clips {
             _channel.set("channel", 1, 1, 512);
             _start.set("start", 12, 1, 16);
             _amount.set("amount", 1, 1, 16);
-            _minValue.set("minValue", 60, 0, 255);
-            _maxValue.set("maxValue", 120, 0, 255);
+            _minValue.set("minValue", 0, 0, 255);
+            _maxValue.set("maxValue", 70, 0, 255);
             _addPeakEnergy.set("addPeakEnergy", false);
             _speed.set("speed", .1, 0, 1);
             _add.set("add");
