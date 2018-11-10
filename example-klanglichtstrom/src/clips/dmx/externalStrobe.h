@@ -6,13 +6,11 @@ namespace clips {
     public:
         externalStrobe(int frequencyChannel, int velocityChannel) : dmx() {
             _name = "externalStrobe";
-            _frequencyChannel.set("frequencyChannel", frequencyChannel, 1, 512);
-            _velocityChannel.set("velocityChannel", velocityChannel, 1, 512);
+            _frequencyChannel.set("frequencyChannel", frequencyChannel, 0, 511);
+            _velocityChannel.set("velocityChannel", velocityChannel, 0, 511);
             _frequency.set("frequency", 0, 0, 255);
             _velocity.set("velocity", 0, 0, 255);
             
-            _parameters.add(_frequencyChannel);
-            _parameters.add(_velocityChannel);
             _parameters.add(_frequency);
             _parameters.add(_velocity);
             
@@ -39,7 +37,6 @@ namespace clips {
         }
         void onValueChange(int & value){
             if(!_active) return;
-            
             std::pair<int, int> frequency(_frequencyChannel, _frequency);
             _valueChangeEvent.notify(frequency);
             std::pair<int, int> velocity(_velocityChannel, _velocity);
