@@ -10,20 +10,20 @@ namespace clips {
             _channel.set("channel", 1, 1, 512);
             _start.set("start", 12, 1, 16);
             _amount.set("amount", 1, 1, 16);
-            _minValue.set("minValue", 60, 0, 255);
-            _maxValue.set("maxValue", 120, 0, 255);
+            _minValue.set("minValue", 0, 0, 255);
+            _maxValue.set("maxValue", 200, 0, 255);
             _addPeakEnergy.set("addPeakEnergy", false);
             _breathe.set("breathe", true);
-            _speed.set("speed", .1, 0, 1);
+            _speed.set("speed", .7, 0, 1);
        
             _active.setName(_name);
             
             _beatsQuadrant.set("beatsQuadrant", 0, 0, 3);
-            _beatsEnergyThreshold.set("beatsEnergyThreshold", 0.5, 0, 1);
+            _beatsEnergyThreshold.set("beatsEnergyThreshold", 0.2, 0, 1);
 
-            _highs.set("highs", false);
+            _highs.set("highs", true);
             _highsQuadrant.set("highsQuadrant", 1, 0, 3);
-            _highsMaxValue.set("highsMaxValue", 100, 0, 255);
+            _highsMaxValue.set("highsMaxValue", 0, 0, 255);
 
             _randomiseHighsQuadrant.set("randomiseHighsQuadrant");
             _randomiseHighsQuadrant.addListener(this, &anchor::onRandomiseHighsQuadrant);
@@ -31,7 +31,7 @@ namespace clips {
             _parameters.add(_beatsSoundAnalyserId);
             _parameters.add(_start);
             _parameters.add(_amount);
-            _parameters.add(_minValue);
+//            _parameters.add(_minValue);
             _parameters.add(_maxValue);
             _parameters.add(_addPeakEnergy);
             _parameters.add(_speed);
@@ -55,7 +55,7 @@ namespace clips {
             // highs
             if(_highs){
                 auto channel = _highsQuadrant * 4 + (int)(ofRandom(0, 4));
-                _values[channel] = _peakEnergy * ofRandom(_highsMaxValue);
+                _values[channel] = ofRandom(0, _highsMaxValue);
             }
  
       
@@ -63,10 +63,10 @@ namespace clips {
             auto dmxValue = 0;
             if(_breathe){
                 if(_addPeakEnergy){
-                    _values[_beatsQuadrant*4 + 3] = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4)) + _peakEnergy, 0, 2, _minValue, _maxValue);
+                    _values[_beatsQuadrant*4 + 3] = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*0.1+0.4)) + _beatsPeakEnergy, 0, 2, _minValue, _maxValue);
                     
                 }else{
-                    _values[_beatsQuadrant*4 + 3] = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4)), 0, 1, _minValue, _maxValue);
+                    _values[_beatsQuadrant*4 + 3] = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*0.1+0.4)), 0, 1, _minValue, _maxValue);
                 }
             }else{
                 for(auto i = _beatsQuadrant*4; i < _beatsQuadrant*4+4; i++){
@@ -74,6 +74,11 @@ namespace clips {
                         _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + 250, _maxValue, _minValue);
                     }
                 }
+            }
+            
+            ofLogNotice() << _peakEnergy;
+            if(_peakEnergy > .2 && timestamp - _highsQuadrantChangeTimestamp > 100){
+                onRandomiseHighsQuadrant();
             }
 
             
@@ -96,7 +101,6 @@ namespace clips {
             }
             if(analyserId == _beatsSoundAnalyserId){
                 if(value > _beatsEnergyThreshold){
-                    ofLogNotice()<<"beat "<<value;
                     if(_breathe){
                         _breathe = false;
                         _values[_beatsQuadrant*4 + 3] = 0;
@@ -113,6 +117,8 @@ namespace clips {
         }
         
         void onRandomiseHighsQuadrant(){
+            _highsQuadrantChangeTimestamp = ofGetElapsedTimeMillis();
+            ofLogNotice() << "randomise";
             int oldValue = _highsQuadrant;
             
             _highsQuadrant = ofRandom(0, 4-.00001);
@@ -151,6 +157,6 @@ namespace clips {
         
         std::vector<int> _values;
         std::vector<u_int64_t> _timestamps;
-
+        u_int64_t _highsQuadrantChangeTimestamp;
     };
 };

@@ -15,7 +15,8 @@ void ofApp::setup(){
     ofxLiveSet::track::dmx* lightBulbsTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("light bulbs")));
     ofxLiveSet::track::dmx* strobeTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("strobe")));
     ofxLiveSet::track::dmx* utilsTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("utils")));
-    
+    ofxLiveSet::track::dmx* afterShowTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("afterShow")));
+
     
     lightBulbsTrack->addClip(new clips::within())->setup();
     lightBulbsTrack->addClip(new clips::anchor())->setup();
@@ -27,12 +28,14 @@ void ofApp::setup(){
     utilsTrack->addClip(new clips::still(), 4)->setup();
     utilsTrack->addClip(new clips::midi2dmx())->setup();
     
+    for(auto track : _session->_tracks){
+        if(auto dmxTrack = dynamic_cast<ofxLiveSet::track::dmx*>(track)) {
+            dmxTrack->setup(&_dmx);
+        }
+    }
 
-    lightBulbsTrack->setup(&_dmx);
-    strobeTrack->setup(&_dmx);
-    utilsTrack->setup(&_dmx);
-    
     _session->setup();
+    _session->openMidiInPort(2);
     _session->renameScene(0, "within");
     _session->renameScene(1, "anchor");
     _session->renameScene(2, "firn");
@@ -54,7 +57,7 @@ void ofApp::exit(){
 }
 
 void ofApp::update(){
-    _dmx.update();
+//    _dmx.update();
     _soundAnalyser.update();
     ofSetWindowTitle("klanglichtstrom :: fps: "+ofToString((int)(ofGetFrameRate())));
 }

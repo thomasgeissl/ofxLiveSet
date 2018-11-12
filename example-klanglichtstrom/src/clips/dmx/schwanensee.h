@@ -8,7 +8,7 @@ namespace clips {
             _name = "schwanensee";
             _start.set("start", 12, 1, 16);
             _amount.set("amount", 16, 1, 16);
-            _minValue.set("minValue", 60, 0, 255);
+            _minValue.set("minValue", 0, 0, 255);
             _maxValue.set("maxValue", 120, 0, 255);
             _fadeOutTime.set("fadeOutTime", 300, 0, 3000);
 
@@ -18,7 +18,7 @@ namespace clips {
             _active.setName(_name);
             
             _parameters.add(_start);
-            _parameters.add(_minValue);
+//            _parameters.add(_minValue);
             _parameters.add(_maxValue);
             _parameters.add(_fadeOutTime);
             _parameters.add(_addPeakEnergy);
@@ -30,17 +30,20 @@ namespace clips {
         
         void update(){
             auto timestamp = ofGetElapsedTimeMillis();
-            if(_timestamp != -1 && timestamp - _timestamp >= 10){
+            if(_pitch2 != -1 && _timestamp != -1 && timestamp - _timestamp >= 32){
                 auto index = (int)(ofMap(_pitch, 40, 72, 0, 15));
-                ofLogNotice("schwanensee::setPeakEnergy")<< index;
-                if(index < 0 || index > _amount -1){
-//                TODO
-                    ofLogError()<<"index out of bounds. "<<index;
-                    return;
+                if(index >= 0 && index <= _amount -1 && index != _lastIndex){
+                    if(timestamp - _timestamps[index] > 100){
+                        _values[index] = _maxValue;
+                        _timestamps[index] = timestamp;
+                    }
+                    _timestamp = -1;
+                    _pitch2 = -1;
+                    _lastIndex = index;
+                }else{
+//                    ofLogError()<<"index out of bounds. "<<index;
                 }
-                _values[index] = _maxValue;
-                _timestamps[index] = timestamp;
-                _timestamp = -1;
+ 
             }
             
             for(auto i = 0; i < _amount; i++) {
@@ -60,8 +63,10 @@ namespace clips {
         }
         void setPeakEnergy(int analyserId, float value){
             if(analyserId != _soundAnalyserId){return;}
-            _peakEnergy = value;
             if(value > _pitchThreshold){
+                ofLogNotice() << "value > threshold "<<value;
+                _peakEnergy = value;
+                _pitch2 = _pitch;
                 _timestamp = ofGetElapsedTimeMillis();
             }
         }
@@ -84,5 +89,8 @@ namespace clips {
         std::vector<int> _values;
         float _peakEnergy;
         float _pitch;
+        float _pitch2;
+        int _lastIndex;
+
     };
 };

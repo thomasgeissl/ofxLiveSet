@@ -5,6 +5,7 @@
 #include "ofxKeyMapper.h"
 //#include "mqttSynchroniser.h"
 #include "./tracks/base.h"
+#include "./gui/infoPanel.h"
 
 namespace ofxLiveSet {
 class session {
@@ -69,13 +70,11 @@ public:
         _focusedTrack.set("focusedTrack", 0);
         _focusedClip.set("focusedClip", 0);
 
-        _midiMapper.openMidiPort(0);
         //    _midiMapper.openVirtualMidiPort("ofxMidiMapper");
         for(auto track : _tracks){
             for(auto clip : track->_clips){
-                _midiMapper.addParameters(clip->_parameters);
+                _midiMapper.addParameters(clip->_parameters, true);
                 _keyMapper.addParameters(clip->_parameters);
-
             }
         }
         _midiMapper.getParameters().setName("midi mapper");
@@ -88,6 +87,7 @@ public:
         _keyMapperPanel.setPosition(_midiMapperPanel.getPosition().x, _midiMapperPanel.getPosition().y + _midiMapperPanel.getHeight());
         _keyMapperPanel.setHeaderBackgroundColor(ofColor::green);
         
+        _infoPanel.setup();
         for(auto track : _tracks){
             for(auto clip : track->_clips){
                 clip->_gui.setPosition(0, ofGetHeight()/2);
@@ -101,8 +101,13 @@ public:
         if(ofFile::doesFileExist("mapping.key.json")){
             _keyMapper.loadMapping(ofToDataPath("mapping.key.json"));
         }
+        
+        _infoPanel.setInfo("successfully loaded \n* midi mappings \n* key mappings");
     }
-    
+    void openMidiInPort(int index){
+        _midiMapper.openMidiPort(index);
+        
+    }
 	void update(){
         if(_active){
             _timestamp = ofGetElapsedTimeMillis();
@@ -131,10 +136,12 @@ public:
 		}
         
         _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(),0); //TODO: only set position on resize
+        _midiMapperPanel.setPosition(ofGetWidth() - _midiMapperPanel.getWidth(), _midiMapperPanel.getPosition().y); //TODO: only set position on resize
+        _keyMapperPanel.setPosition(ofGetWidth() - _keyMapperPanel.getWidth(), _keyMapperPanel.getPosition().y); //TODO: only set position on resize
         _scenesPanel.draw();
         _midiMapperPanel.draw();
         _keyMapperPanel.draw();
-
+        _infoPanel.draw(0, ofGetHeight() - 100, ofGetWidth()/4, 100);
         if(_focusedTrack < _tracks.size() && _focusedClip < _tracks[_focusedTrack]->_clips.size()){
             _tracks[_focusedTrack]->_clips[_focusedClip]->_gui.draw();
         }
@@ -236,8 +243,7 @@ public:
 	}
     
     void triggerScene(int index){
-        for (auto track : _tracks)
-        {
+        for (auto track : _tracks){
             track->stop();
             track->trigger(index);
         }
@@ -317,6 +323,9 @@ public:
     u_int64_t _startedTimestamp;
     
 //    mqttSynchroniser _mqttSynchroniser;
+        
+    gui::infoPanel _infoPanel;
+
 
 };
 }; // namespace ofxLiveSet
