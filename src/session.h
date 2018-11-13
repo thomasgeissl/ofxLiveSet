@@ -46,6 +46,7 @@ public:
             scenes = std::max(scenes, (int)(track->_clips.size()));
         }
         _sceneTriggers.resize(scenes);
+        _sceneInformation.resize(scenes);
         auto i = 0;
         for(auto sceneTrigger : _sceneTriggers){
             sceneTrigger.set("scene "+ofToString(i++), false);
@@ -101,10 +102,8 @@ public:
         if(ofFile::doesFileExist("mapping.key.json")){
             _keyMapper.loadMapping(ofToDataPath("mapping.key.json"));
         }
-        
-        _infoPanel.setInfo("successfully loaded \n* midi mappings \n* key mappings");
     }
-    void openMidiInPort(int index){
+    void openMidiMapperInPort(int index){
         _midiMapper.openMidiPort(index);
         
     }
@@ -141,10 +140,10 @@ public:
         _scenesPanel.draw();
         _midiMapperPanel.draw();
         _keyMapperPanel.draw();
-        _infoPanel.draw(0, ofGetHeight() - 100, ofGetWidth()/4, 100);
         if(_focusedTrack < _tracks.size() && _focusedClip < _tracks[_focusedTrack]->_clips.size()){
             _tracks[_focusedTrack]->_clips[_focusedClip]->_gui.draw();
         }
+        _infoPanel.draw(0, ofGetHeight() - 100, ofGetWidth()/4, 100);
 	}
     void exit(){
         if(ofFile::doesFileExist("mapping.midi.json")){
@@ -247,6 +246,9 @@ public:
             track->stop();
             track->trigger(index);
         }
+        if(index < _sceneInformation.size()){
+            _infoPanel.setInfo(_sceneInformation[index]);
+        }
     }
     
     clip::base* getClip(int track, int index){
@@ -325,6 +327,7 @@ public:
 //    mqttSynchroniser _mqttSynchroniser;
         
     gui::infoPanel _infoPanel;
+    std::vector<ofxLiveSet::information> _sceneInformation;
 
 
 };

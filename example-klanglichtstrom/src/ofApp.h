@@ -1,23 +1,16 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxGui.h"
 #include "ofxDmx.h"
 #include "ofxMidi.h"
-#include "ofxMidiMapper.h"
 #include "ofxSoundAnalyser.h"
 #include "ofxLiveSet.h"
 
-#include "./clips/dmx/sin.h"
-#include "./clips/dmx/sines.h"
-#include "./clips/dmx/rand.h"
-#include "./clips/dmx/peak.h"
-#include "./clips/dmx/strobe.h"
 #include "./clips/dmx/within.h"
 #include "./clips/dmx/anchor.h"
 #include "./clips/dmx/firn.h"
 #include "./clips/dmx/schwanensee.h"
-#include "./clips/dmx/externalStrobe.h"
+#include "./clips/dmx/strobe.h"
 #include "./clips/dmx/utils/still.h"
 #include "./clips/dmx/utils/midi2dmx.h"
 

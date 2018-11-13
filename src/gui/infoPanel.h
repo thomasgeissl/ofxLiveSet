@@ -2,6 +2,11 @@
 #include "ofMain.h"
 
 namespace ofxLiveSet{
+    struct information{
+        std::string _text = "";
+        ofLogLevel _level = OF_LOG_NOTICE;
+        int _duration = 3000;
+    };
     namespace gui{
         class infoPanel : public ofBaseDraws{
         public:
@@ -15,7 +20,7 @@ namespace ofxLiveSet{
             void draw(float x, float y, float w, float h) const {
                 auto timestamp = ofGetElapsedTimeMillis();
                 auto fadeOutTime = 1000;
-                if(timestamp > _fadeOutTimestamp){
+                if(timestamp > _fadeOutTimestamp || _text.empty()){
                     return;
                 }
                 ofRectangle background;
@@ -61,6 +66,11 @@ namespace ofxLiveSet{
                 return _width;
             }
             
+            void setInfo(ofxLiveSet::information info){
+                _logLevel = info._level;
+                _text = info._text;
+                _fadeOutTimestamp = ofGetElapsedTimeMillis() + info._duration;
+            }
             void setInfo(std::string text, int durationMs = 5000, ofLogLevel level = OF_LOG_NOTICE){
                 _logLevel = level;
                 _text = text;

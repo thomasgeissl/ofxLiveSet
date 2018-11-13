@@ -1,49 +1,52 @@
 #pragma once
-#include "./soundReactiveDmx.h"
+#include "clips/dmx.h"
 
 namespace clips {
-    class strobe : public soundReactiveDmx {
+    class strobe : public ofxLiveSet::clip::dmx {
     public:
-        strobe() : soundReactiveDmx() {
-            _name = "strobe";
-            _channel.set("channel", 1, 1, 512);
-            _amount.set("amount", 16, 1, 16);
-            _minValue.set("minValue", 50, 0, 255);
-            _maxValue.set("maxValue", 100, 0, 255);
-            _speed.set("speed", 1, 0, 1);
-
-            _parameters.add(_channel);
-            _parameters.add(_amount);
-            _parameters.add(_minValue);
-            _parameters.add(_maxValue);
-            _parameters.add(_speed);
-
-            _timestamp = ofGetElapsedTimeMillis();
-        }
-
-        void update(){
-            auto timestamp = ofGetElapsedTimeMillis();
-            if(timestamp - _timestamp < ofMap(_speed, 0, 1, 1000, 20)){ return; }
+        strobe(int frequencyChannel, int velocityChannel) : dmx() {
+            _name = "externalStrobe";
+            _frequencyChannel.set("frequencyChannel", frequencyChannel, 1, 512);
+            _velocityChannel.set("velocityChannel", velocityChannel, 1, 512);
+            _frequency.set("frequency", 0, 0, 255);
+            _velocity.set("velocity", 0, 0, 255);
             
-            _timestamp = timestamp;
-            _value = !_value;
-
-            for(auto i = 0; i < _amount; i++){
-                std::pair<int, int> value(_channel+i, _value ? _maxValue : _minValue);
-                _valueChangeEvent.notify(value);
+            _parameters.add(_frequency);
+            _parameters.add(_velocity);
+            
+            _timestamp = ofGetElapsedTimeMillis();
+            
+            _active.addListener(this, &strobe::onActiveChange);
+            _frequency.addListener(this, &strobe::onValueChange);
+            _velocity.addListener(this, &strobe::onValueChange);
+        }
+        
+        void update(){}
+        void onActiveChange(bool & value){
+            if(value){
+                std::pair<int, int> frequency(_frequencyChannel, _frequency);
+                _valueChangeEvent.notify(frequency);
+                std::pair<int, int> velocity(_velocityChannel, _velocity);
+                _valueChangeEvent.notify(velocity);
+            }else{
+                std::pair<int, int> frequency(_frequencyChannel, 0);
+                _valueChangeEvent.notify(frequency);
+                std::pair<int, int> velocity(_velocityChannel, 0);
+                _valueChangeEvent.notify(velocity);
             }
         }
-
-        void setPeakEnergy(int analyserId, float value){}
-
-        ofParameter<int> _channel;
-        ofParameter<int> _amount;
-        bool _value;
-        ofParameter<int> _minValue;
-        ofParameter<int> _maxValue;
-        ofParameter<float> _speed;
-
+        void onValueChange(int & value){
+            if(!_active) return;
+            std::pair<int, int> frequency(_frequencyChannel, _frequency);
+            _valueChangeEvent.notify(frequency);
+            std::pair<int, int> velocity(_velocityChannel, _velocity);
+            _valueChangeEvent.notify(velocity);
+        }
+        ofParameter<int> _frequencyChannel;
+        ofParameter<int> _velocityChannel;
+        ofParameter<int> _frequency;
+        ofParameter<int> _velocity;
+        
         u_int64_t _timestamp;
-        int _group;
     };
 };

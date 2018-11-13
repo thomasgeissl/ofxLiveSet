@@ -116,14 +116,13 @@
 		181D363B6DD54D1FA6309C43 /* ofxColorPicker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxColorPicker.cpp; path = ../../../addons/ofxGui/src/ofxColorPicker.cpp; sourceTree = SOURCE_ROOT; };
 		1A022D22F03057162A5DEA9E /* schwanensee.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = schwanensee.h; path = src/clips/dmx/schwanensee.h; sourceTree = SOURCE_ROOT; };
 		1C0DA2561397A7DE0246858B /* ofxGuiGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGuiGroup.h; path = ../../../addons/ofxGui/src/ofxGuiGroup.h; sourceTree = SOURCE_ROOT; };
-		1C223F7D53250CAAEB84DDE0 /* externalStrobe.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = externalStrobe.h; path = src/clips/dmx/externalStrobe.h; sourceTree = SOURCE_ROOT; };
+		1C223F7D53250CAAEB84DDE0 /* strobe.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = strobe.h; path = src/clips/dmx/strobe.h; sourceTree = SOURCE_ROOT; };
 		1FC97823AB4CE449723B687F /* midiReactiveDmx.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = midiReactiveDmx.h; path = src/clips/dmx/midiReactiveDmx.h; sourceTree = SOURCE_ROOT; };
 		1FCBB2D019F7C31B159BF0E7 /* read_handle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = read_handle.h; path = local_addons/ofxMQTT/libs/mosquitto/src/read_handle.h; sourceTree = SOURCE_ROOT; };
 		208298154B11456DCD0BE131 /* ofxRtMidiIn.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxRtMidiIn.h; path = ../../../addons/ofxMidi/src/desktop/ofxRtMidiIn.h; sourceTree = SOURCE_ROOT; };
 		20F35AFADAF0068B067E713F /* OscReceivedElements.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscReceivedElements.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscReceivedElements.h; sourceTree = SOURCE_ROOT; };
 		22EC5BB7661C95C5EDA58814 /* session.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = session.h; path = ../../../addons/ofxLiveSet/src/session.h; sourceTree = SOURCE_ROOT; };
 		23640F57DF6C4BB6BFC5DA4C /* PacketListener.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = PacketListener.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/PacketListener.h; sourceTree = SOURCE_ROOT; };
-		24B6CA8B0BA1198E2E3E17E5 /* sines.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = sines.h; path = src/clips/dmx/sines.h; sourceTree = SOURCE_ROOT; };
 		2834D88A62CD23F3DE2C47D1 /* ofxButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxButton.h; path = ../../../addons/ofxGui/src/ofxButton.h; sourceTree = SOURCE_ROOT; };
 		29357256C9E45D83B332A677 /* base.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = base.h; path = ../../../addons/ofxLiveSet/src/tracks/base.h; sourceTree = SOURCE_ROOT; };
 		2D0498B0068B2D027F339347 /* ofxKeyMappableFloat.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxKeyMappableFloat.h; path = local_addons/ofxKeyMapper/src/ofxKeyMappableFloat.h; sourceTree = SOURCE_ROOT; };
@@ -132,7 +131,6 @@
 		372D8B2EA76C5A1A6E4F095B /* thread_mosq.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = thread_mosq.c; path = local_addons/ofxMQTT/libs/mosquitto/src/thread_mosq.c; sourceTree = SOURCE_ROOT; };
 		382E604B9EC72353CF489DE7 /* dmx.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = dmx.h; path = ../../../addons/ofxLiveSet/src/clips/dmx.h; sourceTree = SOURCE_ROOT; };
 		39C505AB0D5F4C997D4237AA /* midi.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = midi.h; path = ../../../addons/ofxLiveSet/src/tracks/midi.h; sourceTree = SOURCE_ROOT; };
-		3A11E8C3DF330D55E092C530 /* rects.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = rects.h; path = src/clips/graphic/rects.h; sourceTree = SOURCE_ROOT; };
 		3A5471B6D1939E9E099FF9A6 /* ofxMidiMappableInt.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxMidiMappableInt.h; path = local_addons/ofxMidiMapper/src/ofxMidiMappableInt.h; sourceTree = SOURCE_ROOT; };
 		3B361208CD4107E479F04E7B /* NetworkingUtils.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = NetworkingUtils.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/posix/NetworkingUtils.cpp; sourceTree = SOURCE_ROOT; };
 		3DD359247F3ED1550D8BB5C9 /* ofxMidiIn.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxMidiIn.cpp; path = ../../../addons/ofxMidi/src/ofxMidiIn.cpp; sourceTree = SOURCE_ROOT; };
@@ -144,14 +142,12 @@
 		470CF04F1D4D1B38D5AA1797 /* ofxRtMidiOut.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxRtMidiOut.h; path = ../../../addons/ofxMidi/src/desktop/ofxRtMidiOut.h; sourceTree = SOURCE_ROOT; };
 		48974F980F51769171D0B2F5 /* IpEndpointName.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = IpEndpointName.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/IpEndpointName.h; sourceTree = SOURCE_ROOT; };
 		489B196944B06ADC2A071076 /* ofxColorPicker.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxColorPicker.h; path = ../../../addons/ofxGui/src/ofxColorPicker.h; sourceTree = SOURCE_ROOT; };
-		49508319AA55F4CD3F73D597 /* rand.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = rand.h; path = src/clips/dmx/rand.h; sourceTree = SOURCE_ROOT; };
 		497DDB0B7AD97CCBA7FDB133 /* ofxMidiClock.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxMidiClock.h; path = ../../../addons/ofxMidi/src/ofxMidiClock.h; sourceTree = SOURCE_ROOT; };
 		4BAF8980298C6893682EB2BF /* ofxDmx.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDmx.h; path = local_addons/ofxDmx/src/ofxDmx.h; sourceTree = SOURCE_ROOT; };
 		4CB3000389A799744F0F9215 /* will_mosq.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = will_mosq.h; path = local_addons/ofxMQTT/libs/mosquitto/src/will_mosq.h; sourceTree = SOURCE_ROOT; };
 		4E95FB446A9C9C6F0DE12D75 /* OscPrintReceivedElements.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscPrintReceivedElements.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscPrintReceivedElements.h; sourceTree = SOURCE_ROOT; };
 		52AFA1F08C420992CAAAE648 /* ofxSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSlider.h; path = ../../../addons/ofxGui/src/ofxSlider.h; sourceTree = SOURCE_ROOT; };
 		54DC82C20E63BAC0F0F926FA /* ofxMidiTimecode.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxMidiTimecode.h; path = ../../../addons/ofxMidi/src/ofxMidiTimecode.h; sourceTree = SOURCE_ROOT; };
-		56E872D68885C3503A8B6C6F /* sin.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = sin.h; path = src/clips/dmx/sin.h; sourceTree = SOURCE_ROOT; };
 		5F42ACCE157CA22686D83BA5 /* ofxMidiMappableVoid.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxMidiMappableVoid.h; path = local_addons/ofxMidiMapper/src/ofxMidiMappableVoid.h; sourceTree = SOURCE_ROOT; };
 		6369BB7D166D839AFB8852EA /* videoGrabber.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = videoGrabber.h; path = ../../../addons/ofxLiveSet/src/clips/videoGrabber.h; sourceTree = SOURCE_ROOT; };
 		63A47AC60FFAFC3BF093EC0F /* OscOutboundPacketStream.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = OscOutboundPacketStream.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscOutboundPacketStream.cpp; sourceTree = SOURCE_ROOT; };
@@ -193,7 +189,6 @@
 		9BF3AA0D4FAA89D0F8A0E545 /* OscReceivedElements.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = OscReceivedElements.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscReceivedElements.cpp; sourceTree = SOURCE_ROOT; };
 		9F7986DC4EB05E75FCE2C777 /* ofxOscSender.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscSender.h; path = ../../../addons/ofxOsc/src/ofxOscSender.h; sourceTree = SOURCE_ROOT; };
 		A0ED4A758F7EAF12DF43DBC2 /* ofxKeyMappableVoid.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxKeyMappableVoid.h; path = local_addons/ofxKeyMapper/src/ofxKeyMappableVoid.h; sourceTree = SOURCE_ROOT; };
-		A0F65FA004F84FA46115E6D5 /* lines.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = lines.h; path = src/clips/graphic/lines.h; sourceTree = SOURCE_ROOT; };
 		A111E2BFFAC845899ECD9687 /* ofxMQTT.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxMQTT.cpp; path = local_addons/ofxMQTT/src/ofxMQTT.cpp; sourceTree = SOURCE_ROOT; };
 		A2AAA8CA403479E6FCDF920E /* OscHostEndianness.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscHostEndianness.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscHostEndianness.h; sourceTree = SOURCE_ROOT; };
 		A2E134D1AFB6160A77C18F5F /* config.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = config.h; path = local_addons/ofxMQTT/libs/mosquitto/src/config.h; sourceTree = SOURCE_ROOT; };
@@ -236,7 +231,6 @@
 		D39D836E26DCCDE4A47C2C31 /* ofxMidiMappable.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxMidiMappable.cpp; path = local_addons/ofxMidiMapper/src/ofxMidiMappable.cpp; sourceTree = SOURCE_ROOT; };
 		D3CF05A2924CD88FC9551CF5 /* ofxMidiMappable.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxMidiMappable.h; path = local_addons/ofxMidiMapper/src/ofxMidiMappable.h; sourceTree = SOURCE_ROOT; };
 		D48D7AA5DEA50765C94129EA /* soundReactiveDmx.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = soundReactiveDmx.h; path = src/clips/dmx/soundReactiveDmx.h; sourceTree = SOURCE_ROOT; };
-		D958814904DCB8ACF34BA605 /* peak.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = peak.h; path = src/clips/dmx/peak.h; sourceTree = SOURCE_ROOT; };
 		D9A2FCE017BB212C5A38B436 /* null.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = null.h; path = ../../../addons/ofxLiveSet/src/clips/null.h; sourceTree = SOURCE_ROOT; };
 		D9BFFBBF4CC43DEE890B3C3E /* OscTypes.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = OscTypes.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscTypes.cpp; sourceTree = SOURCE_ROOT; };
 		DE67CAB423AB6E05A8EB616C /* read_handle_client.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = read_handle_client.c; path = local_addons/ofxMQTT/libs/mosquitto/src/read_handle_client.c; sourceTree = SOURCE_ROOT; };
@@ -245,7 +239,6 @@
 		E112B3AEBEA2C091BF2B40AE /* ofxPanel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxPanel.cpp; path = ../../../addons/ofxGui/src/ofxPanel.cpp; sourceTree = SOURCE_ROOT; };
 		E16BB73D19DD0713FDCC7986 /* ofxMidiTypes.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxMidiTypes.h; path = ../../../addons/ofxMidi/src/ofxMidiTypes.h; sourceTree = SOURCE_ROOT; };
 		E174BEDB7640DA6B9F3EE935 /* read_handle.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = read_handle.c; path = local_addons/ofxMQTT/libs/mosquitto/src/read_handle.c; sourceTree = SOURCE_ROOT; };
-		E1B5511A92BE91E4AC79FA91 /* strobe.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = strobe.h; path = src/clips/dmx/strobe.h; sourceTree = SOURCE_ROOT; };
 		E232D73FE09C910A6CE22BF5 /* will_mosq.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = will_mosq.c; path = local_addons/ofxMQTT/libs/mosquitto/src/will_mosq.c; sourceTree = SOURCE_ROOT; };
 		E238CCDE032640E0FEBFAD82 /* ofxMidi.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxMidi.cpp; path = ../../../addons/ofxMidi/src/ofxMidi.cpp; sourceTree = SOURCE_ROOT; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -395,18 +388,13 @@
 		4EABDA1E9C53C588C60284A5 /* dmx */ = {
 			isa = PBXGroup;
 			children = (
-				24B6CA8B0BA1198E2E3E17E5 /* sines.h */,
 				C6384E44A6EE1C161C7899C9 /* anchor.h */,
 				1A022D22F03057162A5DEA9E /* schwanensee.h */,
 				FA0DF13F64B661CB9A1CB18B /* within.h */,
 				AB142AB19C3240BAB09F6A57 /* firn.h */,
 				A1BAD6A6E56B82B5D637C892 /* utils */,
-				49508319AA55F4CD3F73D597 /* rand.h */,
-				1C223F7D53250CAAEB84DDE0 /* externalStrobe.h */,
+				1C223F7D53250CAAEB84DDE0 /* strobe.h */,
 				D48D7AA5DEA50765C94129EA /* soundReactiveDmx.h */,
-				E1B5511A92BE91E4AC79FA91 /* strobe.h */,
-				56E872D68885C3503A8B6C6F /* sin.h */,
-				D958814904DCB8ACF34BA605 /* peak.h */,
 				1FC97823AB4CE449723B687F /* midiReactiveDmx.h */,
 			);
 			name = dmx;
@@ -537,15 +525,6 @@
 			name = src;
 			sourceTree = "<group>";
 		};
-		7794754B76EF3AA14219AFC2 /* graphic */ = {
-			isa = PBXGroup;
-			children = (
-				A0F65FA004F84FA46115E6D5 /* lines.h */,
-				3A11E8C3DF330D55E092C530 /* rects.h */,
-			);
-			name = graphic;
-			sourceTree = "<group>";
-		};
 		7F656E1BEE0DCE124B100CD2 /* src */ = {
 			isa = PBXGroup;
 			children = (
@@ -626,7 +605,6 @@
 			isa = PBXGroup;
 			children = (
 				4EABDA1E9C53C588C60284A5 /* dmx */,
-				7794754B76EF3AA14219AFC2 /* graphic */,
 			);
 			name = clips;
 			sourceTree = "<group>";

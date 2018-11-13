@@ -6,16 +6,24 @@ ofApp::ofApp() : _session(_project._session){
 void ofApp::setup(){
     ofSetBackgroundColor(16, 16, 16);
 
+    // inputs
     _soundAnalyser.setup();
     _soundAnalyser.addListener(this);
-
-    _dmx.connect("tty.usbserial-EN160415");
-    _dmx.setChannels(16);
     
-    ofxLiveSet::track::dmx* lightBulbsTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("light bulbs")));
-    ofxLiveSet::track::dmx* strobeTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("strobe")));
-    ofxLiveSet::track::dmx* utilsTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("utils")));
-    ofxLiveSet::track::dmx* afterShowTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("afterShow")));
+    _midiIn.openVirtualPort("ofxLiveSet");
+    _midiIn.ignoreTypes(false, false, false);
+    _midiIn.addListener(this);
+    _midiIn.setVerbose(true);
+    
+    // outputs
+    _dmx.connect("tty.usbserial-EN160415");
+    _dmx.setChannels(18);
+    
+    // session
+    auto lightBulbsTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("light bulbs")));
+    auto strobeTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("strobe")));
+    auto utilsTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("utils")));
+    auto afterShowTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("afterShow")));
 
     
     lightBulbsTrack->addClip(new clips::within())->setup();
@@ -23,7 +31,7 @@ void ofApp::setup(){
     lightBulbsTrack->addClip(new clips::firn())->setup();
     lightBulbsTrack->addClip(new clips::schwanensee())->setup();
 
-    strobeTrack->addClip(new clips::externalStrobe(17, 18), 2)->setup();
+    strobeTrack->addClip(new clips::strobe(17, 18), 2)->setup();
 
     utilsTrack->addClip(new clips::still(), 4)->setup();
     utilsTrack->addClip(new clips::midi2dmx())->setup();
@@ -35,18 +43,14 @@ void ofApp::setup(){
     }
 
     _session->setup();
-    _session->openMidiInPort(2);
+    _session->openMidiMapperInPort(2);
     _session->renameScene(0, "within");
     _session->renameScene(1, "anchor");
     _session->renameScene(2, "firn");
     _session->renameScene(3, "schwanensee");
-    _session->stop();
-
     
-    _midiIn.openVirtualPort("ofxLiveSet");
-    _midiIn.ignoreTypes(false, false, false);
-    _midiIn.addListener(this);
-    _midiIn.setVerbose(true);
+    _session->_sceneInformation[1]._text = "activate analyser\non beats track\nin ableton live";
+    _session->stop();
 }
 
 void ofApp::exit(){
@@ -103,40 +107,6 @@ void ofApp::draw(){
         y += ofGetHeight()/4;
         x = ofGetWidth()/2;
     }
-    
-////    draw audio
-//    x = ofGetWidth()/2 - 100;
-//    y = ofGetHeight()/2 - 100;
-//    ofSetColor(255, 0, 0, 64);
-//    ofDrawRectangle(x, y, 50, 50);
-//    ofSetColor(ofColor::white);
-//    ofDrawBitmapString("audio", x,y+25);
-//
-////    draw left speaker
-//    x = ofGetWidth() - 100;
-//    y = ofGetHeight()/2 - 100;
-//    ofSetColor(255, 0, 255, 64);
-//    ofDrawRectangle(x, y, 50, 50);
-//    ofSetColor(ofColor::white);
-//    ofDrawBitmapString("left", x,y+25);
-//    ofDrawBitmapString("speaker", x,y+45);
-//
-////    draw right speaker
-//    x = ofGetWidth()/2 - 100;
-//    y = ofGetHeight() - 50;
-//    ofSetColor(255, 0, 255, 64);
-//    ofDrawRectangle(x, y, 50, 50);
-//    ofSetColor(ofColor::white);
-//    ofDrawBitmapString("right", x,y+25);
-//    ofDrawBitmapString("speaker", x,y+45);
-//
-////    draw light
-//    x = ofGetWidth() - 100;
-//    y = ofGetHeight() - 50;
-//    ofSetColor(0, 0, 255, 64);
-//    ofDrawRectangle(x, y, 50, 50);
-//    ofSetColor(ofColor::white);
-//    ofDrawBitmapString("light", x,y+25);
 }
 
 void ofApp::keyPressed(int key){
