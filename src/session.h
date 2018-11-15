@@ -1,6 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxOsc.h"
 #include "ofxMidiMapper.h"
 #include "ofxKeyMapper.h"
 //#include "mqttSynchroniser.h"
@@ -105,7 +106,9 @@ public:
     }
     void openMidiMapperInPort(int index){
         _midiMapper.openMidiPort(index);
-        
+    }
+    void openOscInPort(int port){
+        _oscReceiver.setup(port);
     }
 	void update(){
         if(_active){
@@ -123,8 +126,37 @@ public:
             track->update();
         }
 
+//    TODO: add more commands, check oscparamsync with multiple parameter groups having the same name, 
+        while(_oscReceiver.hasWaitingMessages()){
+            ofxOscMessage m;
+            _oscReceiver.getNextMessage(m);
 
+            if(m.getAddress() == "/ofxSession/scene/trigger"){
+                auto index = m.getArgAsInt(0);
+                triggerScene(index);
+            }
+            else if(m.getAddress() == "/ofxSession/stop"){
+                stop();
+            }
+            else if(m.getAddress() == "/ofxSession/track/stop"){
+                auto index = m.getArgAsInt(0);
+                if(index < _tracks.size()){
+                    _tracks[index]->stop();
+                }
+            }
+            else if(m.getAddress() == "/ofxSession/clip/toggle"){
+                auto trackIndex = m.getArgAsInt(0);
+                auto clipIndex = m.getArgAsInt(1);
 
+                if(trackIndex < _tracks.size()){
+                    auto track = _tracks[trackIndex];
+                    if(clipIndex < track->_clips.size()){
+                        auto clip = track->_clips[clipIndex];
+                        clip->toggle();
+                    }
+                }
+            }
+        }
 //        _mqttSynchroniser.update();
 	}
 	void draw()
@@ -320,6 +352,8 @@ public:
     ofxPanel _keyMapperPanel;
     ofxMidiMapper _midiMapper;
     ofxKeyMapper _keyMapper;
+    
+    ofxOscReceiver _oscReceiver;
 
     u_int64_t _timestamp;
     u_int64_t _startedTimestamp;
@@ -328,6 +362,7 @@ public:
         
     gui::infoPanel _infoPanel;
     std::vector<ofxLiveSet::information> _sceneInformation;
+    
 
 
 };

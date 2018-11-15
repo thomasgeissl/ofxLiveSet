@@ -48,8 +48,13 @@ void ofApp::setup(){
     _session->renameScene(1, "anchor");
     _session->renameScene(2, "firn");
     _session->renameScene(3, "schwanensee");
-    
+    _session->_sceneInformation[0]._text = "";
     _session->_sceneInformation[1]._text = "activate analyser\non beats track\nin ableton live";
+    _session->_sceneInformation[2]._text = "";
+    _session->_sceneInformation[3]._text = "";
+    
+    _session->openOscInPort(9000);
+
     _session->stop();
 }
 
@@ -61,7 +66,7 @@ void ofApp::exit(){
 }
 
 void ofApp::update(){
-//    _dmx.update();
+    _dmx.update();
     _soundAnalyser.update();
     ofSetWindowTitle("klanglichtstrom :: fps: "+ofToString((int)(ofGetFrameRate())));
 }

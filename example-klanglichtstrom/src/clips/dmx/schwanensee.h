@@ -13,7 +13,7 @@ namespace clips {
             _fadeOutTime.set("fadeOutTime", 300, 0, 3000);
 
             _addPeakEnergy.set("addPeakEnergy", false);
-            _pitchThreshold.set("pitchThreshold", .5, 0, 1);
+            _pitchThreshold.set("pitchThreshold", .03, 0, 1);
 
             _active.setName(_name);
             
@@ -30,7 +30,7 @@ namespace clips {
         
         void update(){
             auto timestamp = ofGetElapsedTimeMillis();
-            if(_pitch2 != -1 && _timestamp != -1 && timestamp - _timestamp >= 32){
+            if(_pitch2 != -1 && _timestamp != -1 && timestamp - _timestamp >= 16){
                 auto index = (int)(ofMap(_pitch, 40, 72, 0, 15));
                 if(index >= 0 && index <= _amount -1 && index != _lastIndex){
                     if(timestamp - _timestamps[index] > 100){

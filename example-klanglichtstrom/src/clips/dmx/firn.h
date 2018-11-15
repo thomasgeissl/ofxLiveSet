@@ -13,8 +13,8 @@ namespace clips {
             _minValue.set("minValue", 0, 0, 255);
             _maxValue.set("maxValue", 100, 0, 255);
             _speed.set("speed", 1, 0, 1);
-            _threshold.set("threshold", .5, 0, 1);
-            _peakEnergyDebounceTime.set("debounce", 50, 0, 500);
+            _threshold.set("threshold", .01, 0, 1);
+            _peakEnergyDebounceTime.set("debounce", 100, 30, 500);
             _minDistance.set("minDistance", 7, 1, 12);
             
             _active.setName(_name);
