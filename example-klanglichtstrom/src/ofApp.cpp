@@ -36,6 +36,9 @@ void ofApp::setup(){
     utilsTrack->addClip(new clips::still(), 4)->setup();
     utilsTrack->addClip(new clips::midi2dmx())->setup();
     
+    utilsTrack->mute();
+    afterShowTrack->mute();
+    
     for(auto track : _session->_tracks){
         if(auto dmxTrack = dynamic_cast<ofxLiveSet::track::dmx*>(track)) {
             dmxTrack->setup(&_dmx);

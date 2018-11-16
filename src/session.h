@@ -34,7 +34,7 @@ public:
         _active.set("active", false);
         _timestampString.set("time", "0");
         _mute.set("mute", false);
-        _gain.set("gain", 1, 0, 1);
+        _gain.set("gain", 1, 0, 1); //TODO: does make gain sense for a session with audio, dmx and midi tracks?
 
 //        _parameters.add(_name);
         _parameters.add(_active);

@@ -10,6 +10,7 @@ namespace clips {
             _minValue.set("minValue", 0, 0, 255);
             _maxValue.set("maxValue", 0, 0, 255);
             _fadeOutTime.set("fadeOutTime", 300, 0, 3000);
+            _debounceTime.set("debounceTime", 20, 0, 1000);
 
             _addPeakEnergy.set("addPeakEnergy", false);
             _pitchThreshold.set("pitchThreshold", .01, 0, 1);
@@ -21,6 +22,7 @@ namespace clips {
 //            _parameters.add(_minValue);
             _parameters.add(_maxValue);
             _parameters.add(_fadeOutTime);
+            _parameters.add(_debounceTime);
             _parameters.add(_addPeakEnergy);
             _parameters.add(_pitchThreshold);
             _parameters.add(_blackoutDimmer2);
@@ -32,12 +34,12 @@ namespace clips {
         void update(){
             auto timestamp = ofGetElapsedTimeMillis();
             if(_peakEnergy > _pitchThreshold && !_onsetDetected){
-                _timestamp = ofGetElapsedTimeMillis() + 50;
+                _timestamp = ofGetElapsedTimeMillis() + _debounceTime;
                 _onsetDetected = true;
             }
             if(timestamp > _timestamp && _onsetDetected){
                 _onsetDetected = false;
-                auto index = (int)(ofMap(_pitch, 40, 72, 0, 15));
+                auto index = (int)(ofMap(_pitch, 40, 72, 0, _amount -1));
                 if(index >= 0 && index <= _amount -1 && index != _lastIndex){
                     if(timestamp - _timestamps[index] > 100){
                         _values[index] = _maxValue;
@@ -82,6 +84,7 @@ namespace clips {
         ofParameter<int> _minValue;
         ofParameter<int> _maxValue;
         ofParameter<int> _fadeOutTime;
+        ofParameter<int> _debounceTime;
         ofParameter<bool> _addPeakEnergy;
         ofParameter<float> _pitchThreshold;
         ofParameter<void> _blackoutDimmer2;

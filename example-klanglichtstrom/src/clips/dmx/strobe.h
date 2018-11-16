@@ -5,7 +5,8 @@ namespace clips {
     class strobe : public ofxLiveSet::clip::dmx {
     public:
         strobe(int frequencyChannel, int velocityChannel) : dmx() {
-            _name = "externalStrobe";
+            _name = "strobe";
+            _active.setName("strobe");
             _frequencyChannel.set("frequencyChannel", frequencyChannel, 1, 512);
             _velocityChannel.set("velocityChannel", velocityChannel, 1, 512);
             _frequency.set("frequency", 0, 0, 255);
@@ -13,8 +14,6 @@ namespace clips {
             
             _parameters.add(_frequency);
             _parameters.add(_velocity);
-            
-            _timestamp = ofGetElapsedTimeMillis();
             
             _active.addListener(this, &strobe::onActiveChange);
             _frequency.addListener(this, &strobe::onValueChange);
@@ -46,7 +45,5 @@ namespace clips {
         ofParameter<int> _velocityChannel;
         ofParameter<int> _frequency;
         ofParameter<int> _velocity;
-        
-        u_int64_t _timestamp;
     };
 };

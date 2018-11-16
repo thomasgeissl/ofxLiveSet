@@ -24,7 +24,7 @@ namespace ofxLiveSet
             }
             void onValueChange(std::pair<int, int> &value){
                 if(!_mute){
-                    _dmx->setLevel(value.first, value.second);
+                    _dmx->setLevel(value.first, _gain * value.second);
                 }
             }
             ofxDmx * _dmx;
