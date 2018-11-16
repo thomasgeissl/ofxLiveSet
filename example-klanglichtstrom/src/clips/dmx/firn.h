@@ -12,16 +12,14 @@ namespace clips {
             
             _minValue.set("minValue", 0, 0, 255);
             _maxValue.set("maxValue", 100, 0, 255);
-            _speed.set("speed", 1, 0, 1);
-            _threshold.set("threshold", .01, 0, 1);
-            _peakEnergyDebounceTime.set("debounce", 100, 30, 500);
+            _threshold.set("threshold", .1, 0, 1);
+            _peakEnergyDebounceTime.set("debounce", 300, 30, 500);
             _minDistance.set("minDistance", 7, 1, 12);
             
             _active.setName(_name);
             
             _parameters.add(_minValue);
             _parameters.add(_maxValue);
-            _parameters.add(_speed);
             _parameters.add(_threshold);
             _parameters.add(_peakEnergyDebounceTime);
             _parameters.add(_minDistance);
@@ -40,7 +38,13 @@ namespace clips {
                 }
             }
         }
-        
+        void stop(){
+            for(auto i = 1; i <= 16; i++){
+                std::pair<int, int> value(i, 0);
+                _valueChangeEvent.notify(value);
+            }
+            base::stop();
+        }
         void setPeakEnergy(int analyserId, float value) {
             if(value < _threshold){return;}
             if(analyserId != _soundAnalyserId){return;}
@@ -48,7 +52,6 @@ namespace clips {
             if(timestamp - _timestamp < _peakEnergyDebounceTime){
                 return;
             }
-            ofLogNotice() << "no debouncing " << timestamp - _timestamp;
             _timestamp = timestamp;
             
             auto i = ofRandom(_amount);
@@ -73,7 +76,6 @@ namespace clips {
         ofParameter<int> _minValue;
         ofParameter<int> _maxValue;
         
-        ofParameter<float> _speed;
         ofParameter<float> _threshold;
         ofParameter<int> _peakEnergyDebounceTime;
         ofParameter<int> _minDistance;

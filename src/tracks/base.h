@@ -18,11 +18,14 @@ public:
         _stop.set("stop", false);
         _mute.set("mute", false);
         _solo.set("solo", false);
+        _gain.set("gain", 1, 0, 1);
+
 //        _parameters.add(_name);
         _parameters.add(_stop);
         _parameters.add(_solo);
         _parameters.add(_mute);
-        
+        _parameters.add(_gain);
+
         _stop.addListener(this, &base::onStop);
 
 	}
@@ -132,6 +135,7 @@ public:
     ofParameter<bool> _stop;
     ofParameter<bool> _mute;
     ofParameter<bool> _solo;
+    ofParameter<float> _gain;
     ofParameterGroup _clipTriggers;
     
     ofxPanel _gui;

@@ -10,7 +10,7 @@ namespace clips {
             _start.set("start", 12, 1, 16);
             _amount.set("amount", 1, 1, 16);
             _minValue.set("minValue", 0, 0, 255);
-            _maxValue.set("maxValue", 20, 0, 255);
+            _maxValue.set("maxValue", 0, 0, 255);
             _addPeakEnergy.set("addPeakEnergy", false);
             _speed.set("speed", .1, 0, 1);
             _add.set("add");
@@ -38,16 +38,13 @@ namespace clips {
             for(auto i = 0; i < _amount; i++){
                 auto dmxValue = 0;
                 if(_addPeakEnergy){
-                    dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)) + _peakEnergy, 0, 2, _minValue, _maxValue);
-
+                    dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)) - 0.1*_peakEnergy, 0, 1, _minValue, _maxValue, true);
                 }else{
                     dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)), 0, 1, _minValue, _maxValue);
                 }
                 std::pair<int, int> value((_start+i)%16+1, dmxValue);
                 _valueChangeEvent.notify(value);
-
             }
-            
         }
         void stop(){
             for(auto i = 1; i <= 16; i++){

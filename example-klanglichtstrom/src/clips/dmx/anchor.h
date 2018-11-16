@@ -11,7 +11,7 @@ namespace clips {
             _start.set("start", 12, 1, 16);
             _amount.set("amount", 1, 1, 16);
             _minValue.set("minValue", 0, 0, 255);
-            _maxValue.set("maxValue", 200, 0, 255);
+            _maxValue.set("maxValue", 115, 0, 255); // beatMaxValue
             _addPeakEnergy.set("addPeakEnergy", false);
             _breathe.set("breathe", false);
             _speed.set("speed", .7, 0, 1);

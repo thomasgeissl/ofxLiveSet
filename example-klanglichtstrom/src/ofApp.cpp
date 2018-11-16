@@ -66,7 +66,9 @@ void ofApp::exit(){
 }
 
 void ofApp::update(){
+#ifdef SENDDMX
     _dmx.update();
+#endif
     _soundAnalyser.update();
     ofSetWindowTitle("klanglichtstrom :: fps: "+ofToString((int)(ofGetFrameRate())));
 }

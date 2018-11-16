@@ -34,11 +34,14 @@ public:
         _active.set("active", false);
         _timestampString.set("time", "0");
         _mute.set("mute", false);
+        _gain.set("gain", 1, 0, 1);
+
 //        _parameters.add(_name);
         _parameters.add(_active);
         _parameters.add(_timestampString);
         _parameters.add(_mute);
-        
+        _parameters.add(_gain);
+
         _active.addListener(this, &session::onActive);
 
         
@@ -343,6 +346,8 @@ public:
     ofParameter<bool> _active;
     ofParameter<std::string> _timestampString;
     ofParameter<bool> _mute;
+    ofParameter<float> _gain;
+
     std::vector<ofParameter<bool>> _sceneTriggers;
     ofParameter<int> _focusedTrack;
     ofParameter<int> _focusedClip;

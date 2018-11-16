@@ -14,6 +14,9 @@
 #include "./clips/dmx/utils/still.h"
 #include "./clips/dmx/utils/midi2dmx.h"
 
+// out comment if you dont have an enttec usb interface connected
+//#define SENDDMX
+
 class ofApp : public ofBaseApp, public ofxMidiListener, public ofxSoundAnalyserListener {
 public:
     ofApp();
