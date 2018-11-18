@@ -70,8 +70,8 @@ namespace clips {
                 }
             }else{
                 for(auto i = _beatsQuadrant*4; i < _beatsQuadrant*4+4; i++){
-                    if(timestamp - _timestamps[i] < 100){
-                        _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + 100, _maxValue, _minValue);
+                    if(timestamp - _timestamps[i] < 50){
+                        _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + 50, _maxValue, _minValue);
                     }
                 }
             }

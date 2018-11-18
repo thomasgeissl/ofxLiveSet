@@ -16,7 +16,7 @@ public:
     virtual void draw(){
         base::draw();
         if(!_mute && _clip) {
-            ((ofxLiveSet::clip::graphic *)(_clip))->_fbo.draw(0,0);
+            ((ofxLiveSet::clip::graphic *)(_clip))->_fbo.draw(0,0); // TODO: apply gain/alpha
         }
     }
 };
