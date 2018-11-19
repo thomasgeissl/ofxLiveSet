@@ -14,7 +14,7 @@ public:
 	session()
 	{
 		ofAddListener(ofEvents().update, this, &session::onUpdate, OF_EVENT_ORDER_AFTER_APP);
-        ofAddListener(ofEvents().draw, this, &session::onDraw, OF_EVENT_ORDER_AFTER_APP);
+        ofAddListener(ofEvents().draw, this, &session::onDraw, OF_EVENT_ORDER_BEFORE_APP);
         ofAddListener(ofEvents().exit, this, &session::onExit, OF_EVENT_ORDER_AFTER_APP);
 
 //        ofAddListener(ofEvents().keyPressed, this, &session::onKeyPressed, OF_EVENT_ORDER_AFTER_APP);
@@ -162,13 +162,15 @@ public:
         }
 //        _mqttSynchroniser.update();
 	}
-	void draw()
-	{
-		for (auto track : _tracks)
-		{
+	void draw(){
+		for (auto track : _tracks){
             track->draw();
 		}
-        
+	}
+    void drawGui(){
+        for (auto track : _tracks){
+            track->drawGui();
+		}
         _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(),0); //TODO: only set position on resize
         _midiMapperPanel.setPosition(ofGetWidth() - _midiMapperPanel.getWidth(), _midiMapperPanel.getPosition().y); //TODO: only set position on resize
         _keyMapperPanel.setPosition(ofGetWidth() - _keyMapperPanel.getWidth(), _keyMapperPanel.getPosition().y); //TODO: only set position on resize
@@ -179,7 +181,7 @@ public:
             _tracks[_focusedTrack]->_clips[_focusedClip]->_gui.draw();
         }
         _infoPanel.draw(0, ofGetHeight() - 100, ofGetWidth()/4, 100);
-	}
+    }
     void exit(){
         if(ofFile::doesFileExist("mapping.midi.json")){
             ofFile::moveFromTo("mapping.midi.json", ofGetTimestampString()+"_mapping.midi.json");

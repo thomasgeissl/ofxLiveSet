@@ -43,19 +43,20 @@ public:
             _clip->update();
 		}
 	}
-	virtual void draw()
-	{
+	virtual void draw(){
 		if (_clip)
 		{
             _clip->draw();
 		}
+	}
+    void drawGui(){
         if(_focused){
             _gui.setHeaderBackgroundColor(ofColor::purple);
         }else{
             _gui.setHeaderBackgroundColor(ofColor::red);
         }
         _gui.draw();
-	}
+    }
 
 	void start()
 	{

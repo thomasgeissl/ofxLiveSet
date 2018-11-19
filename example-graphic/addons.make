@@ -1,0 +1,9 @@
+ofxGui
+ofxLiveSet
+ofxMidi
+ofxOsc
+local_addons/ofxDmx
+local_addons/ofxMQTT
+local_addons/ofxMidiMapper
+local_addons/ofxKeyMapper
+local_addons/ofxSoundAnalyser

@@ -117,6 +117,7 @@ void ofApp::draw(){
         y += ofGetHeight()/4;
         x = ofGetWidth()/2;
     }
+    _session->drawGui();
 }
 
 void ofApp::keyPressed(int key){
