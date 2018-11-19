@@ -12,3 +12,5 @@
 #include "./clips/graphic.h"
 #include "./clips/videoGrabber.h"
 #include "./clips/null.h"
+#include "./clips/soundReactive.h"
+#include "./clips/midiReactive.h"

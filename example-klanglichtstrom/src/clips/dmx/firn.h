@@ -1,10 +1,10 @@
 #pragma once
-#include "./soundReactiveDmx.h"
+#include "ofxLiveSet.h"
 
 namespace clips {
-    class firn : public soundReactiveDmx {
+    class firn : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive{
     public:
-        firn() : soundReactiveDmx(), _lastIndex(0){
+        firn() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive(), _lastIndex(0){
             _name = "firn";
             _channel.set("channel", 1, 1, 512);
             _amount.addListener(this, &firn::onAmountChange);
@@ -18,6 +18,7 @@ namespace clips {
             
             _active.setName(_name);
             
+            _parameters.add(_soundAnalyserId);
             _parameters.add(_minValue);
             _parameters.add(_maxValue);
             _parameters.add(_threshold);

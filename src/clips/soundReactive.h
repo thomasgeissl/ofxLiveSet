@@ -1,12 +1,11 @@
 #pragma once
-#include "clips/dmx.h"
-
-namespace clips {
-    class soundReactiveDmx : public ofxLiveSet::clip::dmx {
+#include "./base.h"
+namespace ofxLiveSet {
+namespace clip {
+    class soundReactive{
     public:
-        soundReactiveDmx() : dmx(){
+        soundReactive(){
             _soundAnalyserId.set("analyserId", 1, 0, 32);
-            _parameters.add(_soundAnalyserId);
         }
         virtual void setPeakEnergy(int analyserId, float value){}
         virtual void setPitch(int analyserId, float value){}
@@ -15,5 +14,6 @@ namespace clips {
         virtual void setMelFrequencySpectrum(int analyserId, std::vector<float> value){}
         ofParameter<int> _soundAnalyserId;
     };
+};
 };
 

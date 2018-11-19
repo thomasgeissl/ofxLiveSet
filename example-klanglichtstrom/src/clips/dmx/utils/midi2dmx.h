@@ -1,12 +1,13 @@
 #pragma once
-#include "../midiReactiveDmx.h"
+#include "ofxLiveSet.h"
 
 namespace clips {
-    class midi2dmx : public midiReactiveDmx {
+    class midi2dmx : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::midiReactive {
     public:
-        midi2dmx() : midiReactiveDmx() {
+        midi2dmx() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::midiReactive() {
             _name = "midi2dmx";
             _active.setName(_name);
+            _parameters.add(_channel);
         }
         
         void setNoteOn(int note, int velocity) {

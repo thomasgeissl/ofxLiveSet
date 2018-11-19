@@ -1,10 +1,10 @@
 #pragma once
-#include "./soundReactiveDmx.h"
+#include "ofxLiveSet.h"
 
 namespace clips {
-    class within : public soundReactiveDmx {
+    class within : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive{
     public:
-        within() : soundReactiveDmx() {
+        within() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
             _name = "within";
             _channel.set("channel", 1, 1, 512);
             _start.set("start", 12, 1, 16);
@@ -17,6 +17,7 @@ namespace clips {
             _remove.set("remove");
             _active.setName(_name);
 
+            _parameters.add(_soundAnalyserId);
             _parameters.add(_start);
             _parameters.add(_amount);
             _parameters.add(_minValue);

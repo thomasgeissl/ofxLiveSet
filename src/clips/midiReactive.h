@@ -1,12 +1,11 @@
 #pragma once
-#include "clips/dmx.h"
-
-namespace clips {
-    class midiReactiveDmx : public ofxLiveSet::clip::dmx {
+#include "./base.h"
+namespace ofxLiveSet {
+namespace clip {
+    class midiReactive{
     public:
-        midiReactiveDmx() : dmx(){
+        midiReactive(){
             _channel.set("analyserId", 1, 1, 16);
-            _parameters.add(_channel);
         }
         virtual void setNoteOn(int note, int velocity){}
         virtual void setNoteOff(int note, int velocity){}
@@ -14,4 +13,5 @@ namespace clips {
         ofParameter<int> _channel;
 
     };
+};
 };

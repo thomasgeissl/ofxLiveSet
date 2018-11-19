@@ -1,10 +1,10 @@
 #pragma once
-#include "./soundReactiveDmx.h"
+#include "ofxLiveSet.h"
 
 namespace clips {
-    class schwanensee : public soundReactiveDmx {
+    class schwanensee : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive {
     public:
-        schwanensee() : soundReactiveDmx() {
+        schwanensee() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
             _name = "schwanensee";
             _amount.set("amount", 16, 1, 16);
             _minValue.set("minValue", 0, 0, 255);
@@ -19,6 +19,7 @@ namespace clips {
 
             _active.setName(_name);
             
+            _parameters.add(_soundAnalyserId);
 //            _parameters.add(_minValue);
             _parameters.add(_maxValue);
             _parameters.add(_fadeOutTime);

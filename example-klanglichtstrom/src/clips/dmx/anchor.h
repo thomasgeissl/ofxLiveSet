@@ -1,10 +1,10 @@
 #pragma once
-#include "./soundReactiveDmx.h"
+#include "ofxLiveSet.h"
 
 namespace clips {
-    class anchor : public soundReactiveDmx {
+    class anchor : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive {
     public:
-        anchor() : soundReactiveDmx() {
+        anchor() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
             _name = "anchor";
             _beatsSoundAnalyserId.set("beatsAnalyserId", 2, 0, 32);
             _channel.set("channel", 1, 1, 512);
@@ -28,6 +28,7 @@ namespace clips {
             _randomiseHighsQuadrant.set("randomiseHighsQuadrant");
             _randomiseHighsQuadrant.addListener(this, &anchor::onRandomiseHighsQuadrant);
 
+            _parameters.add(_soundAnalyserId);
             _parameters.add(_beatsSoundAnalyserId);
             _parameters.add(_start);
             _parameters.add(_amount);
