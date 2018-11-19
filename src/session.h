@@ -4,6 +4,7 @@
 #include "ofxOsc.h"
 #include "ofxMidiMapper.h"
 #include "ofxKeyMapper.h"
+#include "ofxOscMapper.h"
 //#include "mqttSynchroniser.h"
 #include "./tracks/base.h"
 #include "./gui/infoPanel.h"
@@ -92,6 +93,12 @@ public:
         _keyMapperPanel.setPosition(_midiMapperPanel.getPosition().x, _midiMapperPanel.getPosition().y + _midiMapperPanel.getHeight());
         _keyMapperPanel.setHeaderBackgroundColor(ofColor::green);
         
+               
+        _oscMapper.getParameters().setName("osc mapper");
+        _oscMapperPanel.setup(_oscMapper.getParameters());
+        _oscMapperPanel.setPosition(_keyMapperPanel.getPosition().x, _keyMapperPanel.getPosition().y + _keyMapperPanel.getHeight());
+        _oscMapperPanel.setHeaderBackgroundColor(ofColor::green);
+        
         _infoPanel.setup();
         for(auto track : _tracks){
             for(auto clip : track->_clips){
@@ -174,9 +181,13 @@ public:
         _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(),0); //TODO: only set position on resize
         _midiMapperPanel.setPosition(ofGetWidth() - _midiMapperPanel.getWidth(), _midiMapperPanel.getPosition().y); //TODO: only set position on resize
         _keyMapperPanel.setPosition(ofGetWidth() - _keyMapperPanel.getWidth(), _keyMapperPanel.getPosition().y); //TODO: only set position on resize
+        _oscMapperPanel.setPosition(ofGetWidth() - _oscMapperPanel.getWidth(), _oscMapperPanel.getPosition().y); //TODO: only set position on resize
+
         _scenesPanel.draw();
         _midiMapperPanel.draw();
         _keyMapperPanel.draw();
+        _oscMapperPanel.draw();
+
         if(_focusedTrack < _tracks.size() && _focusedClip < _tracks[_focusedTrack]->_clips.size()){
             _tracks[_focusedTrack]->_clips[_focusedClip]->_gui.draw();
         }
@@ -357,9 +368,11 @@ public:
     ofxPanel _scenesPanel;
     ofxPanel _midiMapperPanel;
     ofxPanel _keyMapperPanel;
+    ofxPanel _oscMapperPanel;
+
     ofxMidiMapper _midiMapper;
     ofxKeyMapper _keyMapper;
-    
+    ofxOscMapper _oscMapper;
     ofxOscReceiver _oscReceiver;
 
     u_int64_t _timestamp;
