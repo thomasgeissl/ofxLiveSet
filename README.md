@@ -23,7 +23,9 @@ Almost all parameters are midi, key and osc mappable.
 
 ## TODOs
 * getting rid of pointers
-* audio based on ofxPdsp
+* audio via ofxPdsp
+* scripting support via ofxLua
+* load/save
 
 ## License
 This project is released under MIT license, please note that dependencies might be released differently.

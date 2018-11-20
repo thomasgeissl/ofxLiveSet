@@ -19,6 +19,8 @@ public:
         ofAddListener(ofEvents().exit, this, &session::onExit, OF_EVENT_ORDER_AFTER_APP);
 
 //        ofAddListener(ofEvents().keyPressed, this, &session::onKeyPressed, OF_EVENT_ORDER_AFTER_APP);
+
+        _defaultMapping.set("defaultMapping", true);
 	}
     void setup() {
         auto x = 0;
@@ -216,49 +218,49 @@ public:
     {
         exit();
     }
-//    void onKeyPressed(ofKeyEventArgs &e){
     void onKeyPressed(int key){
         _keyMapper.keyPressed(key);
-//        switch(e.key){
-        switch(key){
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                triggerScene(key-48);
-                break;
+        if(_defaultMapping){
+            switch(key){
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    triggerScene(key-48);
+                    break;
 
-            case OF_KEY_LEFT: {
-                _focusedTrack = std::max(0, _focusedTrack-1);
-                break;
-            }
-            case OF_KEY_RIGHT: {
-                _focusedTrack = std::min((int)(_tracks.size())-1, (int)((_focusedTrack+1) % _tracks.size()));
-                break;
-            }
-            case OF_KEY_UP: {
-                _focusedClip = std::max(0, _focusedClip-1);
-                break;
-            }
-            case OF_KEY_DOWN: {
-                _focusedClip = std::min((int)(_tracks[_focusedTrack]->_clips.size())-1, _focusedClip+1);
-                break;
-            }
-            case OF_KEY_RETURN: {
-                auto clip = getClip(_focusedTrack, _focusedClip);
-                if(clip != nullptr){
-                    clip->toggle();
+                case OF_KEY_LEFT: {
+                    _focusedTrack = std::max(0, _focusedTrack-1);
+                    break;
                 }
-                break;
-            }
-            case ' ': {
-                toggle();
+                case OF_KEY_RIGHT: {
+                    _focusedTrack = std::min((int)(_tracks.size())-1, (int)((_focusedTrack+1) % _tracks.size()));
+                    break;
+                }
+                case OF_KEY_UP: {
+                    _focusedClip = std::max(0, _focusedClip-1);
+                    break;
+                }
+                case OF_KEY_DOWN: {
+                    _focusedClip = std::min((int)(_tracks[_focusedTrack]->_clips.size())-1, _focusedClip+1);
+                    break;
+                }
+                case OF_KEY_RETURN: {
+                    auto clip = getClip(_focusedTrack, _focusedClip);
+                    if(clip != nullptr){
+                        clip->toggle();
+                    }
+                    break;
+                }
+                case ' ': {
+                    toggle();
+                }
             }
         }
     }
@@ -383,7 +385,7 @@ public:
     gui::infoPanel _infoPanel;
     std::vector<ofxLiveSet::information> _sceneInformation;
     
-
+    ofParameter<bool> _defaultMapping;
 
 };
 }; // namespace ofxLiveSet

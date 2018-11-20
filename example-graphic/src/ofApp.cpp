@@ -19,6 +19,7 @@ void ofApp::setup(){
     auto allTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("all")));
     auto leftTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("left")));
     auto rightTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("right")));
+    auto videoTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("video")));
 
 
     allTrack->addClip(new clips::background())->setup(); 
@@ -31,6 +32,9 @@ void ofApp::setup(){
 
     allTrack->addClip(new clips::progressBar())->setup();
 
+    videoTrack->addClip(new ofxLiveSet::clip::videoGrabber())->setup();
+    videoTrack->addClip(new ofxLiveSet::clip::videoPlayer())->setup();
+
     leftTrack->_xPosition = 0;
     leftTrack->_yPosition = 0;
     leftTrack->_width = ofGetWidth()/2;
@@ -40,6 +44,15 @@ void ofApp::setup(){
     allTrack->_xPosition = 0;
     allTrack->_yPosition = 0;
     allTrack->_width = ofGetWidth();
+    videoTrack->_xPosition = 0;
+    videoTrack->_yPosition = 0;
+    videoTrack->_width = ofGetWidth();
+    videoTrack->_height = ofGetHeight();
+
+    // for(auto track : _session->_tracks){
+    //     track->setup();
+    // }
+
     _session->setup();
     _session->openMidiMapperInPort(0);
     

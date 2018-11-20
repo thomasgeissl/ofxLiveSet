@@ -16,6 +16,8 @@ namespace clips {
             _pitchThreshold.set("pitchThreshold", .01, 0, 1);
             _blackoutDimmer2.set("blackoutDimmer2");
             _blackoutDimmer2.addListener(this, &schwanensee::onBlackoutDimmer2);
+            _staticLight.set("staticLight", false);
+            _staticLightValue.set("staticLightValue", 100, 0, 255);
 
             _active.setName(_name);
             
@@ -27,6 +29,8 @@ namespace clips {
             _parameters.add(_addPeakEnergy);
             _parameters.add(_pitchThreshold);
             _parameters.add(_blackoutDimmer2);
+            _parameters.add(_staticLight);
+            _parameters.add(_staticLightValue);
 
             _values.resize(_amount);
             _timestamps.resize(_amount);
@@ -57,6 +61,10 @@ namespace clips {
                     std::pair<int, int> value(i+1, _values[i]);
                     _valueChangeEvent.notify(value);
                 }
+            }
+            if(_staticLight){
+                std::pair<int, int> value(5, _staticLightValue);
+                _valueChangeEvent.notify(value);
             }
         }
         void stop(){
@@ -89,6 +97,8 @@ namespace clips {
         ofParameter<bool> _addPeakEnergy;
         ofParameter<float> _pitchThreshold;
         ofParameter<void> _blackoutDimmer2;
+        ofParameter<bool> _staticLight;
+        ofParameter<int> _staticLightValue;
 
         u_int64_t _timestamp;
         bool _onsetDetected = false;

@@ -36,6 +36,12 @@ public:
         _gui.setHeaderBackgroundColor(ofColor::red);
         _gui.setUseTTF(true);
         _gui.setFillColor(ofColor::red);
+
+        ofxPanel::setDefaultFillColor(ofColor::red);
+        _outputGui.setup(_outputParameters);
+        _outputGui.setHeaderBackgroundColor(ofColor::red);
+        _outputGui.setUseTTF(true);
+        _outputGui.setFillColor(ofColor::red);
     }
 	virtual void update(){
 		if (_clip != nullptr)
@@ -52,6 +58,7 @@ public:
     void drawGui(){
         if(_focused){
             _gui.setHeaderBackgroundColor(ofColor::purple);
+            _outputGui.draw();
         }else{
             _gui.setHeaderBackgroundColor(ofColor::red);
         }
@@ -140,7 +147,9 @@ public:
     ofParameterGroup _clipTriggers;
     
     ofxPanel _gui;
-    
+    ofParameterGroup _outputParameters;
+    ofxPanel _outputGui;
+
     bool _focused;
 };
 }; // namespace track
