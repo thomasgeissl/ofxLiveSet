@@ -8,3 +8,8 @@ local_addons/ofxMidiMapper
 local_addons/ofxKeyMapper
 local_addons/ofxOscMapper
 local_addons/ofxSoundAnalyser
+local_addons/ofxPDSP
+local_addons/ofxAudioFile
+local_addons/ofxSIMDFloats
+
+

@@ -44,3 +44,18 @@ git clone https://github.com/thomasgeissl/ofxSoundAnalyser.git
 cd ofxSoundAnalyser
 git checkout 9708ff0759feebfa59935fda1b67f1a4184806d9
 cd ..
+
+git clone https://github.com/npisanti/ofxPDSP.git
+cd ofxPDSP
+git checkout 7704691099b43b4af4bc8b9bd8140a91e6f6da1e
+cd ..
+
+git clone https://github.com/npisanti/ofxAudioFile.git
+cd ofxAudioFile
+git checkout 53636bbe5964a83d195bfce8eba3ecfc5180a1b8
+cd ..
+
+git clone https://github.com/npisanti/ofxSIMDFloats.git
+cd ofxSIMDFloats
+git checkout d861d55c33305340c623ff10aacdc9b87b3dd73e
+cd ..

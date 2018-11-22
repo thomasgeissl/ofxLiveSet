@@ -2,10 +2,10 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxOsc.h"
+#include "ofxPDSP.h"
 #include "ofxMidiMapper.h"
 #include "ofxKeyMapper.h"
 #include "ofxOscMapper.h"
-//#include "mqttSynchroniser.h"
 #include "./tracks/base.h"
 #include "./gui/infoPanel.h"
 
@@ -21,6 +21,8 @@ public:
 //        ofAddListener(ofEvents().keyPressed, this, &session::onKeyPressed, OF_EVENT_ORDER_AFTER_APP);
 
         _defaultMapping.set("defaultMapping", true);
+
+        _engine.listDevices();
 	}
     void setup() {
         for(auto track : _tracks){
@@ -120,6 +122,10 @@ public:
         }
         _infoPanel.setup();
     }
+    void setupAudioEngine(int id){
+        _engine.setDeviceID(id);
+        _engine.setup(44100, 512, 3); 
+    }
     void openMidiMapperInPort(int index){
         _midiMapper.openMidiPort(index);
     }
@@ -173,7 +179,6 @@ public:
                 }
             }
         }
-//        _mqttSynchroniser.update();
 	}
 	void draw(){
 		for (auto track : _tracks){
@@ -356,6 +361,8 @@ public:
         }
     }
 
+    pdsp::Engine _engine;
+
 	std::vector<track::base *> _tracks;
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
@@ -380,9 +387,7 @@ public:
 
     u_int64_t _timestamp;
     u_int64_t _startedTimestamp;
-    
-//    mqttSynchroniser _mqttSynchroniser;
-        
+            
     gui::infoPanel _infoPanel;
     std::vector<ofxLiveSet::information> _sceneInformation;
     
