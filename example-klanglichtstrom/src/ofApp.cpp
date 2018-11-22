@@ -46,7 +46,11 @@ void ofApp::setup(){
     }
 
     _session->setup();
+    _session->setupGui();
+    _session->openOscInPort(9000);
     _session->openMidiMapperInPort(2);
+    _session->stop();
+
     _session->renameScene(0, "within");
     _session->renameScene(1, "anchor");
     _session->renameScene(2, "firn");
@@ -55,11 +59,6 @@ void ofApp::setup(){
     _session->_sceneInformation[1]._text = "activate analyser\non beats track\nin ableton live";
     _session->_sceneInformation[2]._text = "";
     _session->_sceneInformation[3]._text = "";
-    
-    _session->openOscInPort(9000);
-
-    _session->stop();
-    _session->setupGui();
 }
 
 void ofApp::exit(){

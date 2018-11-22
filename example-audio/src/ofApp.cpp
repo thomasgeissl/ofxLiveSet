@@ -16,46 +16,19 @@ void ofApp::setup(){
     _midiIn.setVerbose(true);
     
     // session
-    auto allTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("all")));
-    auto leftTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("left")));
-    auto rightTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("right")));
-    auto videoTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("video")));
-
-
-    allTrack->addClip(new clips::background())->setup(); 
-    leftTrack->addClip(new clips::background())->setup();
-    rightTrack->addClip(new clips::background())->setup();
-
-    allTrack->addClip(new clips::randomRectangles())->setup();
-    leftTrack->addClip(new clips::randomRectangles())->setup();
-    rightTrack->addClip(new clips::randomRectangles())->setup();
-
-    allTrack->addClip(new clips::progressBar())->setup();
-
-    videoTrack->addClip(new ofxLiveSet::clip::videoGrabber())->setup();
-    videoTrack->addClip(new ofxLiveSet::clip::videoPlayer())->setup();
-
-    leftTrack->_xPosition = 0;
-    leftTrack->_yPosition = 0;
-    leftTrack->_width = ofGetWidth()/2;
-    rightTrack->_xPosition = ofGetWidth()/2;
-    rightTrack->_yPosition = 0;
-    rightTrack->_width = ofGetWidth()/2;
-    allTrack->_xPosition = 0;
-    allTrack->_yPosition = 0;
-    allTrack->_width = ofGetWidth();
-    videoTrack->_xPosition = 0;
-    videoTrack->_yPosition = 0;
-    videoTrack->_width = ofGetWidth();
-    videoTrack->_height = ofGetHeight();
+    auto allTrack = (ofxLiveSet::track::audio*)(_session->addTrack(new ofxLiveSet::track::audio("all")));
+    auto leftTrack = (ofxLiveSet::track::audio*)(_session->addTrack(new ofxLiveSet::track::audio("left")));
+    auto rightTrack = (ofxLiveSet::track::audio*)(_session->addTrack(new ofxLiveSet::track::audio("right")));
 
     _session->setup();
     _session->setupGui();
-    _session->openMidiMapperInPort(0);    
+    _session->setupAudioEngine(1);
+    _session->openMidiMapperInPort(0);
     _session->openOscInPort(9000);
     _session->stop();
 
     _drawGui.set("drawGui", true);
+
 }
 
 void ofApp::exit(){
@@ -63,7 +36,7 @@ void ofApp::exit(){
 
 void ofApp::update(){
     _soundAnalyser.update();
-    ofSetWindowTitle("example-graphic: "+ofToString((int)(ofGetFrameRate())));
+    ofSetWindowTitle("example-audio: "+ofToString((int)(ofGetFrameRate())));
 }
 
 void ofApp::draw(){
