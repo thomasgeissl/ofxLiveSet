@@ -34,6 +34,7 @@ namespace clips {
             }
             _fbo.end();
             _timestamp = timestamp;
+            _newFrame = true;
         }
 
         ofParameter<ofColor> _primaryColor;

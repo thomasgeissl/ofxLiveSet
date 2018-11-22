@@ -27,13 +27,16 @@ public:
 	}
     virtual void draw(){
         base::draw();
-        _fbo.begin();
-        ofClear(255,0);
-        if(!_mute && _clip != nullptr) {
-            ((ofxLiveSet::clip::graphic *)(_clip))->_fbo.draw(0,0);
+        auto clip = ((ofxLiveSet::clip::graphic *)(_clip));
+        if(clip == nullptr) return;
+
+        if(!_mute && clip != nullptr && clip->isFrameNew()) {
+            _fbo.begin();
+            ofClear(255,0);
+            clip->_fbo.draw(0,0);
+            _fbo.end();
+            //TODO: apply gain
         }
-        _fbo.end();
-        //TODO: apply gain
         _fbo.draw(_xPosition, _yPosition);
     }
     void onWidthChange(float & value){
@@ -56,7 +59,6 @@ public:
         }
     }
     ofFbo _fbo;
-    ofParameterGroup _outputParameters;
     ofParameter<float> _xPosition;
     ofParameter<float> _yPosition;
     ofParameter<float> _width;

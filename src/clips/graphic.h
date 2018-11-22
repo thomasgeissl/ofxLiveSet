@@ -9,17 +9,13 @@ namespace clip
 class graphic : public base
 {
 public:
-    graphic(std::string name = "") : base(name){
+    graphic(std::string name = "") : base(name), _newFrame(true){
 		_width.addListener(this, &graphic::onWidthChange);
 		_height.addListener(this, &graphic::onHeightChange);
 		_width = ofGetWidth();
 		_height = ofGetHeight();
 	}
-	void update(){
-		_fbo.begin();
-        ofSetColor(255,0,0);
-        ofDrawRectangle(100, 100, 200, 200);
-		_fbo.end();
+	virtual void update(){
 	}
     void draw(){
 //        if(_active){
@@ -38,6 +34,13 @@ public:
 	{
         base::stop();
 	}
+	virtual bool isFrameNew(){
+		if(_newFrame){
+			_newFrame = false;
+			return true;
+		}
+		return false;
+	}
 	void onWidthChange(float & value){
 		_fbo.allocate(_width, _height);
 	}
@@ -47,6 +50,7 @@ public:
 	ofFbo _fbo;
 	ofParameter<float> _width;
 	ofParameter<float> _height;
+	bool _newFrame;
 
 };
 }; // namespace clip

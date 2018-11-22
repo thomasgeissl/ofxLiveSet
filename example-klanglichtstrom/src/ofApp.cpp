@@ -77,9 +77,9 @@ void ofApp::update(){
 }
 
 void ofApp::draw(){
-    auto offset = 100;
+    auto offset = 80;
     auto radius = 20;
-    auto x = ofGetWidth()/2;
+    auto x = ofGetWidth()/3*2;
     auto y = ofGetHeight()/2;
     for(auto row = 0; row < 2; row++){
         for(auto column = 0; column < 2; column++){
@@ -112,10 +112,10 @@ void ofApp::draw(){
             ofDrawCircle(x+offset,y+offset,radius);
             ofFill();
             
-            x += ofGetWidth()/4;
+            x += offset*2;
         }
         y += ofGetHeight()/4;
-        x = ofGetWidth()/2;
+        x = ofGetWidth()/3*2;
     }
     _session->drawGui();
 }
