@@ -23,29 +23,8 @@ public:
         _defaultMapping.set("defaultMapping", true);
 	}
     void setup() {
-        ofxPanel::setDefaultFillColor(ofColor::green);
-        _midiMapper.getParameters().setName("midi mapper");
-        _midiMapperPanel.setup(_midiMapper.getParameters());
-        _midiMapperPanel.setPosition(0, ofGetHeight()/2);
-        _midiMapperPanel.setHeaderBackgroundColor(ofColor::green);
-        _keyMapper.getParameters().setName("key mapper");
-        _keyMapperPanel.setup(_keyMapper.getParameters());
-        _keyMapperPanel.setPosition(_midiMapperPanel.getPosition().x, _midiMapperPanel.getPosition().y + _midiMapperPanel.getHeight());
-        _keyMapperPanel.setHeaderBackgroundColor(ofColor::green);
-        _oscMapper.getParameters().setName("osc mapper");
-        _oscMapperPanel.setup(_oscMapper.getParameters());
-        _oscMapperPanel.setPosition(_keyMapperPanel.getPosition().x, _keyMapperPanel.getPosition().y + _keyMapperPanel.getHeight());
-        _oscMapperPanel.setHeaderBackgroundColor(ofColor::green);
-
-
-        auto x = 0;
-        auto y = 0;
         for(auto track : _tracks){
             track->setup();
-            track->_gui.setPosition(x, y);
-            track->_outputGui.setPosition(_midiMapperPanel.getPosition().x + _midiMapperPanel.getWidth(), ofGetHeight()/2);
-
-            x += track->_gui.getWidth() + 1; //TODO: get border width
         }
         
         
@@ -77,14 +56,7 @@ public:
             _parameters.add(sceneTrigger);
             sceneTrigger.addListener(this, &session::onSceneTrigger);
         }
-        ofxPanel::setDefaultFillColor(ofColor::green);
-//        _scenesPanel.setDefaultBorderColor(ofColor::green);
-        _scenesPanel.setup(_parameters);
-        _scenesPanel.setHeaderBackgroundColor(ofColor::green);
-        _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(), 0);
-        _scenesPanel.setUseTTF(true);
 
-//        _mqttSynchroniser.setup();
         
         for(auto track : _tracks){
             for(auto clip : track->_clips){
@@ -95,7 +67,6 @@ public:
         _focusedTrack.set("focusedTrack", 0);
         _focusedClip.set("focusedClip", 0);
 
-        //    _midiMapper.openVirtualMidiPort("ofxMidiMapper");
         for(auto track : _tracks){
             for(auto clip : track->_clips){
                 _midiMapper.addParameters(clip->_parameters, true);
@@ -103,14 +74,7 @@ public:
             }
         }
 
-        
-        _infoPanel.setup();
-        for(auto track : _tracks){
-            for(auto clip : track->_clips){
-                clip->_gui.setPosition(track->_outputGui.getPosition().x + track->_outputGui.getWidth(), ofGetHeight()/2);
-            }
-        }
-        
+                
         if(ofFile::doesFileExist("mapping.midi.json")){
             _midiMapper.loadMapping(ofToDataPath("mapping.midi.json"));
         }
@@ -118,6 +82,43 @@ public:
         if(ofFile::doesFileExist("mapping.key.json")){
             _keyMapper.loadMapping(ofToDataPath("mapping.key.json"));
         }
+    }
+    void setupGui(){
+        ofxPanel::setDefaultFillColor(ofColor::green);
+        _midiMapper.getParameters().setName("midi mapper");
+        _midiMapperPanel.setup(_midiMapper.getParameters());
+        _midiMapperPanel.setPosition(0, ofGetHeight()/2);
+        _midiMapperPanel.setHeaderBackgroundColor(ofColor::green);
+        _keyMapper.getParameters().setName("key mapper");
+        _keyMapperPanel.setup(_keyMapper.getParameters());
+        _keyMapperPanel.setPosition(_midiMapperPanel.getPosition().x, _midiMapperPanel.getPosition().y + _midiMapperPanel.getHeight());
+        _keyMapperPanel.setHeaderBackgroundColor(ofColor::green);
+        _oscMapper.getParameters().setName("osc mapper");
+        _oscMapperPanel.setup(_oscMapper.getParameters());
+        _oscMapperPanel.setPosition(_keyMapperPanel.getPosition().x, _keyMapperPanel.getPosition().y + _keyMapperPanel.getHeight());
+        _oscMapperPanel.setHeaderBackgroundColor(ofColor::green);
+
+        ofxPanel::setDefaultFillColor(ofColor::green);
+//        _scenesPanel.setDefaultBorderColor(ofColor::green);
+        _scenesPanel.setup(_parameters);
+        _scenesPanel.setHeaderBackgroundColor(ofColor::green);
+        _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(), 0);
+        _scenesPanel.setUseTTF(true);
+
+        auto x = 0;
+        auto y = 0;
+        for(auto track : _tracks){
+            track->setupGui();
+            track->_gui.setPosition(x, y);
+            track->_outputGui.setPosition(_midiMapperPanel.getPosition().x + _midiMapperPanel.getWidth(), ofGetHeight()/2);
+
+            x += track->_gui.getWidth() + 1; //TODO: get border width
+
+            for(auto clip : track->_clips){
+                clip->_gui.setPosition(track->_outputGui.getPosition().x + track->_outputGui.getWidth(), ofGetHeight()/2);
+            }
+        }
+        _infoPanel.setup();
     }
     void openMidiMapperInPort(int index){
         _midiMapper.openMidiPort(index);

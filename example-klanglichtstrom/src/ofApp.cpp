@@ -59,6 +59,7 @@ void ofApp::setup(){
     _session->openOscInPort(9000);
 
     _session->stop();
+    _session->setupGui();
 }
 
 void ofApp::exit(){

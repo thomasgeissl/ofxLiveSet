@@ -19,6 +19,9 @@ public:
  
 	}
     virtual void setup(){
+
+    }
+    void setupGui(){
         //        ofxPanel::setDefaultWidth(200);
         ofxPanel::setDefaultFillColor(ofColor::blue);
         _gui.setup(_parameters);

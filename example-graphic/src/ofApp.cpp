@@ -49,10 +49,6 @@ void ofApp::setup(){
     videoTrack->_width = ofGetWidth();
     videoTrack->_height = ofGetHeight();
 
-    // for(auto track : _session->_tracks){
-    //     track->setup();
-    // }
-
     _session->setup();
     _session->openMidiMapperInPort(0);
     
@@ -61,6 +57,8 @@ void ofApp::setup(){
     _session->stop();
 
     _drawGui.set("drawGui", true);
+
+    _session->setupGui();
 }
 
 void ofApp::exit(){

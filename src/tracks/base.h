@@ -30,7 +30,8 @@ public:
 
 	}
     virtual void setup(){
-//        ofxPanel::setDefaultWidth(200);
+    }
+    void setupGui(){
         ofxPanel::setDefaultFillColor(ofColor::red);
         _gui.setup(_parameters);
         _gui.setHeaderBackgroundColor(ofColor::red);
@@ -42,6 +43,10 @@ public:
         _outputGui.setHeaderBackgroundColor(ofColor::red);
         _outputGui.setUseTTF(true);
         _outputGui.setFillColor(ofColor::red);
+
+        for(auto clip : _clips){
+            clip->setupGui();
+        }
     }
 	virtual void update(){
 		if (_clip != nullptr)
