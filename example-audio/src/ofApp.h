@@ -1,12 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxDmx.h"
-#include "ofxMidi.h"
-#include "ofxSoundAnalyser.h"
 #include "ofxLiveSet.h"
 
-class ofApp : public ofBaseApp, public ofxMidiListener, public ofxSoundAnalyserListener {
+class ofApp : public ofBaseApp{
 public:
     ofApp();
     void setup();
@@ -35,8 +32,6 @@ public:
     ofxLiveSet::project _project;
     ofxLiveSet::session *_session;
     
-    ofxMidiIn _midiIn;
-    ofxSoundAnalyser _soundAnalyser;
     ofParameterGroup _parameters;
     ofParameter<bool> _drawGui;
 };

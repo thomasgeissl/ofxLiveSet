@@ -1,15 +1,12 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxDmx.h"
-#include "ofxMidi.h"
-#include "ofxSoundAnalyser.h"
 #include "ofxLiveSet.h"
 #include "./clips/graphic/background.h"
 #include "./clips/graphic/randomRectangles.h"
 #include "./clips/graphic/progressBar.h"
 
-class ofApp : public ofBaseApp, public ofxMidiListener, public ofxSoundAnalyserListener {
+class ofApp : public ofBaseApp{
 public:
     ofApp();
     void setup();
@@ -28,18 +25,10 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
-    void onPeakEnergy(std::pair<int, float> & value);
-    void onPitch(std::pair<int, float> & value);
-    void onRootMeanSquare(std::pair<int, float> & value);
-    void onFftMagnitudeSpectrum(std::pair<int, std::vector<float>> & value);
-    void onMelFrequencySpectrum(std::pair<int, std::vector<float>> & value);
-    void newMidiMessage(ofxMidiMessage& eventArgs);
     
     ofxLiveSet::project _project;
     ofxLiveSet::session *_session;
-    
-    ofxMidiIn _midiIn;
-    ofxSoundAnalyser _soundAnalyser;
+
     ofParameterGroup _parameters;
     ofParameter<bool> _drawGui;
 };

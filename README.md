@@ -24,7 +24,6 @@ Almost all parameters are midi, key and osc mappable.
 
 ## TODOs
 ### core
-* move sound and midi inputs to core
 * getting rid of pointers
 * load/save
 * dynamically adding tracks and clips

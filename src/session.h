@@ -3,15 +3,19 @@
 #include "ofxGui.h"
 #include "ofxOsc.h"
 #include "ofxPDSP.h"
+#include "ofxMidi.h"
+#include "ofxSoundAnalyser.h"
 #include "ofxMidiMapper.h"
 #include "ofxKeyMapper.h"
 #include "ofxOscMapper.h"
 #include "./tracks/base.h"
 #include "./tracks/audio.h"
+#include "./clips/soundReactive.h"
+#include "./clips/midiReactive.h"
 #include "./gui/infoPanel.h"
 
 namespace ofxLiveSet {
-class session {
+class session: public ofxMidiListener, public ofxSoundAnalyserListener {
 public:
 	session()
 	{
@@ -26,6 +30,16 @@ public:
         _engine.listDevices();
 	}
     void setup() {
+        // inputs
+        _soundAnalyser.setup();
+        _soundAnalyser.addListener(this);
+        
+        _midiIn.openVirtualPort("ofxLiveSet");
+        _midiIn.ignoreTypes(false, false, false);
+        _midiIn.addListener(this);
+        _midiIn.setVerbose(true);
+
+
         for(auto track : _tracks){
             track->setup();
         }
@@ -149,6 +163,8 @@ public:
         _oscReceiver.setup(port);
     }
 	void update(){
+        _soundAnalyser.update();
+
         if(_active){
             _timestamp = ofGetElapsedTimeMillis();
             _timestampString = ofToString((int)((_timestamp - _startedTimestamp)/1000));
@@ -404,15 +420,74 @@ public:
         }
     }
 
+    void onPeakEnergy(std::pair<int, float> & value){
+        for(auto track : _tracks){
+            auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
+            if (clip != nullptr) {
+                clip->setPeakEnergy(value.first, value.second);
+            }
+        }
+    }
+    void onPitch(std::pair<int, float> & value){
+        int note = std::round((value.second > 0 ? 17.3123405046 * log(.12231220585 * value.second) : -1500));
+    
+        for(auto track : _tracks){
+            auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
+            if (clip != nullptr) {
+                clip->setPitch(value.first, note);
+            }
+        }
+    }
+    void onRootMeanSquare(std::pair<int, float> & value){
+        for(auto track : _tracks){
+            auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
+            if (clip != nullptr) {
+                clip->setRootMeanSquare(value.first, value.second);
+            }
+        }
+    }
+    void onFftMagnitudeSpectrum(std::pair<int, std::vector<float>> & value){
+        for(auto track : _tracks){
+            auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
+            if (clip != nullptr) {
+                clip->setFftMagnitudeSpectrum(value.first, value.second);
+            }
+        }
+    }
+    void onMelFrequencySpectrum(std::pair<int, std::vector<float>> & value){ 
+        for(auto track : _tracks){
+            auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
+            if (clip != nullptr) {
+                clip->setMelFrequencySpectrum(value.first, value.second);
+            }
+        }
+    }
+    void newMidiMessage(ofxMidiMessage& message){
+        for(auto track : _tracks){
+            auto clip = dynamic_cast<ofxLiveSet::clip::midiReactive *>(track->_clip);
+            if (clip != nullptr) {
+                auto status = message.status;
+                if(status == MIDI_NOTE_ON){
+                    clip->setNoteOn(message.pitch, message.velocity);
+                }else if(status == MIDI_NOTE_OFF){
+                    clip->setNoteOff(message.pitch, message.velocity);
+                }
+            }
+        }
+    }
     pdsp::Engine _engine;
+    ofxMidiIn _midiIn;
+    ofxSoundAnalyser _soundAnalyser;
 
 	std::vector<track::base *> _tracks;
+
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
     ofParameter<bool> _active;
     ofParameter<std::string> _timestampString;
     ofParameter<bool> _mute;
     ofParameter<float> _gain;
+    ofParameter<bool> _defaultMapping;
 
     std::vector<ofParameter<bool>> _sceneTriggers;
     ofParameter<int> _focusedTrack;
@@ -433,8 +508,5 @@ public:
             
     gui::infoPanel _infoPanel;
     std::vector<ofxLiveSet::information> _sceneInformation;
-    
-    ofParameter<bool> _defaultMapping;
-
 };
 }; // namespace ofxLiveSet
