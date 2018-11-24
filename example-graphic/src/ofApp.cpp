@@ -21,6 +21,7 @@ void ofApp::setup(){
     rightTrack->addClip(new clips::randomRectangles())->setup();
 
     allTrack->addClip(new clips::progressBar())->setup();
+    allTrack->addClip(new clips::cubeWithTrails())->setup();
 
     videoTrack->addClip(new ofxLiveSet::clip::videoGrabber())->setup();
     videoTrack->addClip(new ofxLiveSet::clip::videoPlayer())->setup();

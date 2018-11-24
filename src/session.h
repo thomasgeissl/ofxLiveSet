@@ -17,8 +17,7 @@
 namespace ofxLiveSet {
 class session: public ofxMidiListener, public ofxSoundAnalyserListener {
 public:
-	session()
-	{
+	session() : _soundAnalyser(ofxSoundAnalyser(8000)){
 		ofAddListener(ofEvents().update, this, &session::onUpdate, OF_EVENT_ORDER_AFTER_APP);
         ofAddListener(ofEvents().draw, this, &session::onDraw, OF_EVENT_ORDER_BEFORE_APP);
         ofAddListener(ofEvents().exit, this, &session::onExit, OF_EVENT_ORDER_AFTER_APP);
@@ -33,7 +32,6 @@ public:
 	}
     void setup() {
         // inputs
-        _soundAnalyser.setup();
         _soundAnalyser.addListener(this);
         
         _midiIn.openVirtualPort("ofxLiveSet");
@@ -60,7 +58,7 @@ public:
         _parameters.add(_mute);
         _parameters.add(_gain);
 
-        _active.addListener(this, &session::onActive);
+        _active.addListener(this, &session::onActiveChange);
 
         
         auto scenes = 0;
@@ -90,6 +88,7 @@ public:
             for(auto clip : track->_clips){
                 _midiMapper.addParameters(clip->_parameters, true);
                 _keyMapper.addParameters(clip->_parameters);
+                _oscMapper.addParameters(clip->_parameters);
             }
         }
 
@@ -97,9 +96,11 @@ public:
         if(ofFile::doesFileExist("mapping.midi.json")){
             _midiMapper.loadMapping(ofToDataPath("mapping.midi.json"));
         }
-        
         if(ofFile::doesFileExist("mapping.key.json")){
             _keyMapper.loadMapping(ofToDataPath("mapping.key.json"));
+        }
+        if(ofFile::doesFileExist("mapping.osc.json")){
+            _oscMapper.loadMapping(ofToDataPath("mapping.osc.json"));
         }
     }
     void setupGui(){
@@ -144,7 +145,7 @@ public:
         _engine.setChannels(inChannels, outChannels);
         _engine.setup(44100, 512, 3); 
 
-                // connect audio tracks
+        // connect audio tracks
         for(auto track : _tracks){
             auto audioTrack = dynamic_cast<ofxLiveSet::track::audio *>(track);
             if (audioTrack != nullptr) {
@@ -183,7 +184,7 @@ public:
         }
 
 //    TODO: add more commands, check oscparamsync with multiple parameter groups having the same name, 
-        while(_oscReceiver.hasWaitingMessages()){
+        while(_oscControlEnabled && _oscReceiver.hasWaitingMessages()){
             ofxOscMessage m;
             _oscReceiver.getNextMessage(m);
 
@@ -245,6 +246,11 @@ public:
             ofFile::moveFromTo("mapping.key.json", ofGetTimestampString()+"_mapping.key.json");
         }
         _keyMapper.saveMapping(ofToDataPath("mapping.key.json"));
+        
+        if(ofFile::doesFileExist("mapping.osc.json")){
+            ofFile::moveFromTo("mapping.osc.json", ofGetTimestampString()+"_mapping.osc.json");
+        }
+        _oscMapper.saveMapping(ofToDataPath("mapping.osc.json"));
     }
     
 	void onUpdate(ofEventArgs &e){
@@ -308,8 +314,7 @@ public:
     void toggle(){
         _active = !_active;
     }
-	void start()
-	{
+	void start(){
         _startedTimestamp = ofGetElapsedTimeMillis();
         for (auto track : _tracks)
         {
@@ -367,13 +372,14 @@ public:
         }
     }
     
-    void onActive(bool & value){
+    void onActiveChange(bool & value){
         if(value){
             start();
         }else{
             stop();
         }
     }
+
     void onClipStarted(const void* sender, bool & value) {
         auto clip = (clip::base *) (sender);
         auto nullClip = dynamic_cast<ofxLiveSet::clip::nullClip *>(clip);
@@ -479,40 +485,44 @@ public:
         }
     }
     pdsp::Engine _engine;
+	std::vector<track::base *> _tracks;
+    std::vector<ofxLiveSet::information> _sceneInformation;
+
+    // inputs
     ofxMidiIn _midiIn;
     ofxSoundAnalyser _soundAnalyser;
+    ofxOscReceiver _oscReceiver;
+    ofxMidiMapper _midiMapper;
+    ofxKeyMapper _keyMapper;
+    ofxOscMapper _oscMapper;
 
-	std::vector<track::base *> _tracks;
-
+    // parameters
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
     ofParameter<bool> _active;
     ofParameter<std::string> _timestampString;
     ofParameter<bool> _mute;
     ofParameter<float> _gain;
+    std::vector<ofParameter<bool>> _sceneTriggers;
 
     ofParameterGroup _settings;
     ofParameter<bool> _defaultKeyMappingEnabled;
     ofParameter<bool> _oscControlEnabled;
 
-    std::vector<ofParameter<bool>> _sceneTriggers;
     ofParameter<int> _focusedTrack;
     ofParameter<int> _focusedClip;
 
-    ofxPanel _scenesPanel;
-    ofxPanel _midiMapperPanel;
-    ofxPanel _keyMapperPanel;
-    ofxPanel _oscMapperPanel;
-
-    ofxMidiMapper _midiMapper;
-    ofxKeyMapper _keyMapper;
-    ofxOscMapper _oscMapper;
-    ofxOscReceiver _oscReceiver;
 
     u_int64_t _timestamp;
     u_int64_t _startedTimestamp;
             
+
+    // gui
+    ofxPanel _scenesPanel;
+    ofxPanel _midiMapperPanel;
+    ofxPanel _keyMapperPanel;
+    ofxPanel _oscMapperPanel;
+    ofxPanel _settingsPanel;
     gui::infoPanel _infoPanel;
-    std::vector<ofxLiveSet::information> _sceneInformation;
 };
 }; // namespace ofxLiveSet
