@@ -50,6 +50,9 @@ public:
     }
     void onHeightChange(float & value){
         _fbo.allocate(_width, _height);
+        _fbo.begin();
+        ofClear(255,0);
+        _fbo.end();
         for(auto clip : _clips){
             auto graphicClip = dynamic_cast<ofxLiveSet::clip::graphic *>(clip);
             if (graphicClip != nullptr) {

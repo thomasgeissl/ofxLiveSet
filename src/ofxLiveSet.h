@@ -8,6 +8,7 @@
 #include "./tracks/dmx.h"
 #include "./clips/base.h"
 #include "./clips/audio.h"
+#include "./clips/audio/audioPlayer.h"
 // #include "./clips/midi.h"
 #include "./clips/graphic.h"
 #include "./clips/video/videoGrabber.h"

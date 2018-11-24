@@ -20,9 +20,12 @@ void ofApp::setup(){
     auto leftTrack = (ofxLiveSet::track::audio*)(_session->addTrack(new ofxLiveSet::track::audio("left")));
     auto rightTrack = (ofxLiveSet::track::audio*)(_session->addTrack(new ofxLiveSet::track::audio("right")));
 
+    rightTrack->addClip(new ofxLiveSet::clip::audioPlayer())->setup();
+
     _session->setup();
     _session->setupGui();
-    _session->setupAudioEngine(1);
+    // osx: you might need to create an aggregated device
+    _session->setupAudioEngine(2);
     _session->openMidiMapperInPort(0);
     _session->openOscInPort(9000);
     _session->stop();

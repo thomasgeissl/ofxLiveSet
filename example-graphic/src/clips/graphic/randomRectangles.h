@@ -23,10 +23,10 @@ namespace clips {
             _fbo.begin();
             ofClear(255,255,255,0);
             ofSetColor(_primaryColor);
-            auto width = ofRandom(0, _width/10);
-            auto height = ofRandom(0, _height/10);
-            for(auto i = 0; i < _amount; i++){
 
+            for(auto i = 0; i < _amount; i++){
+                auto width = ofRandom(0, _width/10);
+                auto height = ofRandom(0, _height/10);
                 auto x = ofRandom(0, _width - width);
                 auto y = ofRandom(0, _height - height);
 

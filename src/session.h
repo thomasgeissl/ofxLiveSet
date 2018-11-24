@@ -7,6 +7,7 @@
 #include "ofxKeyMapper.h"
 #include "ofxOscMapper.h"
 #include "./tracks/base.h"
+#include "./tracks/audio.h"
 #include "./gui/infoPanel.h"
 
 namespace ofxLiveSet {
@@ -122,9 +123,24 @@ public:
         }
         _infoPanel.setup();
     }
-    void setupAudioEngine(int id){
+    void setupAudioEngine(int id, int inChannels = 2, int outChannels = 2){
         _engine.setDeviceID(id);
+        _engine.setChannels(inChannels, outChannels);
         _engine.setup(44100, 512, 3); 
+
+                // connect audio tracks
+        for(auto track : _tracks){
+            auto audioTrack = dynamic_cast<ofxLiveSet::track::audio *>(track);
+            if (audioTrack != nullptr) {
+                _engine.audio_in(0) >> audioTrack->in("left");
+                _engine.audio_in(1) >> audioTrack->in("right");
+
+                audioTrack->out("left") >> _engine.audio_out(0);
+                audioTrack->out("right") >> _engine.audio_out(1);
+
+                ofAddListener(audioTrack->_inputsChanged, this, &session::onInputChannelsChange);
+            }
+        }
     }
     void openMidiMapperInPort(int index){
         _midiMapper.openMidiPort(index);
@@ -358,6 +374,33 @@ public:
             }
             clipIndex = 0;
             trackIndex++;
+        }
+    }
+
+    void onInputChannelsChange(const void* sender, std::pair<int, int> & value){
+        auto audioTrack = (track::audio *) (sender);
+        if(audioTrack != nullptr){
+            // TODO: how can only audio_in be unpatched
+            audioTrack->in("left").disconnectIn();
+            audioTrack->in("right").disconnectIn();
+
+            auto leftChannel = value.first;
+            auto rightChannel = value.second;
+
+            if(leftChannel != -1){
+                _engine.audio_in(leftChannel) >> audioTrack->in("left");
+            }
+            if(rightChannel != -1){
+                _engine.audio_in(rightChannel) >> audioTrack->in("right");
+            }
+            // TODO: reconnect clips
+            for(auto clip : audioTrack->_clips){
+                auto audioClip = (clip::audio *) (clip);
+                if(audioClip != nullptr){
+                    audioClip->out("left") >> audioTrack->_leftAmp;
+                    audioClip->out("right") >> audioTrack->_rightAmp;
+                }
+            }
         }
     }
 

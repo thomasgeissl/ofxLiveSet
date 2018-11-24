@@ -3,9 +3,10 @@
 ## Description
 ofxLiveSet is an openframeworks addon, developed for the *klanglichtstrom* performance. It allows you to structure your performance like an ableton live session. 
 
-This is a work in progress and it is very likely that the codebase will change.
+This is a work in progress, it is sill buggy, incomplete and not yet clean. It is very likely that the codebase will change.
 
 ![screenshot](./screenshot.png)
+
 
 ## Features
 ### Supports different types of tracks and clips
@@ -13,7 +14,6 @@ This is a work in progress and it is very likely that the codebase will change.
 * dmx
 * audio (not yet, working on it)
 * can be easily extended
-* dynamically adding tracks and clips (not yet, working on it)
 
 ### Gui
 It comes with an ofxGui, a web based gui will probably be added in the future
@@ -21,11 +21,22 @@ It comes with an ofxGui, a web based gui will probably be added in the future
 ### Mappable parameters
 Almost all parameters are midi, key and osc mappable. 
 
+
 ## TODOs
+### core
+* move sound and midi inputs to core
 * getting rid of pointers
-* audio via ofxPdsp
-* scripting support via ofxLua
 * load/save
+* dynamically adding tracks and clips
+### audio
+* add proper example
+* timing/quantisation/...
+* audio effect support
+* vst/au support
+### graphics
+* scripting support via ofxLua
+* video player and video grabber clips
+
 
 ## License
 This project is released under MIT license, please note that dependencies might be released differently.

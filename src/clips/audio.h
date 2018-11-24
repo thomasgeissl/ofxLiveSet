@@ -1,20 +1,17 @@
 #pragma once
 #include "ofMain.h"
 #include "base.h"
+#include "ofxPDSP.h"
 
 namespace ofxLiveSet
 {
 namespace clip
 {
-class audio : public base
+class audio : public base, public pdsp::Patchable
 {
 public:
     audio(std::string name = "") : base(name)
 	{
-	}
-    audio(std::string path, std::string name) : base(name)
-	{
-		_player.load(path);
 	}
 	void update()
 	{
@@ -23,7 +20,6 @@ public:
 	void start()
 	{
 		ofLogNotice("clip::audio") << "start";
-		_player.play();
 	}
 	void pause()
 	{
@@ -33,7 +29,6 @@ public:
 	{
 		ofLogNotice("clip::audio") << "stop";
 	}
-	ofSoundPlayer _player;
 };
 }; // namespace clip
 }; // namespace ofxLiveSet
