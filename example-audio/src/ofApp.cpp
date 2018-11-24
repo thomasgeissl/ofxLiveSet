@@ -19,8 +19,6 @@ void ofApp::setup(){
     _session->openMidiMapperInPort(0);
     _session->openOscInPort(9000);
     _session->stop();
-
-    _drawGui.set("drawGui", true);
 }
 
 void ofApp::exit(){
@@ -31,17 +29,10 @@ void ofApp::update(){
 }
 
 void ofApp::draw(){
-    if(_drawGui){
-        _session->drawGui();
-    }
+    _session->drawGui();
 }
 
-void ofApp::keyPressed(int key){
-    _session->onKeyPressed(key);
-    switch(key){
-        case 'g': _drawGui = !_drawGui; break;
-    }
-}
+void ofApp::keyPressed(int key){}
 void ofApp::keyReleased(int key){}
 void ofApp::mouseMoved(int x, int y){}
 void ofApp::mouseDragged(int x, int y, int button){}

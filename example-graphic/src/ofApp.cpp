@@ -62,7 +62,6 @@ void ofApp::draw(){
 }
 
 void ofApp::keyPressed(int key){
-    _session->onKeyPressed(key);
     switch(key){
         case 'g': _drawGui = !_drawGui; break;
     }

@@ -31,8 +31,5 @@ public:
     
     ofxLiveSet::project _project;
     ofxLiveSet::session *_session;
-    
-    ofParameterGroup _parameters;
-    ofParameter<bool> _drawGui;
 };
 

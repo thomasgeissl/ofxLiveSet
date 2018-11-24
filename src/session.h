@@ -22,10 +22,12 @@ public:
 		ofAddListener(ofEvents().update, this, &session::onUpdate, OF_EVENT_ORDER_AFTER_APP);
         ofAddListener(ofEvents().draw, this, &session::onDraw, OF_EVENT_ORDER_BEFORE_APP);
         ofAddListener(ofEvents().exit, this, &session::onExit, OF_EVENT_ORDER_AFTER_APP);
+        ofAddListener(ofEvents().keyPressed, this, &session::onKeyPressed, OF_EVENT_ORDER_AFTER_APP);
 
-//        ofAddListener(ofEvents().keyPressed, this, &session::onKeyPressed, OF_EVENT_ORDER_AFTER_APP);
-
-        _defaultMapping.set("defaultMapping", true);
+        _defaultKeyMappingEnabled.set("defaultKeyMappingEnabled", true);
+        _oscControlEnabled.set("oscControlEnabled", true);
+        _settings.add(_defaultKeyMappingEnabled);
+        _settings.add(_oscControlEnabled);
 
         _engine.listDevices();
 	}
@@ -256,9 +258,10 @@ public:
     {
         exit();
     }
-    void onKeyPressed(int key){
+    void onKeyPressed(ofKeyEventArgs & e){
+        int key = e.key;
         _keyMapper.keyPressed(key);
-        if(_defaultMapping){
+        if(_defaultKeyMappingEnabled){
             switch(key){
                 case '0':
                 case '1':
@@ -487,7 +490,10 @@ public:
     ofParameter<std::string> _timestampString;
     ofParameter<bool> _mute;
     ofParameter<float> _gain;
-    ofParameter<bool> _defaultMapping;
+
+    ofParameterGroup _settings;
+    ofParameter<bool> _defaultKeyMappingEnabled;
+    ofParameter<bool> _oscControlEnabled;
 
     std::vector<ofParameter<bool>> _sceneTriggers;
     ofParameter<int> _focusedTrack;
