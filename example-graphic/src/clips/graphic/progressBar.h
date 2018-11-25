@@ -25,7 +25,7 @@ namespace clips {
 
             ofDrawRectangle(x, y, width, height);
             _fbo.end();
-            _newFrame = true;
+            setNewFrame();
         }
 
         ofParameter<ofColor> _primaryColor;

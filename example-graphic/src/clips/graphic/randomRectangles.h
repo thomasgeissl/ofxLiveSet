@@ -21,7 +21,7 @@ namespace clips {
             if(timestamp < _timestamp + _frequency) return;
 
             _fbo.begin();
-            ofClear(255,255,255,0);
+            ofClear(255,0);
             ofSetColor(_primaryColor);
 
             for(auto i = 0; i < _amount; i++){
@@ -34,7 +34,7 @@ namespace clips {
             }
             _fbo.end();
             _timestamp = timestamp;
-            _newFrame = true;
+            setNewFrame();
         }
 
         ofParameter<ofColor> _primaryColor;

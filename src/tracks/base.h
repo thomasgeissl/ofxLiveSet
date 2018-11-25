@@ -28,6 +28,8 @@ public:
 
         _stop.addListener(this, &base::onStop);
 
+        auto ioName = name == "" ? "IO" : name+" IO";
+        _outputParameters.setName(ioName);
 	}
     virtual void setup(){
     }

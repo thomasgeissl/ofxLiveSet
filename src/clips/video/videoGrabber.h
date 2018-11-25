@@ -2,12 +2,9 @@
 #include "ofMain.h"
 #include "./graphic.h"
 
-namespace ofxLiveSet
-{
-    namespace clip
-    {
-        class videoGrabber : public graphic
-        {
+namespace ofxLiveSet{
+    namespace clip{
+        class videoGrabber : public graphic{
         public:
             videoGrabber(int deviceId = 0, std::string name = "") : graphic(name){
                 _grabber.setDeviceID(deviceId);
@@ -20,6 +17,7 @@ namespace ofxLiveSet
                 if (_grabber.isFrameNew()){
                     ofClear(255,0);
                     _grabber.draw(0,0);
+                    setNewFrame();
                 }
                 _fbo.end();
             }

@@ -2,10 +2,10 @@
 
 #include "ofMain.h"
 #include "ofxLiveSet.h"
-#include "./clips/graphic/background.h"
 #include "./clips/graphic/randomRectangles.h"
 #include "./clips/graphic/progressBar.h"
 #include "./clips/graphic/cubeWithTrails.h"
+#include "./clips/graphic/bezierVertex.h"
 
 class ofApp : public ofBaseApp{
 public:

@@ -11,17 +11,17 @@ void ofApp::setup(){
     auto rightTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("right")));
     auto videoTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("video")));
 
-
-    allTrack->addClip(new clips::background())->setup(); 
-    leftTrack->addClip(new clips::background())->setup();
-    rightTrack->addClip(new clips::background())->setup();
-
     allTrack->addClip(new clips::randomRectangles())->setup();
     leftTrack->addClip(new clips::randomRectangles())->setup();
     rightTrack->addClip(new clips::randomRectangles())->setup();
 
-    allTrack->addClip(new clips::progressBar())->setup();
+    rightTrack->addClip(new clips::cubeWithTrails())->setup();
     allTrack->addClip(new clips::cubeWithTrails())->setup();
+
+    leftTrack->addClip(new clips::bezierVertex(), 2)->setup();
+    rightTrack->addClip(new clips::bezierVertex())->setup();
+
+    allTrack->addClip(new clips::progressBar())->setup();
 
     videoTrack->addClip(new ofxLiveSet::clip::videoGrabber())->setup();
     videoTrack->addClip(new ofxLiveSet::clip::videoPlayer())->setup();
