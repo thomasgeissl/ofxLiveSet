@@ -33,9 +33,10 @@ public:
         if(!_mute && clip != nullptr && clip->isFrameNew()) {
             _fbo.begin();
             ofClear(255,0);
+            // TODO: apply gain
+            // ofSetColor(255, _gain * 255);
             clip->_fbo.draw(0,0);
             _fbo.end();
-            //TODO: apply gain
         }
         _fbo.draw(_xPosition, _yPosition);
     }

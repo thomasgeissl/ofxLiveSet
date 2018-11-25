@@ -11,3 +11,4 @@ local_addons/ofxSoundAnalyser
 local_addons/ofxPDSP
 local_addons/ofxAudioFile
 local_addons/ofxSIMDFloats
+local_addons/ofxBeat

@@ -23,6 +23,7 @@ void ofApp::setup(){
 
     allTrack->addClip(new clips::progressBar())->setup();
     allTrack->addClip(new clips::midiVisualiser())->setup();
+    allTrack->addClip(new clips::beatVisualiser())->setup();
 
     videoTrack->addClip(new ofxLiveSet::clip::videoGrabber(), 5)->setup();
     videoTrack->addClip(new ofxLiveSet::clip::videoPlayer())->setup();
@@ -48,6 +49,7 @@ void ofApp::setup(){
     _session->stop();
 
     _drawGui.set("drawGui", true);
+    ofSoundStreamSetup(0, 1, this, 44100, _beat.getBufferSize(), 4);
 }
 
 void ofApp::exit(){
@@ -55,6 +57,18 @@ void ofApp::exit(){
 
 void ofApp::update(){
     ofSetWindowTitle("example-graphic: "+ofToString((int)(ofGetFrameRate())));
+    _beat.update(ofGetElapsedTimeMillis());
+    auto kick = _beat.kick();
+    auto snare = _beat.snare();
+    auto hihat = _beat.hihat();
+    for(auto track : _session->_tracks){
+        auto beatReactiveClip = dynamic_cast<clips::beatReactive *>(track->_clip);
+        if(beatReactiveClip != nullptr){
+            beatReactiveClip->setKick(kick);
+            beatReactiveClip->setSnare(snare);
+            beatReactiveClip->setHihat(hihat);
+        }
+    }
 }
 
 void ofApp::draw(){
@@ -76,5 +90,10 @@ void ofApp::mouseReleased(int x, int y, int button){}
 void ofApp::mouseEntered(int x, int y){}
 void ofApp::mouseExited(int x, int y){}
 void ofApp::windowResized(int w, int h){}
-void ofApp::gotMessage(ofMessage msg){}
 void ofApp::dragEvent(ofDragInfo dragInfo){}
+void ofApp::gotMessage(ofMessage msg){}
+
+//TODO: check how to integrate in session, and ofxPDSP
+void ofApp::audioReceived(float* input, int bufferSize, int nChannels) {
+  _beat.audioReceived(input, bufferSize, nChannels);
+}
