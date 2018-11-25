@@ -7,6 +7,8 @@
 #include "./clips/graphic/progressBar.h"
 #include "./clips/graphic/cubeWithTrails.h"
 #include "./clips/graphic/bezierVertex.h"
+#include "./clips/graphic/parametric2dEquation.h"
+
 #include "./clips/graphic/midiVisualiser.h"
 #include "./clips/graphic/beatVisualiser.h"
 

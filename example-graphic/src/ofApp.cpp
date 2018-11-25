@@ -20,6 +20,7 @@ void ofApp::setup(){
 
     leftTrack->addClip(new clips::bezierVertex(), 2)->setup();
     rightTrack->addClip(new clips::bezierVertex())->setup();
+    rightTrack->addClip(new clips::parametric2dEquation())->setup();
 
     allTrack->addClip(new clips::progressBar())->setup();
     allTrack->addClip(new clips::midiVisualiser())->setup();
