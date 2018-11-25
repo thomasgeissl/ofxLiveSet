@@ -6,6 +6,7 @@
 #include "./clips/graphic/progressBar.h"
 #include "./clips/graphic/cubeWithTrails.h"
 #include "./clips/graphic/bezierVertex.h"
+#include "./clips/graphic/midiVisualiser.h"
 
 class ofApp : public ofBaseApp{
 public:

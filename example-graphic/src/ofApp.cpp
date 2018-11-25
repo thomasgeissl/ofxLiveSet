@@ -6,10 +6,10 @@ ofApp::ofApp() : _session(_project._session){
 void ofApp::setup(){
     ofSetBackgroundColor(16, 16, 16);
     
+    auto videoTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("video")));
     auto allTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("all")));
     auto leftTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("left")));
     auto rightTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("right")));
-    auto videoTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("video")));
 
     allTrack->addClip(new clips::randomRectangles())->setup();
     leftTrack->addClip(new clips::randomRectangles())->setup();
@@ -22,8 +22,9 @@ void ofApp::setup(){
     rightTrack->addClip(new clips::bezierVertex())->setup();
 
     allTrack->addClip(new clips::progressBar())->setup();
+    allTrack->addClip(new clips::midiVisualiser())->setup();
 
-    videoTrack->addClip(new ofxLiveSet::clip::videoGrabber())->setup();
+    videoTrack->addClip(new ofxLiveSet::clip::videoGrabber(), 5)->setup();
     videoTrack->addClip(new ofxLiveSet::clip::videoPlayer())->setup();
 
     leftTrack->_xPosition = 0;
