@@ -26,8 +26,8 @@ void ofApp::setup(){
     allTrack->addClip(new clips::midiVisualiser())->setup();
     allTrack->addClip(new clips::beatVisualiser())->setup();
 
-    videoTrack->addClip(new ofxLiveSet::clip::videoGrabber(), 5)->setup();
-    videoTrack->addClip(new ofxLiveSet::clip::videoPlayer())->setup();
+    videoTrack->addClip(new ofxLiveSet::clip::videoGrabber(0, "camera"), 5)->setup();
+    videoTrack->addClip(new ofxLiveSet::clip::videoPlayer("videos/lake_carrier.mov", "lake carrier"))->setup();
 
     leftTrack->_xPosition = 0;
     leftTrack->_yPosition = 0;

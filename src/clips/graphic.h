@@ -14,8 +14,14 @@ public:
 		_height.addListener(this, &graphic::onHeightChange);
 		_width = ofGetWidth();
 		_height = ofGetHeight();
-
+        _x.set("x", 0.5, 0, 1);
+        _y.set("y", 0.5, 0, 1);
+		_scale.set("scale", 0.5, 0, 1);
 		_shaderEnabled.set("shaderEnabled", false);
+
+		_parameters.add(_x);
+		_parameters.add(_y);
+		_parameters.add(_scale);
 	}
 	virtual void update(){
 	}
@@ -57,8 +63,12 @@ public:
 		if(_shaderEnabled){
 			_shader.begin();
 		}
+		ofPushMatrix();
+		ofPushStyle();
 	}
 	void endFboWithShaderIfActive(){
+		ofPopStyle();
+		ofPopMatrix();
 		if(_shaderEnabled){
 			_shader.end();
 		}
@@ -67,6 +77,11 @@ public:
 	ofFbo _fbo;
 	ofShader _shader;
 	ofParameter<bool> _shaderEnabled;
+	ofParameter<float> _x;
+    ofParameter<float> _y;
+	ofParameter<float> _scale;
+
+
 	ofParameter<float> _width;
 	ofParameter<float> _height;
 	

@@ -27,6 +27,7 @@ Almost all parameters are midi, key and osc mappable.
 * getting rid of pointers
 * load/save
 * dynamically adding tracks and clips
+* lot of performance improvements
 ### audio
 * add proper example
 * timing/quantisation/...
@@ -34,8 +35,6 @@ Almost all parameters are midi, key and osc mappable.
 * vst/au support
 ### graphics
 * scripting support via ofxLua
-* video player and video grabber clips
-
 
 ## License
 This project is released under MIT license, please note that dependencies might be released differently.

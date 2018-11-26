@@ -8,6 +8,7 @@ namespace clip{
 class base{
 public:
     base(std::string name = ""){
+        _active.setName(name);
         _active.addListener(this, &base::onActiveChange);
         _parameters.setName("clip");
         _name.set("name", name);
