@@ -46,6 +46,8 @@ public:
 		}
 		ofPushMatrix();
 		ofPushStyle();
+		ofScale(ofMap(_scale, 0, 1, 0, 2), ofMap(_scale, 0, 1, 0, 2), 0);
+
 	}
 	void endFboWithShaderIfActive(){
 		ofPopStyle();

@@ -8,11 +8,11 @@ namespace clips {
         cubeWithTrails(std::string name = "cubeWithTrails") : graphic(name){
             _name = name;
             _active.setName(_name);
-            
+            _beatReactive.set("beatReactive", false);
             _primaryColor.set("primaryColor", ofColor::white);
             _amount.set("amount", 5, 1, 50);
             _size.set("size", 200, 10, 500);
-
+            _parameters.add(_beatReactive);
             _parameters.add(_primaryColor);
             _parameters.add(_amount);
             _parameters.add(_size);
@@ -20,7 +20,7 @@ namespace clips {
         }
         void update(){
             ofEnableAlphaBlending();
-            _fbo.begin();
+            beginFboWithShaderIfActive();
             ofFill();
             ofSetColor(255,255,255, _amount);
             ofDrawRectangle(0,0,_fbo.getWidth(),_fbo.getHeight());
@@ -28,13 +28,15 @@ namespace clips {
 	        ofNoFill();
 	        ofSetColor(_primaryColor);
 
-            ofPushMatrix();
-                ofTranslate(_fbo.getWidth()/2,_fbo.getHeight()/2,0);
-                ofRotateDeg(ofGetElapsedTimef()*30, 1,0,0.5);
+            ofTranslate(_fbo.getWidth()/2,_fbo.getHeight()/2,0);
+            ofRotateDeg(ofGetElapsedTimef()*30, 1,0,0.5);
+            if(_beatReactive){
                 ofDrawBox(0,0,0,_size*(1+_snare));
-            ofPopMatrix();
+            }else{
+                ofDrawBox(0,0,0,_size);
+            }
 
-            _fbo.end();
+            endFboWithShaderIfActive();
             setNewFrame();
         }
 
@@ -51,6 +53,8 @@ namespace clips {
         float _kick;
         float _snare;
         float _hihat;
+
+        ofParameter<bool> _beatReactive;
         ofParameter<ofColor> _primaryColor;
         ofParameter<int> _amount;
         ofParameter<int> _size;

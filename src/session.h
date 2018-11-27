@@ -14,6 +14,8 @@
 #include "./clips/midiReactive.h"
 #include "./gui/infoPanel.h"
 
+#include "utils/mqttSynchroniser.h"
+
 namespace ofxLiveSet {
 class session: public ofxMidiListener, public ofxSoundAnalyserListener {
 public:
@@ -25,8 +27,11 @@ public:
 
         _defaultKeyMappingEnabled.set("defaultKeyMappingEnabled", true);
         _oscControlEnabled.set("oscControlEnabled", true);
+        _mqttSynchroniserlEnabled.set("mqttSynchroniserEnabled", false);
+
         _settings.add(_defaultKeyMappingEnabled);
         _settings.add(_oscControlEnabled);
+        _settings.add(_mqttSynchroniserlEnabled);
 
         _engine.listDevices();
 	}
@@ -102,6 +107,18 @@ public:
         if(ofFile::doesFileExist("mapping.osc.json")){
             _oscMapper.loadMapping(ofToDataPath("mapping.osc.json"));
         }
+
+        _mqttSynchroniser.setup();
+        for(auto track : _tracks){
+            std::string prefix = "ofxLiveSet/mqttSynchroniser/session/"+ofToString(track->_name)+"/parameters/";
+            _mqttSynchroniser.addParameters(track->_parameters, prefix);
+            prefix =  "ofxLiveSet/mqttSynchroniser/session/"+ofToString(track->_name)+"/ioParameters/";
+            _mqttSynchroniser.addParameters(track->_ioParameters, prefix);
+            for(auto clip : track->_clips){
+                prefix = "ofxLiveSet/mqttSynchroniser/session/"+ofToString(track->_name)+"/"+ofToString(clip->_name)+"/parameters/";
+                _mqttSynchroniser.addParameters(clip->_parameters, prefix);
+            }
+        }
     }
     void setupGui(){
         ofxPanel::setDefaultFillColor(ofColor::green);
@@ -167,6 +184,10 @@ public:
     }
 	void update(){
         _soundAnalyser.update();
+        if(_mqttSynchroniserlEnabled){
+            _mqttSynchroniser.update();
+        }
+
 
         if(_active){
             _timestamp = ofGetElapsedTimeMillis();
@@ -508,6 +529,7 @@ public:
     ofParameterGroup _settings;
     ofParameter<bool> _defaultKeyMappingEnabled;
     ofParameter<bool> _oscControlEnabled;
+    ofParameter<bool> _mqttSynchroniserlEnabled;
 
     ofParameter<int> _focusedTrack;
     ofParameter<int> _focusedClip;
@@ -524,5 +546,7 @@ public:
     ofxPanel _oscMapperPanel;
     ofxPanel _settingsPanel;
     gui::infoPanel _infoPanel;
+
+    ofxLiveSet::mqttSynchroniser _mqttSynchroniser;
 };
 }; // namespace ofxLiveSet

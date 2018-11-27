@@ -3,7 +3,7 @@
 namespace clips {
     class parametric2dEquation : public ofxLiveSet::clip::graphic {
     public:
-        parametric2dEquation(std::string name = "parametric2dEquation") : graphic(name){
+        parametric2dEquation(std::string name = "parametric2dEquation") : graphic(name), _t(0){
             _name = name;
             _active.setName(_name);
             

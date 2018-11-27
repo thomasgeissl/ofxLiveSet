@@ -29,7 +29,6 @@ namespace ofxLiveSet
                     beginFboWithShaderIfActive();
                     ofClear(255,0);
                     ofTranslate(ofMap(_x, 0, 1, 0, _width), ofMap(_y, 0, 1, 0, _height));
-                    ofScale(ofMap(_scale, 0, 1, 0, 2), ofMap(_scale, 0, 1, 0, 2), 0);
                     _player.draw(-_player.getWidth()/2,-_player.getHeight()/2);
                     endFboWithShaderIfActive();
                 }
