@@ -3,8 +3,8 @@
 namespace clips {
     class parametric2dEquation : public ofxLiveSet::clip::graphic {
     public:
-        parametric2dEquation() : graphic(){
-            _name = "parametric2dEquation";
+        parametric2dEquation(std::string name = "parametric2dEquation") : graphic(name){
+            _name = name;
             _active.setName(_name);
             
             _primaryColor.set("primaryColor", ofColor::white);
@@ -18,13 +18,13 @@ namespace clips {
             _x0Frequency.set("x0Frequency", 15, 1, 100);
             _x1Frequency.set("x1Frequency", 10, 1, 100);
 
-            _x0Amplitude.set("x0Amplitude", 100, 1, 200);
+            _x0Amplitude.set("x0Amplitude", 150, 1, 200);
             _x1Amplitude.set("x1Amplitude", 50, 1, 200);
 
-            _y0Frequency.set("y0Frequency", 15, 1, 100);
-            _y1Frequency.set("y1Frequency", 10, 1, 100);
+            _y0Frequency.set("y0Frequency", 3, 1, 100);
+            _y1Frequency.set("y1Frequency", 12, 1, 100);
 
-            _y0Amplitude.set("y0Amplitude", 100, 1, 200);
+            _y0Amplitude.set("y0Amplitude", 120, 1, 200);
             _y1Amplitude.set("y1Amplitude", 50, 1, 200);
 
             _lineWidth.set("lineWidth", 2, 1, 10);

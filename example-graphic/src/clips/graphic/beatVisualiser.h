@@ -5,8 +5,8 @@
 namespace clips {
     class beatVisualiser : public ofxLiveSet::clip::graphic, public clips::beatReactive {
     public:
-        beatVisualiser() : graphic(){
-            _name = "beatVisualiser";
+        beatVisualiser(std::string name = "beatVisualiser") : graphic(name){
+            _name = name;
             _active.setName(_name);
             
             _primaryColor.set("primaryColor", ofColor::white);

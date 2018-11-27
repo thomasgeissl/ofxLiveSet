@@ -3,8 +3,8 @@
 namespace clips {
     class midiVisualiser : public ofxLiveSet::clip::graphic, public ofxLiveSet::clip::midiReactive {
     public:
-        midiVisualiser() : graphic(){
-            _name = "midiVisualiser";
+        midiVisualiser(std::string name = "midiVisualiser") : graphic(name){
+            _name = name;
             _active.setName(_name);
             
             _primaryColor.set("primaryColor", ofColor::white);

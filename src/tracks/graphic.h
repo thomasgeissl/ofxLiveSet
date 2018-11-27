@@ -19,16 +19,17 @@ public:
         _width.addListener(this, &graphic::onWidthChange);
         _height.addListener(this, &graphic::onHeightChange);
 
-        _outputParameters.add(_xPosition);
-        _outputParameters.add(_yPosition);
-        _outputParameters.add(_width);
-        _outputParameters.add(_height);
+        _ioParameters.add(_xPosition);
+        _ioParameters.add(_yPosition);
+        _ioParameters.add(_width);
+        _ioParameters.add(_height);
         _fbo.allocate(_width, _height);
+        _fbo.begin();
+        ofClear(255,0);
+        _fbo.end();
 	}
     virtual void draw(){
-        base::draw();
         auto clip = ((ofxLiveSet::clip::graphic *)(_clip));
-        if(clip == nullptr) return;
 
         if(!_mute && clip != nullptr && clip->isFrameNew()) {
             _fbo.begin();
@@ -38,10 +39,18 @@ public:
             clip->_fbo.draw(0,0);
             _fbo.end();
         }
+        if(clip == nullptr){
+            _fbo.begin();
+            ofClear(255,0);
+            _fbo.end();
+        }
         _fbo.draw(_xPosition, _yPosition);
     }
     void onWidthChange(float & value){
         _fbo.allocate(_width, _height);
+        _fbo.begin();
+        ofClear(255,0);
+        _fbo.end();
         for(auto clip : _clips){
             auto graphicClip = dynamic_cast<ofxLiveSet::clip::graphic *>(clip);
             if (graphicClip != nullptr) {

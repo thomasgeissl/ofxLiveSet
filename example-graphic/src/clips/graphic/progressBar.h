@@ -3,8 +3,8 @@
 namespace clips {
     class progressBar : public ofxLiveSet::clip::graphic {
     public:
-        progressBar() : graphic(){
-            _name = "progressBar";
+        progressBar(std::string name = "progressBar") : graphic(name){
+            _name = name;
             _active.setName(_name);
 
             _primaryColor.set("primaryColor", ofColor::red);

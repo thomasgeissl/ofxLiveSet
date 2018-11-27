@@ -23,26 +23,7 @@ public:
 		_parameters.add(_y);
 		_parameters.add(_scale);
 	}
-	virtual void update(){
-	}
-    void draw(){
-//        if(_active){
-//            _fbo.draw(0,0);
-//        }
-    }
-	void start()
-	{
-        base::start();
-	}
-	void pause()
-	{
-        base::pause();
-	}
-	void stop()
-	{
-        base::stop();
-	}
-	virtual bool isFrameNew(){
+	bool isFrameNew(){
 		if(_newFrame){
 			_newFrame = false;
 			return true;
@@ -74,6 +55,7 @@ public:
 		}
 		_fbo.end();
 	}
+
 	ofFbo _fbo;
 	ofShader _shader;
 	ofParameter<bool> _shaderEnabled;

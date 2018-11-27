@@ -3,8 +3,8 @@
 namespace clips {
     class randomRectangles : public ofxLiveSet::clip::graphic {
     public:
-        randomRectangles() : graphic(){
-            _name = "randomRects";
+        randomRectangles(std::string name = "randomRects") : graphic(name){
+            _name = name;
             _active.setName(_name);
             
             _primaryColor.set("primaryColor", ofColor::red);

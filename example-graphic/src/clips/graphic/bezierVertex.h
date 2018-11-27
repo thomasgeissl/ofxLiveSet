@@ -3,8 +3,8 @@
 namespace clips {
     class bezierVertex : public ofxLiveSet::clip::graphic {
     public:
-        bezierVertex() : graphic(){
-            _name = "bezierVertex";
+        bezierVertex(std::string name = "bezierVertex") : graphic(name){
+            _name = name;
             _active.setName(_name);
             
             _primaryColor.set("primaryColor", ofColor::white);

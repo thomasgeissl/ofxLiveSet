@@ -14,8 +14,8 @@ public:
 	audio(std::string name = "") : base(name){
 		_leftInChannel.set("leftIn", 0, -1, 16);
 		_rightInChannel.set("rightIn", -1, -1, 16);
-		_outputParameters.add(_leftInChannel);
-		_outputParameters.add(_rightInChannel);
+		_ioParameters.add(_leftInChannel);
+		_ioParameters.add(_rightInChannel);
 
 		addModuleInput("left", _leftAmp);
 		addModuleInput("right", _rightAmp);

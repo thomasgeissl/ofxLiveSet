@@ -16,12 +16,8 @@ public:
         
 //        _parameters.add(_name);
         _parameters.add(_active);
-        
- 
 	}
-    virtual void setup(){
-
-    }
+    virtual void setup(){}
     void setupGui(){
         //        ofxPanel::setDefaultWidth(200);
         ofxPanel::setDefaultFillColor(ofColor::blue);
@@ -47,17 +43,22 @@ public:
         bool valueToBeNotified = true;
         if(value){
             ofNotifyEvent(_started, valueToBeNotified, this);
+            onStart();
         } else {
             ofNotifyEvent(_stopped, valueToBeNotified, this);
+            onStop();
         }
     }
+    virtual void onStart(){}
+    virtual void onStop(){}
+
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
 	ofParameter<bool> _active;
 
-     ofEvent<bool> _started;
-     ofEvent<bool> _finished;
-     ofEvent<bool> _stopped;
+    ofEvent<bool> _started;
+    ofEvent<bool> _finished;
+    ofEvent<bool> _stopped;
     
     ofxPanel _gui;
 };

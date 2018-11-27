@@ -5,8 +5,8 @@
 namespace clips {
     class cubeWithTrails : public ofxLiveSet::clip::graphic, public clips::beatReactive {
     public:
-        cubeWithTrails() : graphic(){
-            _name = "cubeWithTrails";
+        cubeWithTrails(std::string name = "cubeWithTrails") : graphic(name){
+            _name = name;
             _active.setName(_name);
             
             _primaryColor.set("primaryColor", ofColor::white);

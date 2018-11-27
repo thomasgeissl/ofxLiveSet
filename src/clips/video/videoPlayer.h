@@ -16,8 +16,6 @@ namespace ofxLiveSet
                 _parameters.add(_openFileChooser);
                 _parameters.add(_loop);
                 _player.load(path);
-
-                _active.addListener(this, &videoPlayer::onActiveChange);
             }
             void update(){
                 _player.update();
@@ -46,12 +44,11 @@ namespace ofxLiveSet
                     _player.load(path);
                 }
             }
-            void onActiveChange(bool & value){
-                if(value){
-                    _player.play();
-                }else{
-                    _player.stop();
-                }
+            void onStart(){
+                _player.play();
+            }
+            void onStop(){
+                _player.stop();
             }
             ofVideoPlayer _player;
 

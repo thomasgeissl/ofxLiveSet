@@ -130,12 +130,12 @@ public:
         for(auto track : _tracks){
             track->setupGui();
             track->_gui.setPosition(x, y);
-            track->_outputGui.setPosition(_midiMapperPanel.getPosition().x + _midiMapperPanel.getWidth(), ofGetHeight()/2);
+            track->_ioGui.setPosition(_midiMapperPanel.getPosition().x + _midiMapperPanel.getWidth(), ofGetHeight()/2);
 
             x += track->_gui.getWidth() + 1; //TODO: get border width
 
             for(auto clip : track->_clips){
-                clip->_gui.setPosition(track->_outputGui.getPosition().x + track->_outputGui.getWidth(), ofGetHeight()/2);
+                clip->_gui.setPosition(track->_ioGui.getPosition().x + track->_ioGui.getWidth(), ofGetHeight()/2);
             }
         }
         _infoPanel.setup();
