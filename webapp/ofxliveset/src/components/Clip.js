@@ -5,14 +5,14 @@ const mapStateToProps = state => {
     return { tracks: state.session.tracks };
 };
 
-class Track extends Component {
+class Clip extends Component {
   render() {
     return (
-      <div className="Track">
-        track
+      <div className="Clip">
+        clip
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps)(Track);
+export default connect(mapStateToProps)(Clip);

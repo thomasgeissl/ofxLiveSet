@@ -38,6 +38,8 @@ const getTrackName = (id) => {
   const idParts = id.split('/')
   return idParts[3]
 }
+
+// TODO: data structure for tracks? array, map? redux best practices?
 const initialState = {
     tracks: [],
     counter: 0
