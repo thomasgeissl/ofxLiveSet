@@ -24,7 +24,7 @@ Almost all parameters are midi, key and osc mappable.
 
 ## TODOs
 ### core
-* getting rid of pointers
+* getting rid of pointers and fix constructor, setup order
 * load/save
 * dynamically adding tracks and clips
 * lot of performance improvements
@@ -35,6 +35,7 @@ Almost all parameters are midi, key and osc mappable.
 * vst/au support
 ### graphics
 * scripting support via ofxLua
+* effects e.g. via ofxPostProcessing
 
 ## License
 This project is released under MIT license, please note that dependencies might be released differently.

@@ -36,6 +36,52 @@ public:
     void onMessage(ofxMQTTMessage &msg){
         if(msg.topic == "remote/ofxLiveSet/mqttSynchroniser/request"){
             // TODO: send all parameters
+            for(auto item : _synchronisables){
+                auto id = item.first;
+                auto synchronisable = item.second;
+                auto value = id;
+
+                auto voidParameter = dynamic_cast<mqttSynchronisableVoid *>(_synchronisables[value]);
+                auto boolParameter = dynamic_cast<mqttSynchronisableBool *>(_synchronisables[value]);
+                auto intParameter = dynamic_cast<mqttSynchronisableInt *>(_synchronisables[value]);
+                auto floatParameter = dynamic_cast<mqttSynchronisableFloat *>(_synchronisables[value]);
+                auto colorParameter = dynamic_cast<mqttSynchronisableColor *>(_synchronisables[value]);
+
+                if(voidParameter != nullptr){
+                    ofJson payload;
+                    payload["name"] = voidParameter->_parameter.getName();
+                    _client.publish(value, payload.dump());
+                }else if(boolParameter != nullptr){
+                    ofJson payload;
+                    payload["value"] = boolParameter->_parameter.get();
+                    // payload["min"] = boolParameter->_parameter.getMin();
+                    // payload["max"] = boolParameter->_parameter.getMax();
+                    payload["name"] = boolParameter->_parameter.getName();
+                    _client.publish(value, payload.dump());
+                }else if(intParameter != nullptr){
+                    ofJson payload;
+                    payload["value"] = intParameter->_parameter.get();
+                    payload["min"] = intParameter->_parameter.getMin();
+                    payload["max"] = intParameter->_parameter.getMax();
+                    payload["name"] = intParameter->_parameter.getName();
+                    _client.publish(value, payload.dump());
+                }else if(floatParameter != nullptr){
+                    ofJson payload;
+                    payload["value"] = floatParameter->_parameter.get();
+                    payload["min"] = floatParameter->_parameter.getMin();
+                    payload["max"] = floatParameter->_parameter.getMax();
+                    payload["name"] = floatParameter->_parameter.getName();
+                    _client.publish(value, payload.dump());
+                }else if(colorParameter != nullptr){
+                    ofJson payload;
+                    payload["red"] = colorParameter->_parameter.get().r;
+                    payload["green"] = colorParameter->_parameter.get().g;
+                    payload["blue"] = colorParameter->_parameter.get().b;
+                    payload["alpha"] = colorParameter->_parameter.get().a;
+                    payload["name"] = colorParameter->_parameter.getName();
+                    _client.publish(value, payload.dump());
+                }
+            }
         }else{
             ofJson payload;
             try{

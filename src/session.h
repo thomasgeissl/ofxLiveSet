@@ -27,7 +27,7 @@ public:
 
         _defaultKeyMappingEnabled.set("defaultKeyMappingEnabled", true);
         _oscControlEnabled.set("oscControlEnabled", true);
-        _mqttSynchroniserlEnabled.set("mqttSynchroniserEnabled", false);
+        _mqttSynchroniserlEnabled.set("mqttSynchroniserEnabled", true);
 
         _settings.add(_defaultKeyMappingEnabled);
         _settings.add(_oscControlEnabled);
