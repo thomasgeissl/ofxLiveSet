@@ -12,17 +12,15 @@ namespace ofxLiveSet{
             }
             void update(){
                 _grabber.update();
-                beginFboWithShaderIfActive();
                 if (_grabber.isFrameNew()){
-                    ofClear(255,0);
-                    ofTranslate(ofMap(_x, 0, 1, 0, _width), ofMap(_y, 0, 1, 0, _height));
+                    begin();
                     _grabber.draw(-640/2,-480/2);
-
+                    end();
                     setNewFrame();
                 }
-                endFboWithShaderIfActive();
             }
             ofVideoGrabber _grabber;
+            // TODO: parameter device id
         };
     }; // namespace clip
 }; // namespace ofxLiveSet

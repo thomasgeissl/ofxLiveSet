@@ -13,9 +13,18 @@ namespace ofxLiveSet
                 _openFileChooser.set("openFileChooser");
                 _openFileChooser.addListener(this, &videoPlayer::onOpenFileChooser);
                 _loop.set("loop", true);
+                _speed.set("speed", 1, 0, 10);
+                _speed.addListener(this, &videoPlayer::onSpeedChange);
+                _volume.set("volume", 0, 0, 1);
+                _volume.addListener(this, &videoPlayer::onVolumeChange);
+
                 _parameters.add(_openFileChooser);
                 _parameters.add(_loop);
+                _parameters.add(_speed);
+                _parameters.add(_volume);
+
                 _player.load(path);
+                _player.setVolume(_volume);
             }
             void update(){
                 _player.update();
@@ -26,11 +35,9 @@ namespace ofxLiveSet
                     _player.setLoopState(OF_LOOP_NONE);
                 }
                 if (_player.isFrameNew()){
-                    beginFboWithShaderIfActive();
-                    ofClear(255,0);
-                    ofTranslate(ofMap(_x, 0, 1, 0, _width), ofMap(_y, 0, 1, 0, _height));
+                    begin();
                     _player.draw(-_player.getWidth()/2,-_player.getHeight()/2);
-                    endFboWithShaderIfActive();
+                    end();
                 }
                 setNewFrame();
             }
@@ -43,6 +50,12 @@ namespace ofxLiveSet
                     _player.load(path);
                 }
             }
+            void onSpeedChange(float & value){
+                _player.setSpeed(value);
+            }
+            void onVolumeChange(float & value){
+                _player.setVolume(value);
+            }
             void onStart(){
                 _player.play();
             }
@@ -53,6 +66,9 @@ namespace ofxLiveSet
 
             ofParameter<void> _openFileChooser;
             ofParameter<bool> _loop;
+            ofParameter<float> _speed;
+            ofParameter<float> _volume;
+
         };
     }; // namespace clip
 }; // namespace ofxLiveSet

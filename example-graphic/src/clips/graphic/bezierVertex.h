@@ -18,10 +18,9 @@ namespace clips {
         }
         void update(){
             ofEnableAlphaBlending();
-            beginFboWithShaderIfActive();
-            ofClear(255,0);
-            float x0 = 50;
-            float y0 = _height/2;
+            begin();
+            float x0 = -_width/4;
+            float y0 = 0;
             float x1 = x0+_width/2+50*cos(ofGetElapsedTimef()*1.0f);
             float y1 = y0+100*sin(ofGetElapsedTimef()/3.5f);
             float x2 = 100+30*cos(ofGetElapsedTimef()*2.0f);
@@ -29,7 +28,6 @@ namespace clips {
             float x3 = x0+_width/2 - 50;
             float y3 = y0;
         
-            
             
             ofFill();
             ofSetColor(_primaryColor);
@@ -48,7 +46,7 @@ namespace clips {
                 ofDrawCircle(x3,y3,4);
             ofDisableAlphaBlending();
 
-            endFboWithShaderIfActive();
+            end();
             setNewFrame();
         }
 

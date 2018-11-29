@@ -20,19 +20,18 @@ namespace clips {
             auto timestamp = ofGetElapsedTimeMillis();
             if(timestamp < _timestamp + _frequency) return;
 
-            _fbo.begin();
-            ofClear(255,0);
+            begin();
             ofSetColor(_primaryColor);
 
             for(auto i = 0; i < _amount; i++){
                 auto width = ofRandom(0, _width/10);
                 auto height = ofRandom(0, _height/10);
-                auto x = ofRandom(0, _width - width);
-                auto y = ofRandom(0, _height - height);
+                auto x = ofRandom(-_width/2, _width/2);
+                auto y = ofRandom(-_height/2, _height/2);
 
                 ofDrawRectangle(x, y, width, height);
             }
-            _fbo.end();
+            end();
             _timestamp = timestamp;
             setNewFrame();
         }

@@ -19,12 +19,13 @@ namespace clips {
             auto height = 50;
             auto y = (_height - height)/2;
             auto width = ofMap(std::abs(std::sin(ofGetElapsedTimef())), 0, 1, 0, _width/2);
-            _fbo.begin();
+            
+            begin(false);
             ofClear(_backgroundColor);
             ofSetColor(_primaryColor);
 
-            ofDrawRectangle(x, y, width, height);
-            _fbo.end();
+            ofDrawRectangle(x-_width/2, y-_height/2, width, height);
+            end();
             setNewFrame();
         }
 

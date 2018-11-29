@@ -11,27 +11,38 @@ namespace clips {
             
             _primaryColor.set("primaryColor", ofColor::white);
             _parameters.add(_primaryColor);
+
+            _beatDetection.setName("beat detection");
+            _kickThreshold.set("kick threshold", 0.5, 0, 1);
+            _snareThreshold.set("snare threshold", 0.5, 0, 1);
+            _hihatThreshold.set("hihat threshold", 0.5, 0, 1);
+
+            _beatDetection.add(_kickThreshold);
+            _beatDetection.add(_snareThreshold);
+            _beatDetection.add(_hihatThreshold);
+            _parameters.add(_beatDetection);
+
         }
         void update(){
-            ofEnableAlphaBlending();
-            beginFboWithShaderIfActive();
-            ofClear(255,0);
-            if(_kick > .5){
+            if(_kick < _kickThreshold && _snare < _snareThreshold && _hihat < _hihatThreshold){
+                return;
+            }
+            begin();
+            if(_kick > _kickThreshold){
                 ofSetColor(ofColor(255,255,255, _kick*255));
-                ofDrawRectangle(0, _height - 100, 100, 100);
+                ofDrawRectangle(-100, -100, 100, 100);
             }
 
-            if(_snare > .5){
+            if(_snare > _snareThreshold){
                 ofSetColor(ofColor(255,255,255, _snare*255));
-                ofDrawRectangle(100, _height - 150, 50, 50);
+                ofDrawRectangle(0, -100, 50, 50);
             }
-            if(_hihat > .5){
+            if(_hihat > _hihatThreshold){
                 ofSetColor(ofColor(255,255,255, _hihat*255));
-                ofDrawRectangle(150, _height - 200, 50, 50);
+                ofDrawRectangle(100, -200, 50, 50);
             }
-
-            endFboWithShaderIfActive();
             setNewFrame();
+            end();
         }
         void setKick(float value){
             _kick = value;
@@ -44,6 +55,11 @@ namespace clips {
         }
 
         ofParameter<ofColor> _primaryColor;
+        ofParameterGroup _beatDetection;
+        ofParameter<float> _kickThreshold;
+        ofParameter<float> _snareThreshold;
+        ofParameter<float> _hihatThreshold;
+
         float _kick;
         float _snare;
         float _hihat;

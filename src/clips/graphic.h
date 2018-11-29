@@ -14,14 +14,19 @@ public:
 		_height.addListener(this, &graphic::onHeightChange);
 		_width = ofGetWidth();
 		_height = ofGetHeight();
-        _x.set("x", 0.5, 0, 1);
-        _y.set("y", 0.5, 0, 1);
-		_scale.set("scale", 0.5, 0, 1);
+        _x.set("x", 0, -1, 1);
+        _y.set("y", 0, -1, 1);
+		_scale.set("scale", 0, -1, 1);
+		_rotate.set("rotate", 0, 0, 359);
+
 		_shaderEnabled.set("shaderEnabled", false);
 
-		_parameters.add(_x);
-		_parameters.add(_y);
-		_parameters.add(_scale);
+		_translation.setName("translation");
+		_translation.add(_x);
+		_translation.add(_y);
+		_translation.add(_scale);
+		_translation.add(_rotate);
+		_parameters.add(_translation);
 	}
 	bool isFrameNew(){
 		if(_newFrame){
@@ -39,17 +44,25 @@ public:
 	void setNewFrame(bool value = true){
 		_newFrame = value;
 	}
-	void beginFboWithShaderIfActive(){
+	void setSize(float width, float height){
+		_width = width;
+		_height = height;
+	}
+	void begin(bool clear = true){
 		_fbo.begin();
 		if(_shaderEnabled){
 			_shader.begin();
 		}
+		if(clear){
+			ofClear(255,0);
+		}
 		ofPushMatrix();
 		ofPushStyle();
-		ofScale(ofMap(_scale, 0, 1, 0, 2), ofMap(_scale, 0, 1, 0, 2), 0);
-
+		ofTranslate(ofMap(_x, -1, 1, 0, _width), ofMap(_y, -1, 1, 0, _height));
+        ofScale(ofMap(_scale, -1, 1, 0, 2), ofMap(_scale, -1, 1, 0, 2), 0);
+		ofRotateDeg(_rotate);
 	}
-	void endFboWithShaderIfActive(){
+	void end(){
 		ofPopStyle();
 		ofPopMatrix();
 		if(_shaderEnabled){
@@ -61,9 +74,11 @@ public:
 	ofFbo _fbo;
 	ofShader _shader;
 	ofParameter<bool> _shaderEnabled;
+	ofParameterGroup _translation;
 	ofParameter<float> _x;
     ofParameter<float> _y;
 	ofParameter<float> _scale;
+	ofParameter<float> _rotate;
 
 
 	ofParameter<float> _width;

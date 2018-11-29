@@ -46,11 +46,13 @@ void ofApp::setup(){
     _session->setup();
     _session->setupGui();
     _session->openMidiMapperInPort(0);    
-    _session->openOscInPort(9000);
+    _session->openOscMapperInPort(9000);
     _session->stop();
+    _session->_oscControlEnabled = false;
 
     _drawGui.set("drawGui", true);
     ofSoundStreamSetup(0, 1, this, 44100, _beat.getBufferSize(), 4);
+
 }
 
 void ofApp::exit(){

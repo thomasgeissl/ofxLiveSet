@@ -27,6 +27,7 @@ public:
 
         _defaultKeyMappingEnabled.set("defaultKeyMappingEnabled", true);
         _oscControlEnabled.set("oscControlEnabled", true);
+        _oscControlEnabled.addListener(this, &session::onOscControlEnabledChange);
         _mqttSynchroniserlEnabled.set("mqttSynchroniserEnabled", true);
 
         _settings.add(_defaultKeyMappingEnabled);
@@ -179,7 +180,7 @@ public:
     void openMidiMapperInPort(int index){
         _midiMapper.openMidiPort(index);
     }
-    void openOscInPort(int port){
+    void openOscMapperInPort(int port){
         _oscReceiver.setup(port);
     }
 	void update(){
@@ -449,7 +450,14 @@ public:
             }
         }
     }
-
+    
+    void onOscControlEnabledChange(bool & value){
+        if(value){
+            _oscReceiver.start();
+        }else{
+            _oscReceiver.stop();
+        }
+    }
     void onPeakEnergy(std::pair<int, float> & value){
         for(auto track : _tracks){
             auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);

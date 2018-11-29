@@ -10,18 +10,19 @@ namespace clips {
             _primaryColor.set("primaryColor", ofColor::white);
             _parameters.add(_channel);
             _parameters.add(_primaryColor);
+            for(auto i = 0; i < 128; i++){
+                _velocities[i] = 0;
+            }
         }
         void update(){
-            ofEnableAlphaBlending();
-            beginFboWithShaderIfActive();
-            ofClear(255,0);
+            begin();
             ofSetColor(_primaryColor);
             auto length = _width/128;
             for(auto i = 0; i < 128; i++){
-                ofDrawRectangle(i*length, _height/2, length, _velocities[i]);
+                ofDrawRectangle(i*length - _width/2, _height/2 - _height/2, length, _velocities[i]);
             }
 
-            endFboWithShaderIfActive();
+            end();
             setNewFrame();
         }
         void setNoteOn(int note, int velocity){
@@ -31,7 +32,6 @@ namespace clips {
             _velocities[note] = 0;
         }
         
-
         ofParameter<ofColor> _primaryColor;
         int _velocities[128];
     };

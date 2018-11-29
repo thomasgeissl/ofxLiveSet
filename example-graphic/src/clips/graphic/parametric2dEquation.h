@@ -45,18 +45,14 @@ namespace clips {
         }
         void update(){
             ofEnableAlphaBlending();
-            beginFboWithShaderIfActive();
-            ofClear(255,0);
+            begin();
             ofSetColor(_primaryColor);
             ofSetLineWidth(_lineWidth);
-            ofPushMatrix();
-                ofTranslate(_fbo.getWidth()/2,_fbo.getHeight()/2,0);
-                for(auto i = 0; i < _amount; i++){
-                    ofDrawLine(x0(_t+i), y0(_t+i), x1(_t+i), y1(_t+i));
-                }
-            ofPopMatrix();
+            for(auto i = 0; i < _amount; i++){
+                ofDrawLine(x0(_t+i), y0(_t+i), x1(_t+i), y1(_t+i));
+            }
 
-            endFboWithShaderIfActive();
+            end();
             _t += _speed * 2;
             setNewFrame();
         }

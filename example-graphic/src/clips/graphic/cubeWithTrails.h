@@ -20,15 +20,14 @@ namespace clips {
         }
         void update(){
             ofEnableAlphaBlending();
-            beginFboWithShaderIfActive();
+            begin(false);
             ofFill();
             ofSetColor(255,255,255, _amount);
-            ofDrawRectangle(0,0,_fbo.getWidth(),_fbo.getHeight());
+            ofDrawRectangle(-_width/2, -_height/2, _width, _height);
 
 	        ofNoFill();
 	        ofSetColor(_primaryColor);
 
-            ofTranslate(_fbo.getWidth()/2,_fbo.getHeight()/2,0);
             ofRotateDeg(ofGetElapsedTimef()*30, 1,0,0.5);
             if(_beatReactive){
                 ofDrawBox(0,0,0,_size*(1+_snare));
@@ -36,7 +35,7 @@ namespace clips {
                 ofDrawBox(0,0,0,_size);
             }
 
-            endFboWithShaderIfActive();
+            end();
             setNewFrame();
         }
 

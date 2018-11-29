@@ -54,7 +54,7 @@ public:
         for(auto clip : _clips){
             auto graphicClip = dynamic_cast<ofxLiveSet::clip::graphic *>(clip);
             if (graphicClip != nullptr) {
-                graphicClip->_fbo.allocate(_width, _height);
+                graphicClip->setSize(_width, _height);
             }
         }
     }
@@ -66,8 +66,7 @@ public:
         for(auto clip : _clips){
             auto graphicClip = dynamic_cast<ofxLiveSet::clip::graphic *>(clip);
             if (graphicClip != nullptr) {
-                graphicClip->_width = _width;
-                graphicClip->_height = _height;
+                 graphicClip->setSize(_width, _height);
             }
         }
     }
