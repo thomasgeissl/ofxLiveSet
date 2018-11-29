@@ -6,28 +6,29 @@ ofApp::ofApp() : _session(_project._session){
 void ofApp::setup(){
     ofSetBackgroundColor(16, 16, 16);
     
-    auto videoTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("video")));
-    auto allTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("all")));
+    auto videoATrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("video A")));
+    auto videoBTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("video B")));
+    auto reactiveTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("reactive")));
     auto leftTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("left")));
     auto rightTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("right")));
 
-    allTrack->addClip(new clips::randomRectangles())->setup();
     leftTrack->addClip(new clips::randomRectangles())->setup();
     rightTrack->addClip(new clips::randomRectangles())->setup();
 
     rightTrack->addClip(new clips::cubeWithTrails())->setup();
-    allTrack->addClip(new clips::cubeWithTrails())->setup();
 
     leftTrack->addClip(new clips::bezierVertex(), 2)->setup();
     rightTrack->addClip(new clips::bezierVertex())->setup();
     rightTrack->addClip(new clips::parametric2dEquation())->setup();
 
-    allTrack->addClip(new clips::progressBar())->setup();
-    allTrack->addClip(new clips::midiVisualiser())->setup();
-    allTrack->addClip(new clips::beatVisualiser())->setup();
+    reactiveTrack->addClip(new clips::cubeWithTrails())->setup();
+    reactiveTrack->addClip(new clips::midiVisualiser())->setup();
+    reactiveTrack->addClip(new clips::beatVisualiser())->setup();
 
-    videoTrack->addClip(new ofxLiveSet::clip::videoGrabber(0, "camera"), 5)->setup();
-    videoTrack->addClip(new ofxLiveSet::clip::videoPlayer("videos/lake_carrier.mov", "lake carrier"))->setup();
+    videoATrack->addClip(new ofxLiveSet::clip::videoGrabber(0, "camera"), 5)->setup();
+    videoATrack->addClip(new ofxLiveSet::clip::videoPlayer("videos/lake_carrier.mov", "lake carrier"))->setup();
+    videoBTrack->addClip(new ofxLiveSet::clip::videoGrabber(0, "camera"), 5)->setup();
+    videoBTrack->addClip(new ofxLiveSet::clip::videoPlayer("videos/lake_carrier.mov", "lake carrier"))->setup();
 
     leftTrack->_xPosition = 0;
     leftTrack->_yPosition = 0;
@@ -35,18 +36,11 @@ void ofApp::setup(){
     rightTrack->_xPosition = ofGetWidth()/2;
     rightTrack->_yPosition = 0;
     rightTrack->_width = ofGetWidth()/2;
-    allTrack->_xPosition = 0;
-    allTrack->_yPosition = 0;
-    allTrack->_width = ofGetWidth();
-    videoTrack->_xPosition = 0;
-    videoTrack->_yPosition = 0;
-    videoTrack->_width = ofGetWidth();
-    videoTrack->_height = ofGetHeight();
 
     _session->setup();
     _session->setupGui();
     _session->openMidiMapperInPort(0);    
-    _session->openOscMapperInPort(9000);
+    _session->openOscControlInPort(9000);
     _session->stop();
     _session->_oscControlEnabled = false;
 
@@ -56,6 +50,7 @@ void ofApp::setup(){
 }
 
 void ofApp::exit(){
+    ofSoundStreamClose();
 }
 
 void ofApp::update(){

@@ -36,9 +36,10 @@ void ofApp::setup(){
 
     _session->setup();
     _session->setupGui();
-    _session->openOscInPort(9000);
+    _session->openOscControlInPort(9000);
     _session->openMidiMapperInPort(2);
     _session->stop();
+    _session->_mqttSynchroniserEnabled = false;
 
     _session->renameScene(0, "within");
     _session->renameScene(1, "anchor");

@@ -9,13 +9,20 @@ class mqttSynchroniser {
 public:
     void setup(){
         _client.begin("localhost", 1883);
-        _client.connect("openframeworks");
+        _client.connect("ofxLiveSet::utils:mqttSynchroniser");
     
         ofAddListener(_client.onOnline, this, &mqttSynchroniser::onOnline);
         ofAddListener(_client.onOffline, this, &mqttSynchroniser::onOffline);
         ofAddListener(_client.onMessage, this, &mqttSynchroniser::onMessage);
+
+        _active.set("active", false);
+        _active.addListener(this, &mqttSynchroniser::onActiveChange);
+        _parameters.add(_active);
     }
     void update() {
+        if(!_active){
+            return;
+        }
         _client.update();
     }
     
@@ -97,7 +104,17 @@ public:
             }
         }
     }
+    void onActiveChange(bool & value){
+        if(value){
+
+        }else{
+
+        }
+    }
     void onChangeEvent(std::string & value){
+        if(!_active){
+            return;
+        }
         auto voidParameter = dynamic_cast<mqttSynchronisableVoid *>(_synchronisables[value]);
         auto boolParameter = dynamic_cast<mqttSynchronisableBool *>(_synchronisables[value]);
         auto intParameter = dynamic_cast<mqttSynchronisableInt *>(_synchronisables[value]);
@@ -193,6 +210,9 @@ public:
     int _idCounter;
     std::string _sessionId;
     std::map<std::string, mqttSynchronisable*> _synchronisables;
+
+    ofParameterGroup _parameters;
+    ofParameter<bool> _active;
 };
 //}; // namespace utils
 }; // namespace ofxLiveSet

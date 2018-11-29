@@ -17,7 +17,7 @@ void ofApp::setup(){
     // osx: you might need to create an aggregated device
     _session->setupAudioEngine(2);
     _session->openMidiMapperInPort(0);
-    _session->openOscInPort(9000);
+    _session->openOscControlInPort(9000);
     _session->stop();
 }
 

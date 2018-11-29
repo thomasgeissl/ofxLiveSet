@@ -16,11 +16,16 @@ public:
         _solo.set("solo", false);
         _gain.set("gain", 1, 0, 1);
 
+        _controls.setName("control");
 //        _parameters.add(_name);
-        _parameters.add(_stop);
-        _parameters.add(_solo);
-        _parameters.add(_mute);
-        _parameters.add(_gain);
+        _controls.add(_stop);
+        _controls.add(_solo);
+        _controls.add(_mute);
+        _controls.add(_gain);
+        _parameters.add(_controls);
+
+        _clipTriggers.setName("clips");
+        _parameters.add(_clipTriggers);
 
         _stop.addListener(this, &base::onStop);
 
@@ -86,7 +91,7 @@ public:
 
     clip::base* addClip(clip::base *clip){
 		_clips.push_back(clip);
-        _parameters.add(clip->_active);
+        _clipTriggers.add(clip->_active);
         ofAddListener(clip->_started, this, &base::onClipStarted);
         ofAddListener(clip->_stopped, this, &base::onClipStopped);
 
@@ -96,11 +101,11 @@ public:
     clip::base* addClip(clip::base *clip, int index){
         while(_clips.size() < index){
             auto nullClip = new clip::nullClip();
-            _parameters.add(nullClip->_active);
+            _clipTriggers.add(nullClip->_active);
             _clips.push_back(nullClip);
         }
         _clips.push_back(clip);
-        _parameters.add(clip->_active);
+        _clipTriggers.add(clip->_active);
         ofAddListener(clip->_started, this, &base::onClipStarted);
         ofAddListener(clip->_stopped, this, &base::onClipStopped);
         
@@ -148,6 +153,7 @@ public:
 	std::vector<clip::base *> _clips;
 	clip::base *_clip;
 	ofParameterGroup _parameters;
+    ofParameterGroup _controls;
 	ofParameter<std::string> _name;
     ofParameter<void> _stop;
     ofParameter<bool> _mute;

@@ -10,6 +10,7 @@
 #include "ofxOscMapper.h"
 #include "./tracks/base.h"
 #include "./tracks/audio.h"
+#include "./tracks/graphic.h"
 #include "./clips/soundReactive.h"
 #include "./clips/midiReactive.h"
 #include "./gui/infoPanel.h"
@@ -29,10 +30,12 @@ public:
         _oscControlEnabled.set("oscControlEnabled", true);
         _oscControlEnabled.addListener(this, &session::onOscControlEnabledChange);
         _mqttSynchroniserlEnabled.set("mqttSynchroniserEnabled", true);
+        _autoResizeGraphicTracksEnabled.set("autoResizeGraphicTracksEnabled", true);
 
         _settings.add(_defaultKeyMappingEnabled);
         _settings.add(_oscControlEnabled);
         _settings.add(_mqttSynchroniserlEnabled);
+        _settings.add(_autoResizeGraphicTracksEnabled);
 
         _engine.listDevices();
 	}
@@ -52,6 +55,7 @@ public:
         
         
         _parameters.setName("session");
+        _controls.setName("controls");
         _name.set("name", "session");
         _active.set("active", false);
         _timestampString.set("time", "0");
@@ -59,10 +63,14 @@ public:
         _gain.set("gain", 1, 0, 1); //TODO: does make gain sense for a session with audio, dmx and midi tracks?
 
 //        _parameters.add(_name);
-        _parameters.add(_active);
-        _parameters.add(_timestampString);
-        _parameters.add(_mute);
-        _parameters.add(_gain);
+        _controls.add(_active);
+        _controls.add(_timestampString);
+        _controls.add(_mute);
+        _controls.add(_gain);
+        _parameters.add(_controls);
+
+        _sceneTriggerGroup.setName("scenes");
+        _parameters.add(_sceneTriggerGroup);
 
         _active.addListener(this, &session::onActiveChange);
 
@@ -76,7 +84,7 @@ public:
         auto i = 0;
         for(auto sceneTrigger : _sceneTriggers){
             sceneTrigger.set("scene "+ofToString(i++), false);
-            _parameters.add(sceneTrigger);
+            _sceneTriggerGroup.add(sceneTrigger);
             sceneTrigger.addListener(this, &session::onSceneTrigger);
         }
 
@@ -122,6 +130,8 @@ public:
         }
     }
     void setupGui(){
+        ofAddListener(ofEvents().windowResized, this, &session::onWindowResized, OF_EVENT_ORDER_AFTER_APP);
+
         ofxPanel::setDefaultFillColor(ofColor::green);
         _midiMapper.getParameters().setName("midi mapper");
         _midiMapperPanel.setup(_midiMapper.getParameters());
@@ -180,7 +190,7 @@ public:
     void openMidiMapperInPort(int index){
         _midiMapper.openMidiPort(index);
     }
-    void openOscMapperInPort(int port){
+    void openOscControlInPort(int port){
         _oscReceiver.setup(port);
     }
 	void update(){
@@ -188,7 +198,6 @@ public:
         if(_mqttSynchroniserlEnabled){
             _mqttSynchroniser.update();
         }
-
 
         if(_active){
             _timestamp = ofGetElapsedTimeMillis();
@@ -282,9 +291,16 @@ public:
 	void onDraw(ofEventArgs &e){
 		draw();
 	}
-    void onExit(ofEventArgs &e)
-    {
+    void onExit(ofEventArgs &e){
         exit();
+    }
+    void onWindowResized(ofResizeEventArgs &e){
+        for (auto track : _tracks){
+            auto graphicTrack = dynamic_cast<ofxLiveSet::track::graphic *>(track);
+            if(graphicTrack != nullptr){
+                graphicTrack->resize(e.width, e.height);
+            }
+		}
     }
     void onKeyPressed(ofKeyEventArgs & e){
         int key = e.key;
@@ -527,17 +543,22 @@ public:
 
     // parameters
 	ofParameterGroup _parameters;
+    ofParameterGroup _controls;
 	ofParameter<std::string> _name;
     ofParameter<bool> _active;
     ofParameter<std::string> _timestampString;
     ofParameter<bool> _mute;
     ofParameter<float> _gain;
+
+    // TODO: remove vector
+    ofParameterGroup _sceneTriggerGroup;
     std::vector<ofParameter<bool>> _sceneTriggers;
 
     ofParameterGroup _settings;
     ofParameter<bool> _defaultKeyMappingEnabled;
     ofParameter<bool> _oscControlEnabled;
     ofParameter<bool> _mqttSynchroniserlEnabled;
+    ofParameter<bool> _autoResizeGraphicTracksEnabled;
 
     ofParameter<int> _focusedTrack;
     ofParameter<int> _focusedClip;
