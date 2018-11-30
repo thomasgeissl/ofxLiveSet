@@ -9,12 +9,12 @@ git clone https://github.com/danomatika/ofxMidi.git
 cd ofxMidi
 git checkout c80fba1ca451cd06a459c0835cc32fb6f51610ed
 cd ..
+cp -R ofxMidi ../../..
 
 git clone https://github.com/thomasgeissl/ofxMidiMapper.git
 cd ofxMidiMapper
 git checkout e338553c62bf28291c7763a310d515f31e6dcdfa
 cd ..
-cp -R ofxMidiMapper ../../
 
 git clone https://github.com/thomasgeissl/ofxKeyMapper.git
 cd ofxKeyMapper
