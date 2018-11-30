@@ -29,12 +29,12 @@ public:
         _defaultKeyMappingEnabled.set("defaultKeyMappingEnabled", true);
         _oscControlEnabled.set("oscControlEnabled", true);
         _oscControlEnabled.addListener(this, &session::onOscControlEnabledChange);
-        _mqttSynchroniserlEnabled.set("mqttSynchroniserEnabled", true);
+        _mqttSynchroniserEnabled.set("mqttSynchroniserEnabled", true);
         _autoResizeGraphicTracksEnabled.set("autoResizeGraphicTracksEnabled", true);
 
         _settings.add(_defaultKeyMappingEnabled);
         _settings.add(_oscControlEnabled);
-        _settings.add(_mqttSynchroniserlEnabled);
+        _settings.add(_mqttSynchroniserEnabled);
         _settings.add(_autoResizeGraphicTracksEnabled);
 
         _engine.listDevices();
@@ -195,7 +195,7 @@ public:
     }
 	void update(){
         _soundAnalyser.update();
-        if(_mqttSynchroniserlEnabled){
+        if(_mqttSynchroniserEnabled){
             _mqttSynchroniser.update();
         }
 
@@ -557,7 +557,7 @@ public:
     ofParameterGroup _settings;
     ofParameter<bool> _defaultKeyMappingEnabled;
     ofParameter<bool> _oscControlEnabled;
-    ofParameter<bool> _mqttSynchroniserlEnabled;
+    ofParameter<bool> _mqttSynchroniserEnabled;
     ofParameter<bool> _autoResizeGraphicTracksEnabled;
 
     ofParameter<int> _focusedTrack;
