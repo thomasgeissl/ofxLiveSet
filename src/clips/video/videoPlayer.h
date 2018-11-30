@@ -10,6 +10,8 @@ namespace ofxLiveSet
         {
         public:
             videoPlayer(std::string path, std::string name = "") : graphic(name){
+                _name = name;
+                _active.setName(_name);
                 _openFileChooser.set("openFileChooser");
                 _openFileChooser.addListener(this, &videoPlayer::onOpenFileChooser);
                 _loop.set("loop", true);

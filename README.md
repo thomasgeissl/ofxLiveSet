@@ -22,6 +22,13 @@ It comes with an ofxGui, a web based gui will probably be added in the future
 ### Mappable parameters
 Almost all parameters are midi, key and osc mappable. 
 
+## Usage
+You can download a fresh version of openFrameworks, as well as ofxLiveSet and its depedencies via the following command.
+
+```
+curl -s https://raw.githubusercontent.com/thomasgeissl/ofxLiveSet/master/scripts/install.sh | sh
+```
+
 
 ## TODOs
 ### core

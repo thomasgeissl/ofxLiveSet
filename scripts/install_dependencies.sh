@@ -14,6 +14,7 @@ git clone https://github.com/thomasgeissl/ofxMidiMapper.git
 cd ofxMidiMapper
 git checkout e338553c62bf28291c7763a310d515f31e6dcdfa
 cd ..
+cp -R ofxMidiMapper ../../
 
 git clone https://github.com/thomasgeissl/ofxKeyMapper.git
 cd ofxKeyMapper

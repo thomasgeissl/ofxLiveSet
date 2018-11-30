@@ -7,6 +7,8 @@ namespace ofxLiveSet{
         class videoGrabber : public graphic{
         public:
             videoGrabber(int deviceId = 0, std::string name = "") : graphic(name){
+                _name = name;
+                _active.setName(_name);
                 _grabber.setDeviceID(deviceId);
                 _grabber.initGrabber(640, 480);
             }

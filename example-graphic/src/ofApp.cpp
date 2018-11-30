@@ -12,27 +12,26 @@ void ofApp::setup(){
     auto leftTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("left")));
     auto rightTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("right")));
 
-    leftTrack->addClip(new clips::randomRectangles())->setup();
-    rightTrack->addClip(new clips::randomRectangles())->setup();
+    videoATrack->addClip(new ofxLiveSet::clip::videoGrabber(0, "camera"), 4)->setup();
+    videoATrack->addClip(new ofxLiveSet::clip::videoPlayer("videos/lake_carrier.mov", "lake carrier"))->setup();
 
-    rightTrack->addClip(new clips::cubeWithTrails())->setup();
-
-    leftTrack->addClip(new clips::bezierVertex(), 2)->setup();
-    rightTrack->addClip(new clips::bezierVertex())->setup();
-    rightTrack->addClip(new clips::parametric2dEquation())->setup();
+    videoBTrack->addClip(new ofxLiveSet::clip::videoGrabber(0, "camera"), 4)->setup();
+    videoBTrack->addClip(new ofxLiveSet::clip::videoPlayer("videos/lake_carrier.mov", "lake carrier"))->setup();
 
     reactiveTrack->addClip(new clips::cubeWithTrails())->setup();
     reactiveTrack->addClip(new clips::midiVisualiser())->setup();
     reactiveTrack->addClip(new clips::beatVisualiser())->setup();
 
-    videoATrack->addClip(new ofxLiveSet::clip::videoGrabber(0, "camera"), 5)->setup();
-    videoATrack->addClip(new ofxLiveSet::clip::videoPlayer("videos/lake_carrier.mov", "lake carrier"))->setup();
-    videoBTrack->addClip(new ofxLiveSet::clip::videoGrabber(0, "camera"), 5)->setup();
-    videoBTrack->addClip(new ofxLiveSet::clip::videoPlayer("videos/lake_carrier.mov", "lake carrier"))->setup();
-
+    leftTrack->addClip(new clips::randomRectangles())->setup();
+    leftTrack->addClip(new clips::bezierVertex(), 3)->setup();
     leftTrack->_xPosition = 0;
     leftTrack->_yPosition = 0;
     leftTrack->_width = ofGetWidth()/2;
+
+    rightTrack->addClip(new clips::randomRectangles())->setup();
+    rightTrack->addClip(new clips::cubeWithTrails())->setup();
+    rightTrack->addClip(new clips::parametric2dEquation())->setup();
+    rightTrack->addClip(new clips::bezierVertex())->setup();
     rightTrack->_xPosition = ofGetWidth()/2;
     rightTrack->_yPosition = 0;
     rightTrack->_width = ofGetWidth()/2;
@@ -46,7 +45,6 @@ void ofApp::setup(){
 
     _drawGui.set("drawGui", true);
     ofSoundStreamSetup(0, 1, this, 44100, _beat.getBufferSize(), 4);
-
 }
 
 void ofApp::exit(){
