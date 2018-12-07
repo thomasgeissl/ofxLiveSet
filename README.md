@@ -44,7 +44,6 @@ curl -s https://raw.githubusercontent.com/thomasgeissl/ofxLiveSet/master/scripts
 ### graphics
 * scripting support via ofxLua
 * effects e.g. via ofxPostProcessing
-* second window support
 
 ## License
 This project is released under MIT license, please note that dependencies might be released differently.

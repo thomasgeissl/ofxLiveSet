@@ -45,6 +45,8 @@ void ofApp::setup(){
 
     _drawGui.set("drawGui", true);
     ofSoundStreamSetup(0, 1, this, 44100, _beat.getBufferSize(), 4);
+
+    _renderApp->_session = _session;
 }
 
 void ofApp::exit(){
@@ -52,7 +54,7 @@ void ofApp::exit(){
 }
 
 void ofApp::update(){
-    ofSetWindowTitle("example-graphic: "+ofToString((int)(ofGetFrameRate())));
+    ofSetWindowTitle("example-graphic control window: "+ofToString((int)(ofGetFrameRate())));
     _beat.update(ofGetElapsedTimeMillis());
     auto kick = _beat.kick();
     auto snare = _beat.snare();
@@ -68,6 +70,10 @@ void ofApp::update(){
 }
 
 void ofApp::draw(){
+
+    // _renderApp->drawFbo();
+    _session->draw();
+    // _session->_fbo.draw(0,0);
     if(_drawGui){
         _session->drawGui();
     }

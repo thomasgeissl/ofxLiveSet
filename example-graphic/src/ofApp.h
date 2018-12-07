@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxLiveSet.h"
 #include "ofxBeat.h"
+#include "renderApp.h"
 #include "./clips/graphic/randomRectangles.h"
 #include "./clips/graphic/progressBar.h"
 #include "./clips/graphic/cubeWithTrails.h"
@@ -39,5 +40,7 @@ public:
 
     ofParameterGroup _parameters;
     ofParameter<bool> _drawGui;
+
+    std::shared_ptr<renderApp> _renderApp;
 };
 

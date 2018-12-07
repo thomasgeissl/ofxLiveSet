@@ -128,6 +128,8 @@ public:
                 _mqttSynchroniser.addParameters(clip->_parameters, prefix);
             }
         }
+
+        _fbo.allocate(ofGetWidth(), ofGetHeight());
     }
     void setupGui(){
         ofAddListener(ofEvents().windowResized, this, &session::onWindowResized, OF_EVENT_ORDER_AFTER_APP);
@@ -247,9 +249,12 @@ public:
         }
 	}
 	void draw(){
+        _fbo.begin();
+        ofClear(255,0);
 		for (auto track : _tracks){
             track->draw();
 		}
+        _fbo.end();
 	}
     void drawGui(){
         for (auto track : _tracks){
@@ -295,10 +300,13 @@ public:
         exit();
     }
     void onWindowResized(ofResizeEventArgs &e){
+        onWindowResized(e.width, e.height);
+    }
+    void onWindowResized(float width, float height){
         for (auto track : _tracks){
             auto graphicTrack = dynamic_cast<ofxLiveSet::track::graphic *>(track);
             if(graphicTrack != nullptr){
-                graphicTrack->resize(e.width, e.height);
+                graphicTrack->resize(width, height);
             }
 		}
     }
@@ -532,6 +540,8 @@ public:
     pdsp::Engine _engine;
 	std::vector<track::base *> _tracks;
     std::vector<ofxLiveSet::information> _sceneInformation;
+    std::mutex _mutex;
+    ofFbo _fbo;
 
     // inputs
     ofxMidiIn _midiIn;
@@ -577,5 +587,6 @@ public:
     gui::infoPanel _infoPanel;
 
     ofxLiveSet::mqttSynchroniser _mqttSynchroniser;
+
 };
 }; // namespace ofxLiveSet
