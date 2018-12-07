@@ -32,7 +32,9 @@ void ofApp::draw(){
     _session->drawGui();
 }
 
-void ofApp::keyPressed(int key){}
+void ofApp::keyPressed(int key){
+    _session->onKeyPressed(key);
+}
 void ofApp::keyReleased(int key){}
 void ofApp::mouseMoved(int x, int y){}
 void ofApp::mouseDragged(int x, int y, int button){}

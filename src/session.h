@@ -24,7 +24,7 @@ public:
 		ofAddListener(ofEvents().update, this, &session::onUpdate, OF_EVENT_ORDER_AFTER_APP);
         ofAddListener(ofEvents().draw, this, &session::onDraw, OF_EVENT_ORDER_BEFORE_APP);
         ofAddListener(ofEvents().exit, this, &session::onExit, OF_EVENT_ORDER_AFTER_APP);
-        ofAddListener(ofEvents().keyPressed, this, &session::onKeyPressed, OF_EVENT_ORDER_AFTER_APP);
+        // ofAddListener(ofEvents().keyPressed, this, &session::onKeyPressed, OF_EVENT_ORDER_AFTER_APP);
 
         _defaultKeyMappingEnabled.set("defaultKeyMappingEnabled", true);
         _oscControlEnabled.set("oscControlEnabled", true);
@@ -312,6 +312,9 @@ public:
     }
     void onKeyPressed(ofKeyEventArgs & e){
         int key = e.key;
+        onKeyPressed(key);
+    }
+    void onKeyPressed(int key){
         _keyMapper.keyPressed(key);
         if(_defaultKeyMappingEnabled){
             switch(key){

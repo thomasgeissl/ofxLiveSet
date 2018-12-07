@@ -83,6 +83,7 @@ void ofApp::keyPressed(int key){
     switch(key){
         case 'g': _drawGui = !_drawGui; break;
     }
+    _session->onKeyPressed(key);
 }
 void ofApp::keyReleased(int key){}
 void ofApp::mouseMoved(int x, int y){}
