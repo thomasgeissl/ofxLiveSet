@@ -24,7 +24,12 @@ public:
             _session->onWindowResized(w, h);
         }
     }
-    
+    void keyPressed(int key){
+        switch(key){
+            case 'f': ofToggleFullscreen(); break;
+        }
+    }
+
     ofxLiveSet::session *_session;
 };
 
