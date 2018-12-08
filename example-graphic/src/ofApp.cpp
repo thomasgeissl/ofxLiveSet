@@ -24,6 +24,9 @@ void ofApp::setup(){
 
     leftTrack->addClip(new clips::randomRectangles())->setup();
     leftTrack->addClip(new clips::bezierVertex(), 3)->setup();
+    leftTrack->addClip(new clips::arcs())->setup();
+    leftTrack->addClip(new clips::circles())->setup();
+
     leftTrack->_xPosition = 0;
     leftTrack->_yPosition = 0;
     leftTrack->_width = ofGetWidth()/2;
@@ -32,6 +35,8 @@ void ofApp::setup(){
     rightTrack->addClip(new clips::cubeWithTrails())->setup();
     rightTrack->addClip(new clips::parametric2dEquation())->setup();
     rightTrack->addClip(new clips::bezierVertex())->setup();
+    // rightTrack->addClip(new ofxLiveSet::clip::slidePlayer("TODO"))->setup();
+
     rightTrack->_xPosition = ofGetWidth()/2;
     rightTrack->_yPosition = 0;
     rightTrack->_width = ofGetWidth()/2;
