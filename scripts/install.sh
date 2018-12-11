@@ -8,8 +8,3 @@ if [ $OS == 0 ]
         then source ./linux/install.sh
     else source ./win/install.sh
 fi
-
-exit
-
-
-
