@@ -12,6 +12,8 @@ void ofApp::setup(){
     auto reactiveTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("reactive")));
     auto leftTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("left")));
 
+    audioTrack->mute();
+
     videoATrack->addClip(new ofxLiveSet::clip::videoGrabber(0, "camera"), 4)->setup();
     videoATrack->addClip(new ofxLiveSet::clip::videoPlayer("videos/lake_carrier.mov", "lake carrier"))->setup();
 
@@ -34,6 +36,8 @@ void ofApp::setup(){
 
     _session->setup();
     _session->setupGui();
+    _session->setupAudioEngine(2);
+
     _session->openMidiMapperInPort(0);    
     _session->openOscControlInPort(9000);
     _session->stop();

@@ -8,6 +8,9 @@ This is a work in progress, it is sill buggy, incomplete and not yet clean. It i
 ![screenshot](./screenshot_gui.png)
 ![screenshot](./screenshot_output.png)
 
+## Build status
+[![Build Status](https://travis-ci.org/thomasgeissl/ofxLiveSet.svg?branch=master)](https://travis-ci.org/thomasgeissl/ofxLiveSet)
+
 
 ## Features
 ### Supports different types of tracks and clips

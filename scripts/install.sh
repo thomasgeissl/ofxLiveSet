@@ -1,11 +1,15 @@
 #!/bin/sh
-# TODO: get os
-curl -O https://openframeworks.cc/versions/v0.10.1/of_v0.10.1_osx_release.zip
-unzip -a of_v0.10.1_osx_release.zip
-rm of_v0.10.1_osx_release.zip
-cd of_v0.10.1_osx_release/addons
-git clone https://github.com/thomasgeissl/ofxLiveSet.git
-cd ofxLiveSet/scripts
-./install_examples-dependencies.sh
-./compile_examples.sh
+# TODO: automatically get os
+echo "What OS are you using? (0): OSX, (1): LINUX, (any other): WINDOWS"
+read OS
+if [ $OS == 0 ]
+    then source ./osx/install.sh
+    elif [ $OS == 1 ]
+        then source ./linux/install.sh
+    else source ./win/install.sh
+fi
+
+exit
+
+
 

@@ -3,6 +3,7 @@
 #include "base.h"
 #include "ofxPDSP.h"
 #include "../clips/audio.h"
+#include "../utils/audioAnalyser/AudioAnalyzerBand.h"
 
 namespace ofxLiveSet
 {
