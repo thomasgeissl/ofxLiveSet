@@ -46,8 +46,13 @@ public:
         _fbo.draw(_xPosition, _yPosition);
     }
     void resize(float width, float height){
-        _width.setWithoutEventNotifications(width);
-        _height.setWithoutEventNotifications(height);
+        _xPosition.setMax(_width);
+        _yPosition.setMax(_height);
+        _width.setMax(_width);
+        _height.setMax(_height);
+
+        _width = width;
+        _height = height;
         _fbo.allocate(width, height);
         _fbo.begin();
         ofClear(255,0);
@@ -58,13 +63,17 @@ public:
                 graphicClip->setSize(_width, _height);
             }
         }
-        _xPosition.setMax(_width);
-        _yPosition.setMax(_height);
     }
     void onWidthChange(float & value){
+        if(value == _width){
+            return;
+        }
         resize(_width, _height);
     }
     void onHeightChange(float & value){
+        if(value == _height){
+            return;
+        }
         resize(_width, _height);
     }
     ofFbo _fbo;

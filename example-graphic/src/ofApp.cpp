@@ -6,11 +6,11 @@ ofApp::ofApp() : _session(_project._session){
 void ofApp::setup(){
     ofSetBackgroundColor(16, 16, 16);
     
+    auto audioTrack = (ofxLiveSet::track::audio*)(_session->addTrack(new ofxLiveSet::track::audio("audio analyser")));
     auto videoATrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("video A")));
     auto videoBTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("video B")));
     auto reactiveTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("reactive")));
     auto leftTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("left")));
-    auto rightTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("right")));
 
     videoATrack->addClip(new ofxLiveSet::clip::videoGrabber(0, "camera"), 4)->setup();
     videoATrack->addClip(new ofxLiveSet::clip::videoPlayer("videos/lake_carrier.mov", "lake carrier"))->setup();
@@ -24,22 +24,13 @@ void ofApp::setup(){
 
     leftTrack->addClip(new clips::randomRectangles())->setup();
     leftTrack->addClip(new clips::bezierVertex(), 3)->setup();
+    leftTrack->addClip(new clips::parametric2dEquation())->setup();
+
     leftTrack->addClip(new clips::arcs())->setup();
     leftTrack->addClip(new clips::circles())->setup();
 
-    leftTrack->_xPosition = 0;
-    leftTrack->_yPosition = 0;
-    leftTrack->_width = ofGetWidth()/2;
-
-    rightTrack->addClip(new clips::randomRectangles())->setup();
-    rightTrack->addClip(new clips::cubeWithTrails())->setup();
-    rightTrack->addClip(new clips::parametric2dEquation())->setup();
-    rightTrack->addClip(new clips::bezierVertex())->setup();
-    // rightTrack->addClip(new ofxLiveSet::clip::slidePlayer("TODO"))->setup();
-
-    rightTrack->_xPosition = ofGetWidth()/2;
-    rightTrack->_yPosition = 0;
-    rightTrack->_width = ofGetWidth()/2;
+    leftTrack->addClip(new clips::unkownPleasures())->setup();
+    leftTrack->addClip(new ofxLiveSet::clip::slidePlayer("TODO"))->setup();
 
     _session->setup();
     _session->setupGui();
@@ -75,10 +66,7 @@ void ofApp::update(){
 }
 
 void ofApp::draw(){
-
-    // _renderApp->drawFbo();
     _session->draw();
-    // _session->_fbo.draw(0,0);
     if(_drawGui){
         _session->drawGui();
     }

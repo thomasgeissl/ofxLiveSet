@@ -303,6 +303,10 @@ public:
         onWindowResized(e.width, e.height);
     }
     void onWindowResized(float width, float height){
+        _fbo.allocate(width, height);
+        _fbo.begin();
+        ofClear(255,0);
+        _fbo.end();
         for (auto track : _tracks){
             auto graphicTrack = dynamic_cast<ofxLiveSet::track::graphic *>(track);
             if(graphicTrack != nullptr){
