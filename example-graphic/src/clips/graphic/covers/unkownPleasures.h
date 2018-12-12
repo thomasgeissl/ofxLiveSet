@@ -1,6 +1,7 @@
 #pragma once
 #include "clips/graphic.h"
-// TODO: credits
+// https://maxhalford.github.io/blog/unknown-pleasures-with-javascript/
+
 namespace clips {
     class unkownPleasures : public ofxLiveSet::clip::graphic {
     public:
