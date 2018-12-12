@@ -1,14 +1,14 @@
 #!/bin/sh
 # TODO: automatically get os
 echo "What OS are you using? (0): OSX, (1): LINUX, (any other): WINDOWS"
-read OS
-if [ $OS == 0 ] 
+read -r OS
+if [ $OS = 0 ]
 then 
     curl -O https://openframeworks.cc/versions/v0.10.1/of_v0.10.1_osx_release.zip
     unzip -a of_v0.10.1_osx_release.zip
     rm of_v0.10.1_osx_release.zip
     cd of_v0.10.1_osx_release/addons
-elif [ $OS == 1 ] 
+elif [ $OS = 1 ]
 then
         curl -O https://openframeworks.cc/versions/v0.10.1/of_v0.10.1_linux64gcc6_release.tar.gz
         tar -zxvf of_v0.10.1_linux64gcc6_release.tar.gz
