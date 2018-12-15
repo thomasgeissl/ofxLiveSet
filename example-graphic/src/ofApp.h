@@ -12,6 +12,7 @@
 #include "./clips/graphic/arcs.h"
 #include "./clips/graphic/circles.h"
 #include "./clips/graphic/covers/unkownPleasures.h"
+#include "./clips/graphic/covers/onTheDarkSideOfTheMoon.h"
 
 #include "./clips/graphic/midiVisualiser.h"
 #include "./clips/graphic/beatVisualiser.h"
