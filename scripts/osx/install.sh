@@ -7,4 +7,4 @@ cd of_v0.10.1_osx_release/addons
 git clone https://github.com/thomasgeissl/ofxLiveSet.git
 cd ofxLiveSet
 ./scripts/install_examples-dependencies.sh
-./scripts/compile_examples.sh
+./scripts/compile_examples.sh > /dev/null
