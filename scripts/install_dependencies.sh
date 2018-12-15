@@ -13,17 +13,17 @@ cp -R ofxMidi ../../..
 
 git clone https://github.com/thomasgeissl/ofxMidiMapper.git
 cd ofxMidiMapper
-git checkout e338553c62bf28291c7763a310d515f31e6dcdfa
+git checkout 1d8b857d2d459b1559962b3b0d9a19a1b34630cc
 cd ..
 
 git clone https://github.com/thomasgeissl/ofxKeyMapper.git
 cd ofxKeyMapper
-git checkout 14201baf2ee5ec0775cc7476794eb4d51319ab2f
+git checkout 409af696a6d74ed78c435a6d767754cbfc7caddd
 cd .. 
 
 git clone https://github.com/thomasgeissl/ofxOscMapper.git
 cd ofxOscMapper
-git checkout 52c3a44a36f913cfab2bc1be2334be3338bcd0a7
+git checkout 7b90ac5f49bba1bca6348d8adb22c9133fc81283
 cd ..
 
 git clone https://github.com/256dpi/ofxMQTT.git
