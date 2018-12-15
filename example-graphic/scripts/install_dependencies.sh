@@ -5,6 +5,9 @@ cd ..
 mkdir local_addons
 cd local_addons
 
+echo "cloning addons"
+pwd
+
 source "../../scripts/install_dependencies.sh"
 
 git clone https://github.com/darrenmothersele/ofxBeat.git
