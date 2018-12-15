@@ -5,6 +5,6 @@ unzip -a -qq of_v0.10.1_osx_release.zip
 rm of_v0.10.1_osx_release.zip
 cd of_v0.10.1_osx_release/addons
 git clone https://github.com/thomasgeissl/ofxLiveSet.git
-cd ofxLiveSet/scripts
-./install_examples-dependencies.sh
-./compile_examples.sh
+cd ofxLiveSet
+./scripts/install_examples-dependencies.sh
+./scripts/compile_examples.sh
