@@ -5,4 +5,4 @@ cd ..
 mkdir local_addons
 cd local_addons
 
-source "../../scripts/install_dependencies.sh"
+../../scripts/install_dependencies.sh
