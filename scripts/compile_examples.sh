@@ -5,6 +5,6 @@ cd ..
 for example in ./example*/
 do
     cd $example
-    make
+    make -j4
     cd ..
 done
