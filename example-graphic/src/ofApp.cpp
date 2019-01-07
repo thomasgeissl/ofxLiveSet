@@ -34,6 +34,10 @@ void ofApp::setup(){
     leftTrack->addClip(new clips::unkownPleasures())->setup();
     leftTrack->addClip(new clips::onTheDarkSideOfTheMoon())->setup();
     leftTrack->addClip(new ofxLiveSet::clip::slidePlayer("TODO"))->setup();
+    leftTrack->addClip(new clips::untitled_00())->setup();
+    leftTrack->addClip(new clips::untitled_01())->setup();
+    leftTrack->addClip(new clips::snake())->setup();
+    leftTrack->addClip(new clips::randomPolygon())->setup();
 
     _session->setup();
     _session->setupGui();

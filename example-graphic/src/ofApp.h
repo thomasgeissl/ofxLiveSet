@@ -16,6 +16,10 @@
 
 #include "./clips/graphic/midiVisualiser.h"
 #include "./clips/graphic/beatVisualiser.h"
+#include "./clips/graphic/untitled_00.h"
+#include "./clips/graphic/untitled_01.h"
+#include "./clips/graphic/snake.h"
+#include "./clips/graphic/randomPolygon.h"
 
 class ofApp : public ofBaseApp{
 public:

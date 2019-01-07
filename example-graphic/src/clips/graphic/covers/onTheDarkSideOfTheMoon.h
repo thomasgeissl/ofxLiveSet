@@ -9,6 +9,8 @@ namespace clips {
             
             _primaryColor.set("primaryColor", ofColor::white);
             _parameters.add(_primaryColor);
+            _startY.set("startY", 0.5, -1, 1);
+            _parameters.add(_startY);
         }
 
         void update(){
@@ -16,7 +18,7 @@ namespace clips {
             glm::vec2 b(100, 100);
             glm::vec2 c(0, a.y - (b.x - a.x)*sqrt(3)/2);
 
-            glm::vec2 d(-_width/2, 100);
+            glm::vec2 d(-_width/2, ofMap(_startY, -1, 1, -200, 200));
             glm::vec2 e(0, 0);
 
             begin();
@@ -28,8 +30,10 @@ namespace clips {
             auto intersection = getIntersection(a, c, d, e);
             ofDrawLine(d.x, d.y, intersection.x, intersection.y);
 
+            auto angle = getAngle(d, e, a, c);
+            ofLogNotice() << "angle " << angle;
 
-            //TODO: calculate angle
+
             glm::vec2 f(intersection.x + 50, intersection.y+10);
             glm::vec2 g(intersection.x + 60, intersection.y-5);
             ofFill();
@@ -112,7 +116,29 @@ namespace clips {
             end();
             setNewFrame();
         }
-
+        float getAngle(glm::vec2 startA, glm::vec2 endA, glm::vec2 startB, glm::vec2 endB){
+            auto x1 = startA.x - endA.x;
+            auto y1 = startA.y - endA.y;
+            auto x2 = startB.x - endB.x;
+            auto y2 = startB.y - endB.y;
+            //
+            float angle1 , angle2 , angle;
+            //
+            if (x1 != 0.0f)
+            angle1 = atan(y1/x1);
+            else
+            angle1 = 3.14159 / 2.0;	// 90 degrees
+            //
+            if (x2 != 0.0f)
+            angle2 = atan(y2/x2);
+            else
+            angle2 = 3.14159 / 2.0;	// 90 degrees
+            //
+            angle = fabs(angle2-angle1);
+            angle = angle * 180.0 / 3.14159;	// convert to degrees ???
+            //
+            return angle;
+        }
         glm::vec2 getIntersection(glm::vec2 startA, glm::vec2 endA, glm::vec2 startB, glm::vec2 endB){
             float a1 = endA.y - startA.y;
             float b1 = startA.x - endA.x; 
@@ -142,5 +168,6 @@ namespace clips {
             return start + position * length;
         }
         ofParameter<ofColor> _primaryColor;
+        ofParameter<float> _startY;
     };
 };

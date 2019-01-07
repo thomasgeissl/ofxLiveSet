@@ -14,7 +14,6 @@ namespace clips {
             _parameters.add(_primaryColor);
             _parameters.add(_amount);
             _parameters.add(_frequency);
-
         }
         void update(){
             auto timestamp = ofGetElapsedTimeMillis();
@@ -41,7 +40,5 @@ namespace clips {
         ofParameter<int> _frequency;
 
         u_int64_t _timestamp;
-
-
     };
 };
