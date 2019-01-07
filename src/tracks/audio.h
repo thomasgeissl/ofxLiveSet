@@ -28,12 +28,22 @@ public:
 		_rightAmp.set(1);
 
 		_gain.addListener(this, &audio::onGainChange);
+		_mute.addListener(this, &audio::onMuteChange);
 		_leftInChannel.addListener(this, &audio::onInputChange);
 		_rightInChannel.addListener(this, &audio::onInputChange);
 	}
 	void onGainChange(float & value){
 		_leftAmp.set(value);
 		_rightAmp.set(value);
+	}
+	void onMuteChange(bool & value){
+		if(value){
+			_leftAmp.set(0);
+			_rightAmp.set(0);
+		}else{
+			_leftAmp.set(_gain);
+			_rightAmp.set(_gain);
+		}
 	}
 	void onInputChange(int & value){
 		auto inputs = std::pair<int, int>(_leftInChannel, _rightInChannel);
