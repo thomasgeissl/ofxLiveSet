@@ -24,6 +24,12 @@ void ofApp::setup(){
     visualATrack->addClip(new clips::midiVisualiser())->setup();
     visualATrack->addClip(new clips::beatVisualiser())->setup();
 
+    visualATrack->addClip(new clips::snake())->setup();
+    visualATrack->addClip(new clips::gameOfLife())->setup();
+
+    visualATrack->addClip(new clips::unkownPleasures())->setup();
+    visualATrack->addClip(new clips::onTheDarkSideOfTheMoon())->setup();
+
     visualB->addClip(new clips::randomRectangles())->setup();
     visualB->addClip(new clips::bezierVertex(), 3)->setup();
     visualB->addClip(new clips::parametric2dEquation())->setup();
@@ -31,12 +37,11 @@ void ofApp::setup(){
     visualB->addClip(new clips::arcs())->setup();
     visualB->addClip(new clips::circles())->setup();
 
-    visualB->addClip(new clips::unkownPleasures())->setup();
-    visualB->addClip(new clips::onTheDarkSideOfTheMoon())->setup();
+
     visualB->addClip(new ofxLiveSet::clip::slidePlayer("TODO"))->setup();
     visualB->addClip(new clips::untitled_00())->setup();
     visualB->addClip(new clips::untitled_01())->setup();
-    visualB->addClip(new clips::snake())->setup();
+
     visualB->addClip(new clips::randomPolygon())->setup();
 
     _session->setup();

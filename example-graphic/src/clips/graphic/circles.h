@@ -8,21 +8,18 @@ namespace clips {
             _active.setName(_name);
             
             _primaryColor.set("primaryColor", ofColor::white);
-            _amount.set("amount", 1, 1, 50);
             _amount.addListener(this, &circles::onAmountChange);
+            _amount.set("amount", 5, 1, 50);
 
             _radius.set("_radius", 100, 1, 500);
 
             _parameters.add(_primaryColor);
             _parameters.add(_amount);
             _parameters.add(_radius);
-            _amount = 5;
         }
         void update(){
             begin();
             ofEnableAlphaBlending();
-            auto radius = 20;
-            ofSetLineWidth(20);
             for(auto i = 0; i < _amount; i++){
                 ofSetColor(_colours[i]);
                 // TODO: move center for each circle
