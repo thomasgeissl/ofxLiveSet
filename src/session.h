@@ -21,6 +21,7 @@ namespace ofxLiveSet {
 class session: public ofxMidiListener, public ofxSoundAnalyserListener {
 public:
 	session() : _soundAnalyser(ofxSoundAnalyser(8000)){
+        ofSetEscapeQuitsApp(false);
 		ofAddListener(ofEvents().update, this, &session::onUpdate, OF_EVENT_ORDER_AFTER_APP);
         ofAddListener(ofEvents().draw, this, &session::onDraw, OF_EVENT_ORDER_BEFORE_APP);
         ofAddListener(ofEvents().exit, this, &session::onExit, OF_EVENT_ORDER_AFTER_APP);
@@ -49,7 +50,7 @@ public:
         _midiIn.setVerbose(true);
 
 
-        for(auto track : _tracks){
+        for(auto & track : _tracks){
             track->setup();
         }
         
@@ -89,7 +90,7 @@ public:
         }
 
         
-        for(auto track : _tracks){
+        for(auto & track : _tracks){
             for(auto clip : track->_clips){
                 ofAddListener(clip->_started, this, &session::onClipStarted);
             }
@@ -98,7 +99,7 @@ public:
         _focusedTrack.set("focusedTrack", 0);
         _focusedClip.set("focusedClip", 0);
 
-        for(auto track : _tracks){
+        for(auto & track : _tracks){
             for(auto clip : track->_clips){
                 _midiMapper.addParameters(clip->_parameters, true);
                 _keyMapper.addParameters(clip->_parameters);
@@ -118,12 +119,12 @@ public:
         }
 
         _mqttSynchroniser.setup();
-        for(auto track : _tracks){
+        for(auto & track : _tracks){
             std::string prefix = "ofxLiveSet/mqttSynchroniser/session/"+ofToString(track->_name)+"/parameters/";
             _mqttSynchroniser.addParameters(track->_parameters, prefix);
             prefix =  "ofxLiveSet/mqttSynchroniser/session/"+ofToString(track->_name)+"/ioParameters/";
             _mqttSynchroniser.addParameters(track->_ioParameters, prefix);
-            for(auto clip : track->_clips){
+            for(auto & clip : track->_clips){
                 prefix = "ofxLiveSet/mqttSynchroniser/session/"+ofToString(track->_name)+"/"+ofToString(clip->_name)+"/parameters/";
                 _mqttSynchroniser.addParameters(clip->_parameters, prefix);
             }
@@ -131,9 +132,10 @@ public:
 
         _fbo.allocate(ofGetWidth(), ofGetHeight());
     }
-    void setupGui(){
+    void setupGui(float panelWidth = 200){
         ofAddListener(ofEvents().windowResized, this, &session::onWindowResized, OF_EVENT_ORDER_AFTER_APP);
 
+        ofxPanel::setDefaultWidth(panelWidth);
         ofxPanel::setDefaultFillColor(ofColor::green);
         _midiMapper.getParameters().setName("midi mapper");
         _midiMapperPanel.setup(_midiMapper.getParameters());
@@ -157,7 +159,7 @@ public:
 
         auto x = 0;
         auto y = 0;
-        for(auto track : _tracks){
+        for(auto & track : _tracks){
             track->setupGui();
             track->_gui.setPosition(x, y);
             track->_ioGui.setPosition(_midiMapperPanel.getPosition().x + _midiMapperPanel.getWidth(), ofGetHeight()/2);
@@ -176,7 +178,7 @@ public:
         _engine.setup(44100, 512, 3); 
 
         // connect audio tracks
-        for(auto track : _tracks){
+        for(auto & track : _tracks){
             auto audioTrack = dynamic_cast<ofxLiveSet::track::audio *>(track);
             if (audioTrack != nullptr) {
                 _engine.audio_in(0) >> audioTrack->in("left");
@@ -204,13 +206,13 @@ public:
         if(_active){
             _timestamp = ofGetElapsedTimeMillis();
             _timestampString = ofToString((int)((_timestamp - _startedTimestamp)/1000));
-            for (auto track : _tracks)
+            for (auto & track : _tracks)
             {
                 track->update();
             }
         }
         auto i = 0;
-        for (auto track : _tracks)
+        for (auto & track : _tracks)
         {
             track->_focused = _focusedTrack == i++;
             track->update();
@@ -251,13 +253,13 @@ public:
 	void draw(){
         _fbo.begin();
         ofClear(255,0);
-		for (auto track : _tracks){
+		for (auto & track : _tracks){
             track->draw();
 		}
         _fbo.end();
 	}
     void drawGui(){
-        for (auto track : _tracks){
+        for (auto & track : _tracks){
             track->drawGui();
 		}
         _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(),0); //TODO: only set position on resize
@@ -442,8 +444,8 @@ public:
         }
         auto trackIndex = 0;
         auto clipIndex = 0;
-        for(auto track : _tracks){
-            for(auto clipToCompareWith : track->_clips){
+        for(auto & track : _tracks){
+            for(auto & clipToCompareWith : track->_clips){
                 if(clip == clipToCompareWith){
                     _focusedTrack = trackIndex;
                     _focusedClip = clipIndex;
@@ -472,7 +474,7 @@ public:
                 _engine.audio_in(rightChannel) >> audioTrack->in("right");
             }
             // TODO: reconnect clips
-            for(auto clip : audioTrack->_clips){
+            for(auto & clip : audioTrack->_clips){
                 auto audioClip = (clip::audio *) (clip);
                 if(audioClip != nullptr){
                     audioClip->out("left") >> audioTrack->_leftAmp;
@@ -490,7 +492,7 @@ public:
         }
     }
     void onPeakEnergy(std::pair<int, float> & value){
-        for(auto track : _tracks){
+        for(auto & track : _tracks){
             auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
             if (clip != nullptr) {
                 clip->setPeakEnergy(value.first, value.second);
@@ -500,7 +502,7 @@ public:
     void onPitch(std::pair<int, float> & value){
         int note = std::round((value.second > 0 ? 17.3123405046 * log(.12231220585 * value.second) : -1500));
     
-        for(auto track : _tracks){
+        for(auto & track : _tracks){
             auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
             if (clip != nullptr) {
                 clip->setPitch(value.first, note);
@@ -508,7 +510,7 @@ public:
         }
     }
     void onRootMeanSquare(std::pair<int, float> & value){
-        for(auto track : _tracks){
+        for(auto & track : _tracks){
             auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
             if (clip != nullptr) {
                 clip->setRootMeanSquare(value.first, value.second);
@@ -516,7 +518,7 @@ public:
         }
     }
     void onFftMagnitudeSpectrum(std::pair<int, std::vector<float>> & value){
-        for(auto track : _tracks){
+        for(auto & track : _tracks){
             auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
             if (clip != nullptr) {
                 clip->setFftMagnitudeSpectrum(value.first, value.second);
@@ -524,7 +526,7 @@ public:
         }
     }
     void onMelFrequencySpectrum(std::pair<int, std::vector<float>> & value){ 
-        for(auto track : _tracks){
+        for(auto & track : _tracks){
             auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
             if (clip != nullptr) {
                 clip->setMelFrequencySpectrum(value.first, value.second);
@@ -532,7 +534,7 @@ public:
         }
     }
     void newMidiMessage(ofxMidiMessage& message){
-        for(auto track : _tracks){
+        for(auto & track : _tracks){
             auto clip = dynamic_cast<ofxLiveSet::clip::midiReactive *>(track->_clip);
             if (clip != nullptr) {
                 auto status = message.status;

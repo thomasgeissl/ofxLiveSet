@@ -13,12 +13,13 @@
 #include "./clips/graphic/circles.h"
 #include "./clips/graphic/covers/unkownPleasures.h"
 #include "./clips/graphic/covers/onTheDarkSideOfTheMoon.h"
+#include "./clips/graphic/games/snake.h"
+#include "./clips/graphic/games/gameOfLife.h"
 
 #include "./clips/graphic/midiVisualiser.h"
 #include "./clips/graphic/beatVisualiser.h"
 #include "./clips/graphic/untitled_00.h"
 #include "./clips/graphic/untitled_01.h"
-#include "./clips/graphic/snake.h"
 #include "./clips/graphic/randomPolygon.h"
 
 class ofApp : public ofBaseApp{

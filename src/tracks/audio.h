@@ -5,12 +5,9 @@
 #include "../clips/audio.h"
 #include "../utils/audioAnalyser/AudioAnalyzerBand.h"
 
-namespace ofxLiveSet
-{
-namespace track
-{
-class audio : public base, public pdsp::Patchable
-{
+namespace ofxLiveSet {
+namespace track {
+class audio : public base, public pdsp::Patchable {
 public:
 	audio(std::string name = "") : base(name){
 		_leftInChannel.set("leftIn", 0, -1, 16);
