@@ -100,6 +100,9 @@ public:
         _focusedClip.set("focusedClip", 0);
 
         for(auto & track : _tracks){
+            _midiMapper.addParameters(track->_controls, true);
+            _keyMapper.addParameters(track->_controls);
+            _oscMapper.addParameters(track->_controls);
             for(auto clip : track->_clips){
                 _midiMapper.addParameters(clip->_parameters, true);
                 _keyMapper.addParameters(clip->_parameters);
