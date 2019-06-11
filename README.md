@@ -31,7 +31,8 @@ You can download a fresh version of openFrameworks, as well as ofxLiveSet and it
 ```
 sh -c "$(curl -sSL https://raw.githubusercontent.com/thomasgeissl/ofxLiveSet/master/scripts/install.sh)"
 ```
-
+## Changelog
+### 1.0.0 - first more or less stable version
 
 ## TODOs
 ### core
