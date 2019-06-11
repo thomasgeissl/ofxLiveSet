@@ -21,12 +21,12 @@ public:
 
 		_shaderEnabled.set("shaderEnabled", false);
 
-		_translation.setName("translation");
-		_translation.add(_x);
-		_translation.add(_y);
-		_translation.add(_scale);
-		_translation.add(_rotate);
-		_parameters.add(_translation);
+		_transform.setName("transform");
+		_transform.add(_x);
+		_transform.add(_y);
+		_transform.add(_scale);
+		_transform.add(_rotate);
+		_parameters.add(_transform);
 	}
 	bool isFrameNew(){
 		if(_newFrame){
@@ -59,7 +59,7 @@ public:
 		ofPushMatrix();
 		ofPushStyle();
 		ofTranslate(ofMap(_x, -1, 1, 0, _width), ofMap(_y, -1, 1, 0, _height));
-        ofScale(ofMap(_scale, -1, 1, 0, 2), ofMap(_scale, -1, 1, 0, 2), 0);
+        ofScale(ofMap(_scale, -1, 1, 0, 4), ofMap(_scale, -1, 1, 0, 4), 0);
 		ofRotateDeg(_rotate);
 	}
 	void end(){
@@ -74,7 +74,7 @@ public:
 	ofFbo _fbo;
 	ofShader _shader;
 	ofParameter<bool> _shaderEnabled;
-	ofParameterGroup _translation;
+	ofParameterGroup _transform;
 	ofParameter<float> _x;
     ofParameter<float> _y;
 	ofParameter<float> _scale;

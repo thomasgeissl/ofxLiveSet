@@ -550,7 +550,10 @@ public:
 	std::vector<track::base *> _tracks;
     std::vector<ofxLiveSet::information> _sceneInformation;
     std::mutex _mutex;
+
+    //outputs
     ofFbo _fbo;
+    std::vector<ofFbo> _fbos;
 
     // inputs
     ofxMidiIn _midiIn;

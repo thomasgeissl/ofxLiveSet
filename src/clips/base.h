@@ -52,6 +52,10 @@ public:
     virtual void onStart(){}
     virtual void onStop(){}
 
+    void addParameter(ofAbstractParameter &parameter){
+        _parameters.add(parameter);
+    }
+
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
 	ofParameter<bool> _active;
