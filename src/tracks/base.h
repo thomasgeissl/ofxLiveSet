@@ -149,6 +149,11 @@ public:
     void onStop() {
         stop();
     }
+
+
+    void setGain(float value){
+        _gain = value;
+    }
    
 	std::vector<clip::base *> _clips;
 	clip::base *_clip;

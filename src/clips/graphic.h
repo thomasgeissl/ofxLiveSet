@@ -48,6 +48,7 @@ public:
 		_width = width;
 		_height = height;
 	}
+
 	void begin(bool clear = true){
 		_fbo.begin();
 		if(_shaderEnabled){

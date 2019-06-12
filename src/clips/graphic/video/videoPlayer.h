@@ -9,7 +9,7 @@ namespace ofxLiveSet
         class videoPlayer : public graphic
         {
         public:
-            videoPlayer(std::string path, std::string name = "") : graphic(name){
+            videoPlayer(std::string path, std::string name = "") : graphic(name), _path(path){
                 _name = name;
                 _active.setName(_name);
                 _openFileChooser.set("openFileChooser");
@@ -25,7 +25,7 @@ namespace ofxLiveSet
                 _parameters.add(_speed);
                 _parameters.add(_volume);
 
-                _player.load(path);
+                // _player.load(path);
                 _player.setVolume(_volume);
             }
             void update(){
@@ -59,10 +59,13 @@ namespace ofxLiveSet
                 _player.setVolume(value);
             }
             void onStart(){
+                _player.load(_path);
+                _player.setVolume(_volume);
                 _player.play();
             }
             void onStop(){
                 _player.stop();
+                _player.close();
             }
             ofVideoPlayer _player;
 
@@ -70,6 +73,7 @@ namespace ofxLiveSet
             ofParameter<bool> _loop;
             ofParameter<float> _speed;
             ofParameter<float> _volume;
+            std::string _path;
 
         };
     }; // namespace clip

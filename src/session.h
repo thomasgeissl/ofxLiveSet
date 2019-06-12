@@ -109,6 +109,7 @@ public:
                 _oscMapper.addParameters(clip->_parameters);
             }
         }
+        _midiMapper.addParameter(_gain);
 
                 
         if(ofFile::doesFileExist("mapping.midi.json")){
@@ -134,6 +135,7 @@ public:
         }
 
         _fbo.allocate(ofGetWidth(), ofGetHeight());
+        _rawFbo.allocate(ofGetWidth(), ofGetHeight());
     }
     void setupGui(float panelWidth = 200){
         ofAddListener(ofEvents().windowResized, this, &session::onWindowResized, OF_EVENT_ORDER_AFTER_APP);
@@ -163,7 +165,7 @@ public:
         auto x = 0;
         auto y = 0;
         for(auto & track : _tracks){
-            track->setupGui();
+            track->setupGui(); 
             track->_gui.setPosition(x, y);
             track->_ioGui.setPosition(_midiMapperPanel.getPosition().x + _midiMapperPanel.getWidth(), ofGetHeight()/2);
 
@@ -254,12 +256,19 @@ public:
         }
 	}
 	void draw(){
-        _fbo.begin();
+        _rawFbo.begin();
         ofClear(255,0);
 		for (auto & track : _tracks){
             track->draw();
 		}
+        _rawFbo.end();
+        _fbo.begin();
+            ofClear(255,0);
+            ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+            ofSetColor(255, _gain * 255);
+            _rawFbo.draw(0,0);
         _fbo.end();
+
 	}
     void drawGui(){
         for (auto & track : _tracks){
@@ -309,9 +318,10 @@ public:
     }
     void onWindowResized(float width, float height){
         _fbo.allocate(width, height);
-        _fbo.begin();
+        _rawFbo.allocate(width, height);
+        _rawFbo.begin();
         ofClear(255,0);
-        _fbo.end();
+        _rawFbo.end();
         for (auto track : _tracks){
             auto graphicTrack = dynamic_cast<ofxLiveSet::track::graphic *>(track);
             if(graphicTrack != nullptr){
@@ -556,6 +566,7 @@ public:
 
     //outputs
     ofFbo _fbo;
+    ofFbo _rawFbo;
     std::vector<ofFbo> _fbos;
 
     // inputs
@@ -601,7 +612,8 @@ public:
     ofxPanel _settingsPanel;
     gui::infoPanel _infoPanel;
 
-    ofxLiveSet::mqttSynchroniser _mqttSynchroniser;
+    ofxPanel _effectsPanel;
 
+    ofxLiveSet::mqttSynchroniser _mqttSynchroniser;
 };
 }; // namespace ofxLiveSet
