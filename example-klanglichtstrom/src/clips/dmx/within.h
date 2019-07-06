@@ -22,15 +22,18 @@ namespace clips {
             _remove.set("remove");
             _active.setName(_name);
 
-            _parameters.add(_soundAnalyserId);
-            _parameters.add(_start);
-            _parameters.add(_amount);
-            _parameters.add(_minValue);
-            _parameters.add(_maxValue);
-            _parameters.add(_addPeakEnergy);
-            _parameters.add(_speed);
-            _parameters.add(_add);
-            _parameters.add(_remove);
+            _climaxSoundAnalyserId.set("climaxSoundAnalyser", 2, 0, 32);
+
+            addParameter(_soundAnalyserId);
+            addParameter(_climaxSoundAnalyserId);
+            addParameter(_start);
+            addParameter(_amount);
+            addParameter(_minValue);
+            addParameter(_maxValue);
+            addParameter(_addPeakEnergy);
+            addParameter(_speed);
+            addParameter(_add);
+            addParameter(_remove);
             
 //            _add.newListener([this](){_amount = _amount+1;});
 //            _remove.newListener([this](){_amount = _amount-1;});
@@ -38,18 +41,31 @@ namespace clips {
             _add.addListener(this, &within::onAdd);
             _remove.addListener(this, &within::onRemove);
 
+            _climax = false;
         }
         
         void update(){
-            for(auto i = 0; i < _amount; i++){
-                auto dmxValue = 0;
-                if(_addPeakEnergy){
-                    dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)) - 0.3*_peakEnergy, 0, 1, _minValue, _maxValue, true);
+            if(_climax){
+                auto duration = 1000;
+                auto timestamp = ofGetElapsedTimeMillis();
+                if(timestamp - _climaxTimestamp < duration){
+                    for(auto i = 0; i < _amount; i++){
+                        setValue(i + 1, ofMap(timestamp - _climaxTimestamp, 0, duration, 255, 0));
+                    }
                 }else{
-                    dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)), 0, 1, _minValue, _maxValue);
+                    _climax = false;
                 }
-                std::pair<int, int> value((_start+i)%16+1, dmxValue);
-                _valueChangeEvent.notify(value);
+            }else{
+                for(auto i = 0; i < _amount; i++){
+                    auto dmxValue = 0;
+                    if(_addPeakEnergy){
+                        dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)) - 0.*_peakEnergy, 0, 1, _minValue, _maxValue, true);
+                    }else{
+                        dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)), 0, 1, _minValue, _maxValue);
+                    }
+                    std::pair<int, int> value((_start+i)%16+1, dmxValue);
+                    _valueChangeEvent.notify(value);
+                }
             }
         }
         void stop(){
@@ -59,9 +75,19 @@ namespace clips {
             }
             base::stop();
         }
+
         void setPeakEnergy(int analyserId, float value){
-            if(analyserId != _soundAnalyserId){return;}
-            _peakEnergy = value;
+            if(analyserId == _soundAnalyserId){
+                _peakEnergy = value;
+            }
+            if(analyserId == _climaxSoundAnalyserId){
+                // _climax = true;
+                if(value > 0.5){
+                    _climaxTimestamp = ofGetElapsedTimeMillis();
+                    ofLogNotice() << "TODO: climax";
+                    ofLogNotice() << value;
+                }
+            }
         }
 
         void onAdd(){
@@ -81,6 +107,11 @@ namespace clips {
         ofParameter<float> _speed;
         ofParameter<void> _add;
         ofParameter<void> _remove;
+
+        ofParameter<int> _climaxSoundAnalyserId;
+
+        bool _climax;
+        u_int64_t _climaxTimestamp;
         
         float _peakEnergy;
     };

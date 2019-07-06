@@ -11,7 +11,9 @@ namespace clips {
         }
         anchor() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
             _name = "anchor";
-            _beatsSoundAnalyserId.set("beatsAnalyserId", 2, 0, 32);
+            // TODO: switch analysers, default one is for beat, second one for ambients
+            _beatsSoundAnalyserId.set("beatsAnalyserId", 1, 0, 32);
+            _soundAnalyserId = 2;
             _channel.set("channel", 1, 1, 512);
             _start.set("start", 12, 1, 16);
             _amount.set("amount", 1, 1, 16);
