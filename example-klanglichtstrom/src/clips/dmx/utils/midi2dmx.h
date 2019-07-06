@@ -12,16 +12,14 @@ namespace clips {
         midi2dmx() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::midiReactive() {
             _name = "midi2dmx";
             _active.setName(_name);
-            _parameters.add(_channel);
+            addParameter(_channel);
         }
         
         void setNoteOn(int note, int velocity) {
-            std::pair<int, int> value(note, velocity * 2);
-            _valueChangeEvent.notify(value);
+            setValue(note, velocity * 2);
         }
         void setNoteOff(int note, int velocity) {
-            std::pair<int, int> value(note, 0);
-            _valueChangeEvent.notify(value);
+            setValue(note, 0);
         }
     };
 };

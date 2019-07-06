@@ -59,7 +59,7 @@ void ofApp::setup(){
 }
 
 void ofApp::exit(){
-    for(auto i = 1; i <= 512; i++){
+    for(auto i = 1; i <= 18; i++){
         _dmx.setLevel(i, 0);
     }
     _dmx.update();

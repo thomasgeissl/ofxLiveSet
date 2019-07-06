@@ -23,8 +23,7 @@ namespace clips {
         
         void update() {
             for(auto i = 0; i < _amount; i++) {
-                std::pair<int, int> value(_channel+i, _values[i]);
-                _valueChangeEvent.notify(value);
+                setValue(_channel+1, _values[i]);
             }
         }
         

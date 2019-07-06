@@ -33,22 +33,22 @@ namespace clips {
             _randomiseHighsQuadrant.set("randomiseHighsQuadrant");
             _randomiseHighsQuadrant.addListener(this, &anchor::onRandomiseHighsQuadrant);
 
-            _parameters.add(_soundAnalyserId);
-            _parameters.add(_beatsSoundAnalyserId);
-            _parameters.add(_start);
-            _parameters.add(_amount);
-//            _parameters.add(_minValue);
-            _parameters.add(_maxValue);
-            _parameters.add(_addPeakEnergy);
-            _parameters.add(_speed);
+            addParameter(_soundAnalyserId);
+            addParameter(_beatsSoundAnalyserId);
+            addParameter(_start);
+            addParameter(_amount);
+            // addParameter(_minValue);
+            addParameter(_maxValue);
+            addParameter(_addPeakEnergy);
+            addParameter(_speed);
             
-            _parameters.add(_breathe);
-            _parameters.add(_beatsQuadrant);
-            _parameters.add(_beatsEnergyThreshold);
-            _parameters.add(_highs);
-            _parameters.add(_highsQuadrant);
-            _parameters.add(_randomiseHighsQuadrant);
-            _parameters.add(_highsMaxValue);
+            addParameter(_breathe);
+            addParameter(_beatsQuadrant);
+            addParameter(_beatsEnergyThreshold);
+            addParameter(_highs);
+            addParameter(_highsQuadrant);
+            addParameter(_randomiseHighsQuadrant);
+            addParameter(_highsMaxValue);
 
             _values.resize(16);
             _timestamps.resize(16);
@@ -96,8 +96,7 @@ namespace clips {
         }
         void stop(){
             for(auto i = 1; i <= 16; i++){
-                std::pair<int, int> value(i, 0);
-                _valueChangeEvent.notify(value);
+                setValue(i, 0);
             }
             base::stop();
         }
@@ -126,7 +125,6 @@ namespace clips {
         
         void onRandomiseHighsQuadrant(){
             _highsQuadrantChangeTimestamp = ofGetElapsedTimeMillis();
-            ofLogNotice() << "randomise";
             int oldValue = _highsQuadrant;
             
             _highsQuadrant = ofRandom(0, 4-.00001);
@@ -139,6 +137,7 @@ namespace clips {
                 _values[channel+i] = 0;
             }
         }
+
         ofParameter<int> _beatsSoundAnalyserId;
         ofParameter<int> _channel;
         ofParameter<int> _start;

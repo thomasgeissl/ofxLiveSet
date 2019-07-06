@@ -1,6 +1,9 @@
 #pragma once
 #include "clips/dmx.h"
 
+// strobe clip for stairville ps1500dmx
+// https://images.thomann.de/pics/atg/atgdata/document/manual/168875_c_168875_de_online.pdf
+
 namespace clips {
     class strobe : public ofxLiveSet::clip::dmx {
     public:
@@ -9,46 +12,48 @@ namespace clips {
         {
             return std::make_shared<strobe>(frequencyChannel, velocityChannel);
         }
-        strobe(int frequencyChannel, int velocityChannel) : dmx() {
+        strobe(int frequencyChannel, int velocityChannel) : dmx(), _frequencyChannel(frequencyChannel), _velocityChannel(velocityChannel) {
             _name = "strobe";
             _active.setName("strobe");
-            _frequencyChannel.set("frequencyChannel", frequencyChannel, 1, 512);
-            _velocityChannel.set("velocityChannel", velocityChannel, 1, 512);
             _frequency.set("frequency", 0, 0, 255);
             _velocity.set("velocity", 0, 0, 255);
+            _singleShot.set("singleShot");
             
-            _parameters.add(_frequency);
-            _parameters.add(_velocity);
+            addParameter(_frequency);
+            addParameter(_velocity);
+            addParameter(_singleShot);
             
             _active.addListener(this, &strobe::onActiveChange);
             _frequency.addListener(this, &strobe::onValueChange);
             _velocity.addListener(this, &strobe::onValueChange);
+            _singleShot.addListener(this, &strobe::onSingleShot);
         }
         
         void update(){}
         void onActiveChange(bool & value){
             if(value){
-                std::pair<int, int> frequency(_frequencyChannel, _frequency);
-                _valueChangeEvent.notify(frequency);
-                std::pair<int, int> velocity(_velocityChannel, _velocity);
-                _valueChangeEvent.notify(velocity);
+                setValue(_frequencyChannel, _frequency);
+                setValue(_velocityChannel, _velocity);
             }else{
-                std::pair<int, int> frequency(_frequencyChannel, 0);
-                _valueChangeEvent.notify(frequency);
-                std::pair<int, int> velocity(_velocityChannel, 0);
-                _valueChangeEvent.notify(velocity);
+                setValue(_frequencyChannel, 0);
+                setValue(_velocityChannel, 0);
             }
         }
         void onValueChange(int & value){
             if(!_active) return;
-            std::pair<int, int> frequency(_frequencyChannel, _frequency);
-            _valueChangeEvent.notify(frequency);
-            std::pair<int, int> velocity(_velocityChannel, _velocity);
-            _valueChangeEvent.notify(velocity);
+            setValue(_frequencyChannel, _frequency);
+            setValue(_velocityChannel, _velocity);
         }
-        ofParameter<int> _frequencyChannel;
-        ofParameter<int> _velocityChannel;
+        void onSingleShot(){
+            // setValue(_frequencyChannel, 16);
+            // setValue(_velocityChannel, 255);
+        }
+
+        int _frequencyChannel;
+        int _velocityChannel;
         ofParameter<int> _frequency;
         ofParameter<int> _velocity;
+        ofParameter<void> _singleShot;
+        u_int64_t _singleShotTimestamp;
     };
 };

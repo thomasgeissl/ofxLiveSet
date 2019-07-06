@@ -23,12 +23,12 @@ namespace clips {
             
             _active.setName(_name);
             
-            _parameters.add(_soundAnalyserId);
-            _parameters.add(_minValue);
-            _parameters.add(_maxValue);
-            _parameters.add(_threshold);
-            _parameters.add(_peakEnergyDebounceTime);
-            _parameters.add(_minDistance);
+            addParameter(_soundAnalyserId);
+            addParameter(_minValue);
+            addParameter(_maxValue);
+            addParameter(_threshold);
+            addParameter(_peakEnergyDebounceTime);
+            addParameter(_minDistance);
             
             _timestamp = ofGetElapsedTimeMillis();
         }
@@ -39,16 +39,12 @@ namespace clips {
             for(auto i = 0; i < _amount; i++) {
                 if(timestamp - _timestamps[i] < 1000){
                     _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + 1000, _maxValue, _minValue);
-                    std::pair<int, int> value(_channel+i, _values[i]);
-                    // _valueChangeEvent.notify(value);
                     setValue(_channel + 1, _values[i]);
                 }
             }
         }
         void stop(){
             for(auto i = 1; i <= 16; i++){
-                // std::pair<int, int> value(i, 0);
-                // _valueChangeEvent.notify(value);
                 setValue(i, 0);
             }
             base::stop();

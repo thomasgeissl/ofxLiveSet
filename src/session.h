@@ -20,7 +20,7 @@
 namespace ofxLiveSet {
 class session: public ofxMidiListener, public ofxSoundAnalyserListener {
 public:
-	session() : _soundAnalyser(ofxSoundAnalyser(10000)){
+	session() : _soundAnalyser(ofxSoundAnalyser(8000)){
         ofSetEscapeQuitsApp(false);
 		ofAddListener(ofEvents().update, this, &session::onUpdate, OF_EVENT_ORDER_AFTER_APP);
         ofAddListener(ofEvents().draw, this, &session::onDraw, OF_EVENT_ORDER_BEFORE_APP);
@@ -112,14 +112,14 @@ public:
         _midiMapper.addParameter(_gain);
 
                 
-        if(ofFile::doesFileExist("mapping.midi.json")){
-            _midiMapper.loadMapping(ofToDataPath("mapping.midi.json"));
+        if(ofFile::doesFileExist("mappings/mapping.midi.json")){
+            _midiMapper.loadMapping(ofToDataPath("mappings/mapping.midi.json"));
         }
-        if(ofFile::doesFileExist("mapping.key.json")){
-            _keyMapper.loadMapping(ofToDataPath("mapping.key.json"));
+        if(ofFile::doesFileExist("mappings/mapping.key.json")){
+            _keyMapper.loadMapping(ofToDataPath("mappings/mapping.key.json"));
         }
-        if(ofFile::doesFileExist("mapping.osc.json")){
-            _oscMapper.loadMapping(ofToDataPath("mapping.osc.json"));
+        if(ofFile::doesFileExist("mappings/mapping.osc.json")){
+            _oscMapper.loadMapping(ofToDataPath("mappings/mapping.osc.json"));
         }
 
         _mqttSynchroniser.setup();
@@ -287,20 +287,30 @@ public:
         _infoPanel.draw(0, ofGetHeight() - 100, ofGetWidth()/4, 100);
     }
     void exit(){
-        if(ofFile::doesFileExist("mapping.midi.json")){
-            ofFile::moveFromTo("mapping.midi.json", ofGetTimestampString()+"_mapping.midi.json");
+        std::string mappingsDirectoryPath = ofToDataPath("mappings");
+        std::string mappingsBackupsDirectoryPath = ofToDataPath("mappings/backups");
+        ofDirectory mappingsDirectory(mappingsDirectoryPath);
+        ofDirectory mappingsBackupsDirectory(mappingsBackupsDirectoryPath);
+        if(!mappingsDirectory.exists()){
+            mappingsDirectory.create(true);
         }
-        _midiMapper.saveMapping(ofToDataPath("mapping.midi.json"));
+        if(!mappingsBackupsDirectory.exists()){
+            mappingsBackupsDirectory.create(true);
+        }
+        if(ofFile::doesFileExist("mappings/mapping.midi.json")){
+            ofFile::moveFromTo("mappings/mapping.midi.json", "mappings/backups/"+ofGetTimestampString()+"_mapping.midi.json");
+        }
+        _midiMapper.saveMapping(ofToDataPath("mappings/mapping.midi.json"));
         
-        if(ofFile::doesFileExist("mapping.key.json")){
-            ofFile::moveFromTo("mapping.key.json", ofGetTimestampString()+"_mapping.key.json");
+        if(ofFile::doesFileExist("mappings/mapping.key.json")){
+            ofFile::moveFromTo("mappings/mapping.key.json", "mappings/backups/"+ofGetTimestampString()+"_mapping.key.json");
         }
-        _keyMapper.saveMapping(ofToDataPath("mapping.key.json"));
+        _keyMapper.saveMapping(ofToDataPath("mappings/mapping.key.json"));
         
-        if(ofFile::doesFileExist("mapping.osc.json")){
-            ofFile::moveFromTo("mapping.osc.json", ofGetTimestampString()+"_mapping.osc.json");
+        if(ofFile::doesFileExist("mappings/mapping.osc.json")){
+            ofFile::moveFromTo("mappings/mapping.osc.json", "mappings/backups/"+ofGetTimestampString()+"_mapping.osc.json");
         }
-        _oscMapper.saveMapping(ofToDataPath("mapping.osc.json"));
+        _oscMapper.saveMapping(ofToDataPath("mappings/mapping.osc.json"));
     }
     
 	void onUpdate(ofEventArgs &e){

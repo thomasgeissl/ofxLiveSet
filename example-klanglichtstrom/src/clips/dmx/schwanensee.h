@@ -26,16 +26,16 @@ namespace clips {
 
             _active.setName(_name);
             
-            _parameters.add(_soundAnalyserId);
-//            _parameters.add(_minValue);
-            _parameters.add(_maxValue);
-            _parameters.add(_fadeOutTime);
-            _parameters.add(_debounceTime);
-            _parameters.add(_addPeakEnergy);
-            _parameters.add(_pitchThreshold);
-            _parameters.add(_blackoutDimmer2);
-            _parameters.add(_staticLight);
-            _parameters.add(_staticLightValue);
+            addParameter(_soundAnalyserId);
+//            addParameter.add(_minValue);
+            addParameter(_maxValue);
+            addParameter(_fadeOutTime);
+            addParameter(_debounceTime);
+            addParameter(_addPeakEnergy);
+            addParameter(_pitchThreshold);
+            addParameter(_blackoutDimmer2);
+            addParameter(_staticLight);
+            addParameter(_staticLightValue);
 
             _values.resize(_amount);
             _timestamps.resize(_amount);
@@ -63,19 +63,16 @@ namespace clips {
             for(auto i = 0; i < _amount; i++) {
                 if(timestamp - _timestamps[i] < _fadeOutTime){
                     _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + _fadeOutTime, _maxValue, _minValue);
-                    std::pair<int, int> value(i+1, _values[i]);
-                    _valueChangeEvent.notify(value);
+                    setValue(i+1, _values[i]);
                 }
             }
             if(_staticLight){
-                std::pair<int, int> value(5, _staticLightValue);
-                _valueChangeEvent.notify(value);
+                setValue(5, _staticLightValue);
             }
         }
         void stop(){
             for(auto i = 1; i <= 16; i++){
-                std::pair<int, int> value(i, 0);
-                _valueChangeEvent.notify(value);
+                setValue(i, 0);
             }
             base::stop();
         }
@@ -89,8 +86,7 @@ namespace clips {
         }
         void onBlackoutDimmer2(){
             for(auto i = 2 * 4; i < _amount; i++) {
-                std::pair<int, int> value(i+1, 0);
-                _valueChangeEvent.notify(value);
+                setValue(i+1, 0);
             }
         }
         

@@ -44,7 +44,7 @@ namespace clips {
             for(auto i = 0; i < _amount; i++){
                 auto dmxValue = 0;
                 if(_addPeakEnergy){
-                    dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)) - 0.1*_peakEnergy, 0, 1, _minValue, _maxValue, true);
+                    dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)) - 0.3*_peakEnergy, 0, 1, _minValue, _maxValue, true);
                 }else{
                     dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)), 0, 1, _minValue, _maxValue);
                 }
