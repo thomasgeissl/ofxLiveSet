@@ -8,6 +8,11 @@ namespace ofxLiveSet{
 namespace track{
 class base{
 public:
+    typedef std::shared_ptr<base> pointer;
+    static pointer create(std::string name)
+    {
+        return std::make_shared<base>(name);
+    }
     base(std::string name = "") : _clip(nullptr), _focused(false){
         _parameters.setName(name);
         _name.set("name", name);
@@ -89,7 +94,7 @@ public:
         }
 	}
 
-    clip::base* addClip(clip::base *clip){
+    clip::base::pointer addClip(clip::base::pointer clip){
 		_clips.push_back(clip);
         _clipTriggers.add(clip->_active);
         ofAddListener(clip->_started, this, &base::onClipStarted);
@@ -98,9 +103,9 @@ public:
         return clip;
 	}
 
-    clip::base* addClip(clip::base *clip, int index){
+    clip::base::pointer addClip(clip::base::pointer clip, int index){
         while(_clips.size() < index){
-            auto nullClip = new clip::nullClip();
+            auto nullClip = clip::nullClip::create();
             _clipTriggers.add(nullClip->_active);
             _clips.push_back(nullClip);
         }
@@ -112,7 +117,7 @@ public:
         return clip;
     }
 
-    void setClip(clip::base *clip){
+    void setClip(clip::base::pointer clip){
         _clip = clip;
     }
 
@@ -132,15 +137,16 @@ public:
 
     void onClipStarted(const void* sender, bool & value) {
         for(auto clip : _clips) {
-            if(clip != sender) {
+            if(clip.get() != sender) {
                 clip->stop();
+            }else{
+                _clip = clip;
             }
         }
-        _clip = (clip::base *) (sender);
     }
 
     void onClipStopped(const void* sender, bool & value) {
-        if(_clip == sender) {
+        if(_clip.get() == sender) {
             _clip->stop();
             _clip = nullptr;
         }
@@ -155,8 +161,8 @@ public:
         _gain = value;
     }
    
-	std::vector<clip::base *> _clips;
-	clip::base *_clip;
+	std::vector<clip::base::pointer> _clips;
+	clip::base::pointer _clip;
 	ofParameterGroup _parameters;
     ofParameterGroup _controls;
 	ofParameter<std::string> _name;

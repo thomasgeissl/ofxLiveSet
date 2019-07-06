@@ -9,6 +9,11 @@ namespace clip
 class graphic : public base
 {
 public:
+    typedef std::shared_ptr<graphic> pointer;
+    static pointer create(std::string name)
+    {
+        return std::make_shared<graphic>(name);
+	}
     graphic(std::string name = "") : base(name), _newFrame(true){
 		_width.addListener(this, &graphic::onWidthChange);
 		_height.addListener(this, &graphic::onHeightChange);

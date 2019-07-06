@@ -4,6 +4,11 @@
 namespace clips {
     class within : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive{
     public:
+        typedef std::shared_ptr<within> pointer;
+        static pointer create()
+        {
+            return std::make_shared<within>();
+        }
         within() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
             _name = "within";
             _channel.set("channel", 1, 1, 512);

@@ -6,30 +6,36 @@ ofApp::ofApp() : _session(_project._session){
 void ofApp::setup(){
     ofSetBackgroundColor(16, 16, 16);
 
-    _dmx.connect("tty.usbserial-EN160415");
+    _dmx.connect("/dev/cu.usbserial-EN160415");
     _dmx.setChannels(18);
     
-    auto lightBulbsTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("light bulbs")));
-    auto strobeTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("strobe")));
-    auto utilsTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("utils")));
-    auto afterShowTrack = (ofxLiveSet::track::dmx*)(_session->addTrack(new ofxLiveSet::track::dmx("afterShow")));
+    auto lightBulbsTrack = ofxLiveSet::track::dmx::create("light bulbs");
+    auto strobeTrack = ofxLiveSet::track::dmx::create("strobe");
+    auto hazerTrack = ofxLiveSet::track::dmx::create("hazer");
+    auto utilsTrack = ofxLiveSet::track::dmx::create("utils");
+    auto afterShowTrack = ofxLiveSet::track::dmx::create("after show");
 
-    
-    lightBulbsTrack->addClip(new clips::within())->setup();
-    lightBulbsTrack->addClip(new clips::anchor())->setup();
-    lightBulbsTrack->addClip(new clips::firn())->setup();
-    lightBulbsTrack->addClip(new clips::schwanensee())->setup();
+    lightBulbsTrack->addClip(clips::within::create())->setup();
+    lightBulbsTrack->addClip(clips::anchor::create())->setup();
+    lightBulbsTrack->addClip(clips::firn::create())->setup();
+    lightBulbsTrack->addClip(clips::schwanensee::create())->setup();
 
-    strobeTrack->addClip(new clips::strobe(17, 18), 2)->setup();
+    strobeTrack->addClip(clips::strobe::create(17, 18), 2)->setup();
 
-    utilsTrack->addClip(new clips::still(), 4)->setup();
-    utilsTrack->addClip(new clips::midi2dmx())->setup();
+    utilsTrack->addClip(clips::still::create(), 4)->setup();
+    utilsTrack->addClip(clips::midi2dmx::create())->setup();
     
     utilsTrack->mute();
     afterShowTrack->mute();
+
+    _session->addTrack(lightBulbsTrack);
+    _session->addTrack(strobeTrack);
+    _session->addTrack(hazerTrack);
+    _session->addTrack(utilsTrack);
+    _session->addTrack(afterShowTrack);
     
     for(auto track : _session->_tracks){
-        if(auto dmxTrack = dynamic_cast<ofxLiveSet::track::dmx*>(track)) {
+        if(auto dmxTrack = std::dynamic_pointer_cast<ofxLiveSet::track::dmx>(track)){
             dmxTrack->setup(&_dmx);
         }
     }
@@ -37,7 +43,7 @@ void ofApp::setup(){
     _session->setup();
     _session->setupGui();
     _session->openOscControlInPort(9000);
-    _session->openMidiMapperInPort(2);
+    _session->openMidiMapperInPort(0);
     _session->stop();
     _session->_mqttSynchroniserEnabled = false;
 
@@ -45,6 +51,7 @@ void ofApp::setup(){
     _session->renameScene(1, "anchor");
     _session->renameScene(2, "firn");
     _session->renameScene(3, "schwanensee");
+    _session->renameScene(4, "TODO: new");
     _session->_sceneInformation[0]._text = "";
     _session->_sceneInformation[1]._text = "activate analyser\non beats track\nin ableton live";
     _session->_sceneInformation[2]._text = "";
@@ -62,7 +69,7 @@ void ofApp::update(){
 #ifdef SENDDMX
     _dmx.update();
 #endif
-    ofSetWindowTitle("klanglichtstrom :: fps: "+ofToString((int)(ofGetFrameRate())));
+    ofSetWindowTitle("klanglichtstrom v2.0:: fps: "+ofToString((int)(ofGetFrameRate())));
 }
 
 void ofApp::draw(){

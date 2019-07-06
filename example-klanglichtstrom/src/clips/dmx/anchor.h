@@ -4,6 +4,11 @@
 namespace clips {
     class anchor : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive {
     public:
+        typedef std::shared_ptr<anchor> pointer;
+        static pointer create()
+        {
+            return std::make_shared<anchor>();
+        }
         anchor() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
             _name = "anchor";
             _beatsSoundAnalyserId.set("beatsAnalyserId", 2, 0, 32);
@@ -99,13 +104,15 @@ namespace clips {
         void setPeakEnergy(int analyserId, float value){
             if(analyserId == _soundAnalyserId){
                 _peakEnergy = value;
+                ofLogNotice() << "got peak energy";
             }
             if(analyserId == _beatsSoundAnalyserId){
+                ofLogNotice() << "got peak energy beat";
                 if(value > _beatsEnergyThreshold){
                     if(_breathe){
                         _breathe = false;
                         _values[_beatsQuadrant*4 + 3] = 0;
-                    }else{
+                    }else{\
                         for(auto i = _beatsQuadrant*4; i < _beatsQuadrant*4+4; i++){
                             _timestamps[i] = ofGetElapsedTimeMillis();
                             _values[i] = _maxValue*value;

@@ -4,6 +4,11 @@
 namespace clips {
     class schwanensee : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive {
     public:
+        typedef std::shared_ptr<schwanensee> pointer;
+        static pointer create()
+        {
+            return std::make_shared<schwanensee>();
+        }
         schwanensee() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
             _name = "schwanensee";
             _amount.set("amount", 16, 1, 16);

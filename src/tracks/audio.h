@@ -9,6 +9,11 @@ namespace ofxLiveSet {
 namespace track {
 class audio : public base, public pdsp::Patchable {
 public:
+    typedef std::shared_ptr<audio> pointer;
+    static pointer create(std::string name)
+    {
+        return std::make_shared<audio>(name);
+    }
 	audio(std::string name = "") : base(name){
 		_leftInChannel.set("leftIn", 0, -1, 16);
 		_rightInChannel.set("rightIn", -1, -1, 16);
@@ -47,8 +52,8 @@ public:
 		_inputsChanged.notify(this, inputs);
 	}
 
-	clip::base* addClip(clip::base *clip){
-		auto audioClip = dynamic_cast<ofxLiveSet::clip::audio *>(clip);
+	clip::base::pointer addClip(clip::base::pointer clip){
+		auto audioClip = dynamic_pointer_cast<ofxLiveSet::clip::audio>(clip);
         if (audioClip != nullptr) {
 			audioClip->out("left") >> _leftAmp;
 			audioClip->out("right") >> _rightAmp;

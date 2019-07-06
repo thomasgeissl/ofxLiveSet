@@ -7,6 +7,11 @@ namespace ofxLiveSet{
 namespace track{
 class graphic : public base{
 public:
+    typedef std::shared_ptr<graphic> pointer;
+    static pointer create(std::string name)
+    {
+        return std::make_shared<graphic>(name);
+    }
     graphic(std::string name = "") : base(name){
         _xPosition.set("x", 0, 0, ofGetWidth());
         _yPosition.set("y", 0, 0, ofGetHeight());
@@ -28,7 +33,7 @@ public:
         _fbo.end();
 	}
     virtual void draw(){
-        auto clip = ((ofxLiveSet::clip::graphic *)(_clip));
+        auto clip = std::dynamic_pointer_cast<clip::graphic>(_clip);
 
         if(!_mute && clip != nullptr && clip->isFrameNew()) {
             _fbo.begin();
@@ -58,7 +63,7 @@ public:
         ofClear(255,0);
         _fbo.end();
         for(auto clip : _clips){
-            auto graphicClip = dynamic_cast<ofxLiveSet::clip::graphic *>(clip);
+            auto graphicClip = dynamic_pointer_cast<ofxLiveSet::clip::graphic>(clip);
             if (graphicClip != nullptr) {
                 graphicClip->setSize(_width, _height);
             }

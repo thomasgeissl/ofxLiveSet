@@ -20,7 +20,7 @@
 namespace ofxLiveSet {
 class session: public ofxMidiListener, public ofxSoundAnalyserListener {
 public:
-	session() : _soundAnalyser(ofxSoundAnalyser(8000)){
+	session() : _soundAnalyser(ofxSoundAnalyser(10000)){
         ofSetEscapeQuitsApp(false);
 		ofAddListener(ofEvents().update, this, &session::onUpdate, OF_EVENT_ORDER_AFTER_APP);
         ofAddListener(ofEvents().draw, this, &session::onDraw, OF_EVENT_ORDER_BEFORE_APP);
@@ -28,10 +28,10 @@ public:
         // ofAddListener(ofEvents().keyPressed, this, &session::onKeyPressed, OF_EVENT_ORDER_AFTER_APP);
 
         _defaultKeyMappingEnabled.set("defaultKeyMappingEnabled", true);
-        _oscControlEnabled.set("oscControlEnabled", true);
         _oscControlEnabled.addListener(this, &session::onOscControlEnabledChange);
-        _mqttSynchroniserEnabled.set("mqttSynchroniserEnabled", true);
+        _oscControlEnabled.set("oscControlEnabled", false);
         _autoResizeGraphicTracksEnabled.set("autoResizeGraphicTracksEnabled", true);
+        _mqttSynchroniserEnabled.set("mqttSynchroniserEnabled", false);
 
         _settings.add(_defaultKeyMappingEnabled);
         _settings.add(_oscControlEnabled);
@@ -184,7 +184,7 @@ public:
 
         // connect audio tracks
         for(auto & track : _tracks){
-            auto audioTrack = dynamic_cast<ofxLiveSet::track::audio *>(track);
+            auto audioTrack = std::dynamic_pointer_cast<ofxLiveSet::track::audio>(track);
             if (audioTrack != nullptr) {
                 _engine.audio_in(0) >> audioTrack->in("left");
                 _engine.audio_in(1) >> audioTrack->in("right");
@@ -323,7 +323,7 @@ public:
         ofClear(255,0);
         _rawFbo.end();
         for (auto track : _tracks){
-            auto graphicTrack = dynamic_cast<ofxLiveSet::track::graphic *>(track);
+            auto graphicTrack = std::dynamic_pointer_cast<ofxLiveSet::track::graphic>(track);
             if(graphicTrack != nullptr){
                 graphicTrack->resize(width, height);
             }
@@ -399,7 +399,7 @@ public:
 			track->stop();
 		}
 	}
-    track::base * addTrack(track::base *track)
+    track::base::pointer addTrack(track::base::pointer track)
 	{
 		_tracks.push_back(track);
         return track;
@@ -415,7 +415,7 @@ public:
         }
     }
     
-    clip::base* getClip(int track, int index){
+    clip::base::pointer getClip(int track, int index){
         if(track >= _tracks.size()){ return nullptr; }
         if(index >= _tracks[track]->_clips.size()){ return nullptr; }
         return _tracks[track]->_clips[index];
@@ -449,7 +449,7 @@ public:
     }
 
     void onClipStarted(const void* sender, bool & value) {
-        auto clip = (clip::base *) (sender);
+        auto clip = (clip::base *)(sender);
         auto nullClip = dynamic_cast<ofxLiveSet::clip::nullClip *>(clip);
         if (nullClip != nullptr){return;}
         if(!_active){
@@ -459,7 +459,7 @@ public:
         auto clipIndex = 0;
         for(auto & track : _tracks){
             for(auto & clipToCompareWith : track->_clips){
-                if(clip == clipToCompareWith){
+                if(clip == clipToCompareWith.get()){
                     _focusedTrack = trackIndex;
                     _focusedClip = clipIndex;
                 }
@@ -488,7 +488,7 @@ public:
             }
             // TODO: reconnect clips
             for(auto & clip : audioTrack->_clips){
-                auto audioClip = (clip::audio *) (clip);
+                auto audioClip = std::dynamic_pointer_cast<clip::audio>(clip);
                 if(audioClip != nullptr){
                     audioClip->out("left") >> audioTrack->_leftAmp;
                     audioClip->out("right") >> audioTrack->_rightAmp;
@@ -506,7 +506,7 @@ public:
     }
     void onPeakEnergy(std::pair<int, float> & value){
         for(auto & track : _tracks){
-            auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
+            auto clip = dynamic_pointer_cast<ofxLiveSet::clip::soundReactive>(track->_clip);
             if (clip != nullptr) {
                 clip->setPeakEnergy(value.first, value.second);
             }
@@ -516,7 +516,7 @@ public:
         int note = std::round((value.second > 0 ? 17.3123405046 * log(.12231220585 * value.second) : -1500));
     
         for(auto & track : _tracks){
-            auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
+            auto clip = dynamic_pointer_cast<ofxLiveSet::clip::soundReactive>(track->_clip);
             if (clip != nullptr) {
                 clip->setPitch(value.first, note);
             }
@@ -524,7 +524,7 @@ public:
     }
     void onRootMeanSquare(std::pair<int, float> & value){
         for(auto & track : _tracks){
-            auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
+            auto clip = dynamic_pointer_cast<ofxLiveSet::clip::soundReactive>(track->_clip);
             if (clip != nullptr) {
                 clip->setRootMeanSquare(value.first, value.second);
             }
@@ -532,7 +532,7 @@ public:
     }
     void onFftMagnitudeSpectrum(std::pair<int, std::vector<float>> & value){
         for(auto & track : _tracks){
-            auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
+            auto clip = dynamic_pointer_cast<ofxLiveSet::clip::soundReactive>(track->_clip);
             if (clip != nullptr) {
                 clip->setFftMagnitudeSpectrum(value.first, value.second);
             }
@@ -540,7 +540,7 @@ public:
     }
     void onMelFrequencySpectrum(std::pair<int, std::vector<float>> & value){ 
         for(auto & track : _tracks){
-            auto clip = dynamic_cast<ofxLiveSet::clip::soundReactive *>(track->_clip);
+            auto clip = dynamic_pointer_cast<ofxLiveSet::clip::soundReactive>(track->_clip);
             if (clip != nullptr) {
                 clip->setMelFrequencySpectrum(value.first, value.second);
             }
@@ -548,7 +548,7 @@ public:
     }
     void newMidiMessage(ofxMidiMessage& message){
         for(auto & track : _tracks){
-            auto clip = dynamic_cast<ofxLiveSet::clip::midiReactive *>(track->_clip);
+            auto clip = dynamic_pointer_cast<ofxLiveSet::clip::midiReactive>(track->_clip);
             if (clip != nullptr) {
                 auto status = message.status;
                 if(status == MIDI_NOTE_ON){
@@ -560,7 +560,7 @@ public:
         }
     }
     pdsp::Engine _engine;
-	std::vector<track::base *> _tracks;
+	std::vector<track::base::pointer> _tracks;
     std::vector<ofxLiveSet::information> _sceneInformation;
     std::mutex _mutex;
 

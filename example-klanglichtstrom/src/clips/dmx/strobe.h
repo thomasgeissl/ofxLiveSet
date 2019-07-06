@@ -4,6 +4,11 @@
 namespace clips {
     class strobe : public ofxLiveSet::clip::dmx {
     public:
+        typedef std::shared_ptr<strobe> pointer;
+        static pointer create(int frequencyChannel, int velocityChannel)
+        {
+            return std::make_shared<strobe>(frequencyChannel, velocityChannel);
+        }
         strobe(int frequencyChannel, int velocityChannel) : dmx() {
             _name = "strobe";
             _active.setName("strobe");

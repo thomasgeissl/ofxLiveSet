@@ -4,6 +4,11 @@
 namespace clips {
     class firn : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive{
     public:
+        typedef std::shared_ptr<firn> pointer;
+        static pointer create()
+        {
+            return std::make_shared<firn>();
+        }
         firn() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive(), _lastIndex(0){
             _name = "firn";
             _channel.set("channel", 1, 1, 512);
@@ -35,20 +40,24 @@ namespace clips {
                 if(timestamp - _timestamps[i] < 1000){
                     _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + 1000, _maxValue, _minValue);
                     std::pair<int, int> value(_channel+i, _values[i]);
-                    _valueChangeEvent.notify(value);
+                    // _valueChangeEvent.notify(value);
+                    setValue(_channel + 1, _values[i]);
                 }
             }
         }
         void stop(){
             for(auto i = 1; i <= 16; i++){
-                std::pair<int, int> value(i, 0);
-                _valueChangeEvent.notify(value);
+                // std::pair<int, int> value(i, 0);
+                // _valueChangeEvent.notify(value);
+                setValue(i, 0);
             }
             base::stop();
         }
         void setPeakEnergy(int analyserId, float value) {
+            ofLogNotice() << "set peak";
             if(value < _threshold){return;}
             if(analyserId != _soundAnalyserId){return;}
+            ofLogNotice() << "got peak energz for firn";
             auto timestamp = ofGetElapsedTimeMillis();
             if(timestamp - _timestamp < _peakEnergyDebounceTime){
                 return;
@@ -62,7 +71,6 @@ namespace clips {
             _lastIndex = i;
             _timestamps[i] = ofGetElapsedTimeMillis();
             _values[i] = _maxValue*value;
-            
         }
         
         void onAmountChange(int & value){

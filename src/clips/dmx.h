@@ -9,6 +9,11 @@ namespace ofxLiveSet
         class dmx : public base
         {
         public:
+            typedef std::shared_ptr<dmx> pointer;
+            static pointer create(std::string name)
+            {
+                return std::make_shared<dmx>(name);
+            }
             dmx(std::string name = "") : base(name)
             {
             }

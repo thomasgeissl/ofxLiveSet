@@ -7,6 +7,11 @@ namespace ofxLiveSet{
 namespace clip{
 class base{
 public:
+    typedef std::shared_ptr<base> pointer;
+    static pointer create(std::string name)
+    {
+        return std::make_shared<base>(name);
+    }
     base(std::string name = ""){
         _active.setName(name);
         _active.addListener(this, &base::onActiveChange);
