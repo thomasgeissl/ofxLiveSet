@@ -15,8 +15,8 @@ namespace clips {
         strobe(int frequencyChannel, int velocityChannel) : dmx(), _frequencyChannel(frequencyChannel), _velocityChannel(velocityChannel) {
             _name = "strobe";
             _active.setName("strobe");
-            _frequency.set("frequency", 0, 0, 255);
-            _velocity.set("velocity", 0, 0, 255);
+            _frequency.set("frequency", 15, 15, 255);
+            _velocity.set("velocity", 15, 15, 255);
             _singleShot.set("singleShot");
             
             addParameter(_frequency);

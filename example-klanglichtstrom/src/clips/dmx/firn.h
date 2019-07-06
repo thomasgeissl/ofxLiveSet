@@ -39,7 +39,7 @@ namespace clips {
             for(auto i = 0; i < _amount; i++) {
                 if(timestamp - _timestamps[i] < 1000){
                     _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + 1000, _maxValue, _minValue);
-                    setValue(_channel + 1, _values[i]);
+                    setValue(_channel + i, _values[i]);
                 }
             }
         }
@@ -50,10 +50,8 @@ namespace clips {
             base::stop();
         }
         void setPeakEnergy(int analyserId, float value) {
-            ofLogNotice() << "set peak";
             if(value < _threshold){return;}
             if(analyserId != _soundAnalyserId){return;}
-            ofLogNotice() << "got peak energz for firn";
             auto timestamp = ofGetElapsedTimeMillis();
             if(timestamp - _timestamp < _peakEnergyDebounceTime){
                 return;
