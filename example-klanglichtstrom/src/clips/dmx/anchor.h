@@ -11,9 +11,7 @@ namespace clips {
         }
         anchor() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
             _name = "anchor";
-            // TODO: switch analysers, default one is for beat, second one for ambients
-            _beatsSoundAnalyserId.set("beatsAnalyserId", 1, 0, 32);
-            _soundAnalyserId = 2;
+            _pitchChangeTriggerSoundAnalyserId.set("pitchChangeTrigger", 2, 0, 32);
             _channel.set("channel", 1, 1, 512);
             _start.set("start", 12, 1, 16);
             _amount.set("amount", 1, 1, 16);
@@ -36,7 +34,7 @@ namespace clips {
             _randomiseHighsQuadrant.addListener(this, &anchor::onRandomiseHighsQuadrant);
 
             addParameter(_soundAnalyserId);
-            addParameter(_beatsSoundAnalyserId);
+            addParameter(_pitchChangeTriggerSoundAnalyserId);
             addParameter(_start);
             addParameter(_amount);
             // addParameter(_minValue);
@@ -71,7 +69,7 @@ namespace clips {
             auto dmxValue = 0;
             if(_breathe){
                 if(_addPeakEnergy){
-                    _values[_beatsQuadrant*4 + 3] = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*0.1+0.4)) + _beatsPeakEnergy, 0, 2, _minValue, _maxValue);
+                    _values[_beatsQuadrant*4 + 3] = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*0.1+0.4)) + _peakEnergy, 0, 2, _minValue, _maxValue);
                     
                 }else{
                     _values[_beatsQuadrant*4 + 3] = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*0.1+0.4)), 0, 1, _minValue, _maxValue);
@@ -84,8 +82,8 @@ namespace clips {
                 }
             }
             
-            ofLogNotice() << _peakEnergy;
-            if(_peakEnergy > .2 && timestamp - _highsQuadrantChangeTimestamp > 100){
+            // ofLogNotice() << ofToString(_pitchChangeTriggerPeakEnergy, 2);
+            if(_pitchChangeTriggerPeakEnergy > .1 && timestamp - _highsQuadrantChangeTimestamp > 100){
                 onRandomiseHighsQuadrant();
             }
 
@@ -103,24 +101,24 @@ namespace clips {
             base::stop();
         }
         void setPeakEnergy(int analyserId, float value){
-            if(analyserId == _soundAnalyserId){
-                _peakEnergy = value;
-                ofLogNotice() << "got peak energy";
+            if(analyserId == _pitchChangeTriggerSoundAnalyserId){
+                if(value > 0.05){
+                ofLogNotice() << ofToString(value, 2);
+                }
+                _pitchChangeTriggerPeakEnergy = value;
             }
-            if(analyserId == _beatsSoundAnalyserId){
-                ofLogNotice() << "got peak energy beat";
+            if(analyserId == _soundAnalyserId){
                 if(value > _beatsEnergyThreshold){
                     if(_breathe){
                         _breathe = false;
                         _values[_beatsQuadrant*4 + 3] = 0;
-                    }else{\
+                    }else{
                         for(auto i = _beatsQuadrant*4; i < _beatsQuadrant*4+4; i++){
                             _timestamps[i] = ofGetElapsedTimeMillis();
                             _values[i] = _maxValue*value;
                         }
                     }
-        
-                    _beatsPeakEnergy = value;
+                    _peakEnergy = value;
                 }
             }
         }
@@ -140,7 +138,7 @@ namespace clips {
             }
         }
 
-        ofParameter<int> _beatsSoundAnalyserId;
+        ofParameter<int> _pitchChangeTriggerSoundAnalyserId;
         ofParameter<int> _channel;
         ofParameter<int> _start;
         ofParameter<int> _amount;
@@ -162,7 +160,7 @@ namespace clips {
         ofParameter<void> _randomiseHighsQuadrant;
 
         float _peakEnergy;
-        float _beatsPeakEnergy;
+        float _pitchChangeTriggerPeakEnergy;
         
         std::vector<int> _values;
         std::vector<u_int64_t> _timestamps;

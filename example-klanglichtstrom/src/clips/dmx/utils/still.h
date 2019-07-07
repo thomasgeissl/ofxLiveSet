@@ -23,7 +23,7 @@ namespace clips {
         
         void update() {
             for(auto i = 0; i < _amount; i++) {
-                setValue(_channel+1, _values[i]);
+                setValue(_channel+i, _values[i]);
             }
         }
         

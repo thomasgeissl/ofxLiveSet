@@ -109,6 +109,5 @@ namespace clips {
         float _peakEnergy;
         float _pitch;
         int _lastIndex;
-
     };
 };
