@@ -5,6 +5,11 @@
 namespace clips {
     class beatVisualiser : public ofxLiveSet::clip::graphic, public clips::beatReactive {
     public:
+        typedef std::shared_ptr<beatVisualiser> pointer;
+        static pointer create(std::string name="")
+        {
+            return std::make_shared<beatVisualiser>(name);
+        }
         beatVisualiser(std::string name = "beatVisualiser") : graphic(name){
             _name = name;
             _active.setName(_name);

@@ -30,6 +30,6 @@ public:
         }
     }
 
-    ofxLiveSet::session *_session;
+    ofxLiveSet::session::pointer _session;
 };
 

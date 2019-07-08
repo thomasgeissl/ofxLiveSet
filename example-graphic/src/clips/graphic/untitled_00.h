@@ -5,6 +5,11 @@
 namespace clips {
     class untitled_00 : public ofxLiveSet::clip::graphic {
     public:
+        typedef std::shared_ptr<untitled_00> pointer;
+        static pointer create(std::string name="untitled_00")
+        {
+            return std::make_shared<untitled_00>(name);
+        }
         untitled_00(std::string name = "untitled_00") : graphic(name){
             _name = name;
             _active.setName(_name);

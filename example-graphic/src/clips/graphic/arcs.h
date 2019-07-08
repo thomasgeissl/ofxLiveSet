@@ -3,6 +3,11 @@
 namespace clips {
     class arcs : public ofxLiveSet::clip::graphic {
     public:
+        typedef std::shared_ptr<arcs> pointer;
+        static pointer create(std::string name="")
+        {
+            return std::make_shared<arcs>(name);
+        }
         arcs(std::string name = "arcs") : graphic(name){
             _name = name;
             _active.setName(_name);

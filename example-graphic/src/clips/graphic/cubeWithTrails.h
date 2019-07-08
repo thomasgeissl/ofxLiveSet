@@ -5,6 +5,11 @@
 namespace clips {
     class cubeWithTrails : public ofxLiveSet::clip::graphic, public clips::beatReactive {
     public:
+        typedef std::shared_ptr<cubeWithTrails> pointer;
+        static pointer create(std::string name="")
+        {
+            return std::make_shared<cubeWithTrails>(name);
+        }
         cubeWithTrails(std::string name = "cubeWithTrails") : graphic(name){
             _name = name;
             _active.setName(_name);

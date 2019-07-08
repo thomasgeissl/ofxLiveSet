@@ -43,8 +43,8 @@ public:
     void gotMessage(ofMessage msg);
     void audioReceived(float* input, int bufferSize, int nChannels);
     
-    ofxLiveSet::project _project;
-    ofxLiveSet::session *_session;
+    ofxLiveSet::project::pointer _project;
+    ofxLiveSet::session::pointer _session;
     ofxBeat _beat;
 
     ofParameterGroup _parameters;

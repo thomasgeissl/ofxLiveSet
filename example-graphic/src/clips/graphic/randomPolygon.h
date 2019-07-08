@@ -3,6 +3,12 @@
 namespace clips {
     class randomPolygon : public ofxLiveSet::clip::graphic {
     public:
+        typedef std::shared_ptr<randomPolygon> pointer;
+        static pointer create(std::string name="")
+        {
+            return std::make_shared<randomPolygon>(name);
+        }
+        
         randomPolygon(std::string name = "randomPolygon") : graphic(name){
             _name = name;
             _active.setName(_name);

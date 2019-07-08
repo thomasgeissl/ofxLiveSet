@@ -9,6 +9,11 @@ namespace ofxLiveSet
         class videoPlayer : public graphic
         {
         public:
+            typedef std::shared_ptr<videoPlayer> pointer;
+            static pointer create(std::string path, std::string name="")
+            {
+                return std::make_shared<videoPlayer>(path, name);
+            }
             videoPlayer(std::string path, std::string name = "") : graphic(name), _path(path){
                 _name = name;
                 _active.setName(_name);

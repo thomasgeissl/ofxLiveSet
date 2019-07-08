@@ -3,6 +3,11 @@
 namespace clips {
     class midiVisualiser : public ofxLiveSet::clip::graphic, public ofxLiveSet::clip::midiReactive {
     public:
+        typedef std::shared_ptr<midiVisualiser> pointer;
+        static pointer create(std::string name="")
+        {
+            return std::make_shared<midiVisualiser>(name);
+        }
         midiVisualiser(std::string name = "midiVisualiser") : graphic(name){
             _name = name;
             _active.setName(_name);

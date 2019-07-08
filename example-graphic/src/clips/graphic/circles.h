@@ -3,6 +3,11 @@
 namespace clips {
     class circles : public ofxLiveSet::clip::graphic {
     public:
+        typedef std::shared_ptr<circles> pointer;
+        static pointer create(std::string name="")
+        {
+            return std::make_shared<circles>(name);
+        }
         circles(std::string name = "circles") : graphic(name){
             _name = name;
             _active.setName(_name);

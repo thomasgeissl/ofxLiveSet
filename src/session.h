@@ -20,6 +20,11 @@
 namespace ofxLiveSet {
 class session: public ofxMidiListener, public ofxSoundAnalyserListener {
 public:
+    typedef std::shared_ptr<session> pointer;
+    static pointer create()
+    {
+        return std::make_shared<session>();
+    }
 	session() : _soundAnalyser(ofxSoundAnalyser(8000)){
         ofSetEscapeQuitsApp(false);
 		ofAddListener(ofEvents().update, this, &session::onUpdate, OF_EVENT_ORDER_AFTER_APP);

@@ -3,6 +3,11 @@
 namespace clips {
     class bezierVertex : public ofxLiveSet::clip::graphic {
     public:
+        typedef std::shared_ptr<bezierVertex> pointer;
+        static pointer create(std::string name="")
+        {
+            return std::make_shared<bezierVertex>(name);
+        }
         bezierVertex(std::string name = "bezierVertex") : graphic(name){
             _name = name;
             _active.setName(_name);

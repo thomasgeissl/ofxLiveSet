@@ -4,6 +4,11 @@
 namespace clips {
     class snake : public ofxLiveSet::clip::graphic {
     public:
+        typedef std::shared_ptr<snake> pointer;
+        static pointer create(std::string name="snake")
+        {
+            return std::make_shared<snake>(name);
+        }
         snake(std::string name = "snake") : graphic(name), _foodPosition(glm::vec2(-5, 5)){
             _name = name;
             _active.setName(_name);

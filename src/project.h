@@ -7,11 +7,16 @@ namespace ofxLiveSet
 class project
 {
 public:
+    typedef std::shared_ptr<project> pointer;
+    static pointer create()
+    {
+        return std::make_shared<project>();
+    }
 	project() : _session(nullptr)
 	{
-		addSession(new session());
+		addSession(session::create());
 	}
-	void addSession(session *session)
+	void addSession(session::pointer session)
 	{
 		_sessions.push_back(session);
         if(_session){
@@ -25,8 +30,8 @@ public:
 	void load(std::string path)
 	{
 	}
-	std::vector<session *> _sessions;
-	session *_session;
+	std::vector<session::pointer> _sessions;
+	session::pointer _session;
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
 };

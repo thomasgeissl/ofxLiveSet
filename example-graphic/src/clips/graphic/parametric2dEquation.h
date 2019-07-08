@@ -3,6 +3,11 @@
 namespace clips {
     class parametric2dEquation : public ofxLiveSet::clip::graphic {
     public:
+        typedef std::shared_ptr<parametric2dEquation> pointer;
+        static pointer create(std::string name="")
+        {
+            return std::make_shared<parametric2dEquation>(name);
+        }
         parametric2dEquation(std::string name = "parametric2dEquation") : graphic(name), _t(0){
             _name = name;
             _active.setName(_name);

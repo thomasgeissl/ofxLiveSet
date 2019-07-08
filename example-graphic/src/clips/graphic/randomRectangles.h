@@ -3,6 +3,11 @@
 namespace clips {
     class randomRectangles : public ofxLiveSet::clip::graphic {
     public:
+        typedef std::shared_ptr<randomRectangles> pointer;
+        static pointer create(std::string name="")
+        {
+            return std::make_shared<randomRectangles>(name);
+        }
         randomRectangles(std::string name = "randomRects") : graphic(name){
             _name = name;
             _active.setName(_name);

@@ -6,6 +6,12 @@ namespace ofxLiveSet{
     namespace clip{
         class videoGrabber : public graphic{
         public:
+            typedef std::shared_ptr<videoGrabber> pointer;
+            static pointer create(int deviceId = 0, std::string name="")
+            {
+                return std::make_shared<videoGrabber>(deviceId, name);
+            }
+
             videoGrabber(int deviceId = 0, std::string name = "") : graphic(name){
                 _name = name;
                 _active.setName(_name);

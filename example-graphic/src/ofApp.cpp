@@ -1,48 +1,54 @@
 #include "ofApp.h"
 
-ofApp::ofApp() : _session(_project._session){
+ofApp::ofApp() : _project(ofxLiveSet::project::create()){
+    _session = _project->_sessions.back();
 }
 
 void ofApp::setup(){
     ofSetBackgroundColor(16, 16, 16);
     
-    auto audioAnalyserTrack = (ofxLiveSet::track::audio*)(_session->addTrack(new ofxLiveSet::track::audio("audio analyser")));
-    auto videoATrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("video A")));
-    auto videoBTrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("video B")));
-    auto visualATrack = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("visual A")));
-    auto visualB = (ofxLiveSet::track::graphic*)(_session->addTrack(new ofxLiveSet::track::graphic("visual B")));
+    auto audioAnalyserTrack = ofxLiveSet::track::audio::create("audio analyser");
+    auto videoATrack = ofxLiveSet::track::graphic::create("video A");
+    auto videoBTrack = ofxLiveSet::track::graphic::create("video B");
+    auto visualATrack = ofxLiveSet::track::graphic::create("visual A");
+    auto visualBTrack = ofxLiveSet::track::graphic::create("visual B");
+    _session->addTrack(audioAnalyserTrack);
+    _session->addTrack(videoATrack);
+    _session->addTrack(videoBTrack);
+    _session->addTrack(visualATrack);
+    _session->addTrack(visualBTrack);
 
     audioAnalyserTrack->mute();
 
-    videoATrack->addClip(new ofxLiveSet::clip::videoGrabber(0, "camera"))->setup();
-    videoATrack->addClip(new ofxLiveSet::clip::videoPlayer("videos/lake_carrier.mov", "lake carrier"), 2)->setup();
+    videoATrack->addClip(ofxLiveSet::clip::videoGrabber::create(0, "camera"))->setup();
+    videoATrack->addClip(ofxLiveSet::clip::videoPlayer::create("videos/lake_carrier.mov", "lake carrier"), 2)->setup();
 
-    videoBTrack->addClip(new ofxLiveSet::clip::videoGrabber(0, "camera"))->setup();
-    videoBTrack->addClip(new ofxLiveSet::clip::videoPlayer("videos/lake_carrier.mov", "lake carrier"), 2)->setup();
+    videoBTrack->addClip(ofxLiveSet::clip::videoGrabber::create(0, "camera"))->setup();
+    videoBTrack->addClip(ofxLiveSet::clip::videoPlayer::create("videos/lake_carrier.mov", "lake carrier"), 2)->setup();
 
-    visualATrack->addClip(new clips::cubeWithTrails())->setup();
-    visualATrack->addClip(new clips::midiVisualiser())->setup();
-    visualATrack->addClip(new clips::beatVisualiser())->setup();
+    visualATrack->addClip(clips::cubeWithTrails::create())->setup();
+    visualATrack->addClip(clips::midiVisualiser::create())->setup();
+    visualATrack->addClip(clips::beatVisualiser::create())->setup();
 
-    visualATrack->addClip(new clips::snake())->setup();
-    visualATrack->addClip(new clips::gameOfLife())->setup();
+    visualATrack->addClip(clips::snake::create())->setup();
+    visualATrack->addClip(clips::gameOfLife::create())->setup();
 
-    visualATrack->addClip(new clips::unkownPleasures())->setup();
-    visualATrack->addClip(new clips::onTheDarkSideOfTheMoon())->setup();
+    visualATrack->addClip(clips::unkownPleasures::create())->setup();
+    visualATrack->addClip(clips::onTheDarkSideOfTheMoon::create())->setup();
 
-    visualB->addClip(new clips::randomRectangles())->setup();
-    visualB->addClip(new clips::bezierVertex(), 3)->setup();
-    visualB->addClip(new clips::parametric2dEquation())->setup();
+    visualBTrack->addClip(clips::randomRectangles::create())->setup();
+    visualBTrack->addClip(clips::bezierVertex::create(), 3)->setup();
+    visualBTrack->addClip(clips::parametric2dEquation::create())->setup();
 
-    visualB->addClip(new clips::arcs())->setup();
-    visualB->addClip(new clips::circles())->setup();
+    visualBTrack->addClip(clips::arcs::create())->setup();
+    visualBTrack->addClip(clips::circles::create())->setup();
 
 
-    visualB->addClip(new ofxLiveSet::clip::slidePlayer("TODO"))->setup();
-    visualB->addClip(new clips::untitled_00())->setup();
-    visualB->addClip(new clips::untitled_01())->setup();
+    // visualBTrack->addClip(ofxLiveSet::clip::slidePlayer::create("TODO"))->setup();
+    visualBTrack->addClip(clips::untitled_00::create())->setup();
+    visualBTrack->addClip(clips::untitled_01::create())->setup();
 
-    visualB->addClip(new clips::randomPolygon())->setup();
+    visualBTrack->addClip(clips::randomPolygon::create())->setup();
 
     _session->setup();
     _session->setupGui(150);
@@ -70,12 +76,12 @@ void ofApp::update(){
     auto snare = _beat.snare();
     auto hihat = _beat.hihat();
     for(auto track : _session->_tracks){
-        auto beatReactiveClip = dynamic_cast<clips::beatReactive *>(track->_clip);
-        if(beatReactiveClip != nullptr){
-            beatReactiveClip->setKick(kick);
-            beatReactiveClip->setSnare(snare);
-            beatReactiveClip->setHihat(hihat);
-        }
+        // auto beatReactiveClip = dynamic_pointer_cast<clips::beatReactive>(track->_clip);
+        // if(beatReactiveClip != nullptr){
+        //     beatReactiveClip->setKick(kick);
+        //     beatReactiveClip->setSnare(snare);
+        //     beatReactiveClip->setHihat(hihat);
+        // }
     }
 }
 

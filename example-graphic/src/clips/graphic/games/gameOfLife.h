@@ -11,6 +11,11 @@ namespace clips {
     };
     class gameOfLife : public ofxLiveSet::clip::graphic {
     public:
+        typedef std::shared_ptr<gameOfLife> pointer;
+        static pointer create(std::string name="gameOfLife")
+        {
+            return std::make_shared<gameOfLife>(name);
+        }
         gameOfLife(std::string name = "gameOfLife") : graphic(name) {
             _name = name;
             _active.setName(_name);

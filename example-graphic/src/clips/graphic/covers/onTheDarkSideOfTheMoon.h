@@ -3,6 +3,11 @@
 namespace clips {
     class onTheDarkSideOfTheMoon : public ofxLiveSet::clip::graphic {
     public:
+        typedef std::shared_ptr<onTheDarkSideOfTheMoon> pointer;
+        static pointer create(std::string name="onTheDarkSideOfTheMoon")
+        {
+            return std::make_shared<onTheDarkSideOfTheMoon>(name);
+        }
         onTheDarkSideOfTheMoon(std::string name = "onTheDarkSideOfTheMoon") : graphic(name){
             _name = name;
             _active.setName(_name);

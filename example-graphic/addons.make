@@ -2,13 +2,15 @@ ofxGui
 ofxLiveSet
 ofxMidi
 ofxOsc
-local_addons/ofxDmx
-local_addons/ofxMQTT
-local_addons/ofxMidiMapper
-local_addons/ofxKeyMapper
-local_addons/ofxOscMapper
-local_addons/ofxSoundAnalyser
-local_addons/ofxPDSP
-local_addons/ofxAudioFile
-local_addons/ofxSIMDFloats
-local_addons/ofxBeat
+local_addons/ofxDmx #https://github.com/npisanti/ofxDmx.git@f14699718
+local_addons/ofxMQTT #https://github.com/256dpi/ofxMQTT.git@eb916edda
+local_addons/ofxMidiMapper #https://github.com/thomasgeissl/ofxMidiMapper.git@e338553c6
+local_addons/ofxKeyMapper #https://github.com/thomasgeissl/ofxKeyMapper.git@14201baf2
+local_addons/ofxOscMapper #https://github.com/thomasgeissl/ofxOscMapper.git@52c3a44a3
+local_addons/ofxSoundAnalyser #https://github.com/thomasgeissl/ofxSoundAnalyser.git@9708ff075
+local_addons/ofxPDSP #https://github.com/npisanti/ofxPDSP.git@770469109
+local_addons/ofxAudioFile #https://github.com/npisanti/ofxAudioFile.git@53636bbe5
+local_addons/ofxSIMDFloats #https://github.com/npisanti/ofxSIMDFloats.git@d861d55c3
+local_addons/ofxBeat #https://github.com/darrenmothersele/ofxBeat.git@71600c8e2
+#local_addons/ofxLiveSet #https://github.com/thomasgeissl/ofxLiveSet.git@f605434a4
+$local_addons/ofxMidi #https://github.com/danomatika/ofxMidi.git@c80fba1ca

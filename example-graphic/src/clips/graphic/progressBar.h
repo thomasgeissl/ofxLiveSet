@@ -3,6 +3,11 @@
 namespace clips {
     class progressBar : public ofxLiveSet::clip::graphic {
     public:
+        typedef std::shared_ptr<progressBar> pointer;
+        static pointer create(std::string name="")
+        {
+            return std::make_shared<progressBar>(name);
+        }
         progressBar(std::string name = "progressBar") : graphic(name){
             _name = name;
             _active.setName(_name);
