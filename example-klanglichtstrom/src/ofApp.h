@@ -1,13 +1,15 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxApp.h"
 #include "ofxDmx.h"
 #include "ofxLiveSet.h"
 
 #include "./clips/dmx/within.h"
 #include "./clips/dmx/anchor.h"
-#include "./clips/dmx/firn.h"
 #include "./clips/dmx/schwanensee.h"
+#include "./clips/dmx/firn.h"
+#include "./clips/dmx/wind.h"
 #include "./clips/dmx/strobe.h"
 #include "./clips/dmx/utils/still.h"
 #include "./clips/dmx/utils/midi2dmx.h"
@@ -15,7 +17,7 @@
 // out comment if you dont have an enttec usb interface connected
 #define SENDDMX
 
-class ofApp : public ofBaseApp{
+class ofApp : public ofxApp{
 public:
     ofApp();
     void setup();

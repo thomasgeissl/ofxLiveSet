@@ -17,12 +17,13 @@ void ofApp::setup(){
 
     lightBulbsTrack->addClip(clips::within::create())->setup();
     lightBulbsTrack->addClip(clips::anchor::create())->setup();
-    lightBulbsTrack->addClip(clips::firn::create())->setup();
     lightBulbsTrack->addClip(clips::schwanensee::create())->setup();
+    lightBulbsTrack->addClip(clips::firn::create())->setup();
+    lightBulbsTrack->addClip(clips::wind::create())->setup();
 
-    strobeTrack->addClip(clips::strobe::create(17, 18), 2)->setup();
+    strobeTrack->addClip(clips::strobe::create(17, 18), 3)->setup();
 
-    utilsTrack->addClip(clips::still::create(), 4)->setup();
+    utilsTrack->addClip(clips::still::create(), 7)->setup();
     utilsTrack->addClip(clips::midi2dmx::create())->setup();
     
     utilsTrack->mute();
@@ -49,9 +50,9 @@ void ofApp::setup(){
 
     _session->renameScene(0, "within");
     _session->renameScene(1, "anchor");
-    _session->renameScene(2, "firn");
-    _session->renameScene(3, "schwanensee");
-    _session->renameScene(4, "TODO: new");
+    _session->renameScene(2, "schwanensee");
+    _session->renameScene(3, "firn");
+    _session->renameScene(4, "wind");
     _session->_sceneInformation[0]._text = "";
     _session->_sceneInformation[1]._text = "activate analyser\non beats track\nin ableton live";
     _session->_sceneInformation[2]._text = "";
@@ -69,7 +70,6 @@ void ofApp::update(){
 #ifdef SENDDMX
     _dmx.update();
 #endif
-    ofSetWindowTitle("klanglichtstrom v2.0:: fps: "+ofToString((int)(ofGetFrameRate())));
 }
 
 void ofApp::draw(){

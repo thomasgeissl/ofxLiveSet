@@ -12,3 +12,4 @@ local_addons/ofxPDSP #https://github.com/npisanti/ofxPDSP.git@770469109
 local_addons/ofxAudioFile #https://github.com/npisanti/ofxAudioFile.git@53636bbe5
 local_addons/ofxSIMDFloats #https://github.com/npisanti/ofxSIMDFloats.git@d861d55c3
 local_addons/ofxMidi #https://github.com/danomatika/ofxMidi.git@c80fba1ca
+local_addons/ofxApp #http://github.com/thomasgeissl/ofxApp.git@2afbb845f
