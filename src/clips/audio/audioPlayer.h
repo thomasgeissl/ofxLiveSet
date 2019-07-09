@@ -9,6 +9,11 @@ namespace ofxLiveSet
         class audioPlayer : public audio
         {
         public:
+            typedef std::shared_ptr<audioPlayer> pointer;
+            static pointer create(std::string name="")
+            {
+                return std::make_shared<audioPlayer>(name);
+            }
             audioPlayer(std::string name = "") : audio(name){
                 _active.addListener(this, &audioPlayer::onActiveChange);
                 _openFileChooser.set("openFileChooser");

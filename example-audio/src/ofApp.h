@@ -29,7 +29,7 @@ public:
     void onMelFrequencySpectrum(std::pair<int, std::vector<float>> & value);
     void newMidiMessage(ofxMidiMessage& eventArgs);
     
-    ofxLiveSet::project _project;
-    ofxLiveSet::session *_session;
+    ofxLiveSet::project::pointer _project;
+    ofxLiveSet::session::pointer _session;
 };
 

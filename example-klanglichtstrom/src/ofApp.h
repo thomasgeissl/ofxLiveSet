@@ -37,8 +37,8 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
-    ofxLiveSet::project _project;
-    ofxLiveSet::session *_session;
+    ofxLiveSet::project::pointer _project;
+    ofxLiveSet::session::pointer _session;
     
     ofxDmx _dmx;
 };

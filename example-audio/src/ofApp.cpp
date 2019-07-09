@@ -1,16 +1,21 @@
 #include "ofApp.h"
 
-ofApp::ofApp() : _session(_project._session){
+ofApp::ofApp() : _project(ofxLiveSet::project::create()){
+    _session = _project->_sessions.back();
 }
 
 void ofApp::setup(){
     ofSetBackgroundColor(16, 16, 16);
 
-    auto allTrack = (ofxLiveSet::track::audio*)(_session->addTrack(new ofxLiveSet::track::audio("all")));
-    auto leftTrack = (ofxLiveSet::track::audio*)(_session->addTrack(new ofxLiveSet::track::audio("left")));
-    auto rightTrack = (ofxLiveSet::track::audio*)(_session->addTrack(new ofxLiveSet::track::audio("right")));
+    auto allTrack = ofxLiveSet::track::audio::create("all");
+    auto leftTrack = ofxLiveSet::track::audio::create("left");
+    auto rightTrack = ofxLiveSet::track::audio::create("right");
 
-    rightTrack->addClip(new ofxLiveSet::clip::audioPlayer())->setup();
+    _session->addTrack(allTrack);
+    _session->addTrack(leftTrack);
+    _session->addTrack(rightTrack);
+
+    rightTrack->addClip(ofxLiveSet::clip::audioPlayer::create())->setup();
 
     _session->setup();
     _session->setupGui();

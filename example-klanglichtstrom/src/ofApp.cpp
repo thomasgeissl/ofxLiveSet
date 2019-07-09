@@ -1,6 +1,7 @@
 #include "ofApp.h"
 
-ofApp::ofApp() : _session(_project._session){
+ofApp::ofApp() : _project(ofxLiveSet::project::create()){
+    _session = _project->_sessions.back();
 }
 
 void ofApp::setup(){
