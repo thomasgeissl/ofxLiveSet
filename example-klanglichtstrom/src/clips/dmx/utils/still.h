@@ -11,13 +11,11 @@ namespace clips {
         }
         still(int channel = 1, int amount = 16) : ofxLiveSet::clip::dmx("still"), _amount(amount) {
             _name ="still";
-            _channel.set("channel", channel, 1, 512);
+            _parameters.add(_channel.set("channel", channel, 1, 512));
             _active.setName(_name);
-            _parameters.add(_channel);
             _values.resize(_amount);
             for(auto i = 0; i < _amount; i++) {
-                _values[i].set(ofToString(i), 0, 0, 255);
-                _parameters.add(_values[i]);
+                _parameters.add(_values[i].set(ofToString(i), 0, 0, 255));
             }
         }
         

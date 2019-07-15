@@ -15,20 +15,14 @@ namespace clips {
             _amount.addListener(this, &firn::onAmountChange);
             _amount.set("amount", 16, 1, 16);
             
-            _minValue.set("minValue", 0, 0, 255);
-            _maxValue.set("maxValue", 100, 0, 255);
-            _threshold.set("threshold", .1, 0, 1);
-            _peakEnergyDebounceTime.set("debounce", 300, 30, 500);
-            _minDistance.set("minDistance", 7, 1, 12);
-            
             _active.setName(_name);
             
             addParameter(_soundAnalyserId);
-            addParameter(_minValue);
-            addParameter(_maxValue);
-            addParameter(_threshold);
-            addParameter(_peakEnergyDebounceTime);
-            addParameter(_minDistance);
+            addParameter(_minValue.set("minValue", 0, 0, 255));
+            addParameter(_maxValue.set("maxValue", 100, 0, 255));
+            addParameter(_threshold.set("threshold", .1, 0, 1));
+            addParameter(_peakEnergyDebounceTime.set("debounce", 300, 30, 500));
+            addParameter(_minDistance.set("minDistance", 7, 1, 12));
             
             _timestamp = ofGetElapsedTimeMillis();
         }

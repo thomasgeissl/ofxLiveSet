@@ -18,8 +18,6 @@ namespace clips {
             _minValue.set("minValue", 0, 0, 255);
             _maxValue.set("maxValue", 115, 0, 255); // beatMaxValue
             _addPeakEnergy.set("addPeakEnergy", false);
-            _breathe.set("breathe", false);
-            _speed.set("speed", .7, 0, 1);
        
             _active.setName(_name);
             
@@ -40,9 +38,9 @@ namespace clips {
             // addParameter(_minValue);
             addParameter(_maxValue);
             addParameter(_addPeakEnergy);
-            addParameter(_speed);
+            addParameter(_speed.set("speed", .7, 0, 1));
             
-            addParameter(_breathe);
+            addParameter(_breathe.set("breathe", false));
             addParameter(_beatsQuadrant);
             addParameter(_beatsEnergyThreshold);
             addParameter(_highs);

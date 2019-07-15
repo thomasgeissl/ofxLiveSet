@@ -12,28 +12,19 @@ namespace clips {
         within() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
             _name = "within";
             _channel.set("channel", 1, 1, 512);
-            _start.set("start", 12, 1, 16);
             _amount.set("amount", 1, 1, 16);
-            _minValue.set("minValue", 0, 0, 255);
-            _maxValue.set("maxValue", 0, 0, 255);
-            _addPeakEnergy.set("addPeakEnergy", false);
-            _speed.set("speed", .1, 0, 1);
-            _add.set("add");
-            _remove.set("remove");
             _active.setName(_name);
 
-            _climaxSoundAnalyserId.set("climaxSoundAnalyser", 2, 0, 32);
-
             addParameter(_soundAnalyserId);
-            addParameter(_climaxSoundAnalyserId);
-            addParameter(_start);
+            addParameter(_climaxSoundAnalyserId.set("climaxSoundAnalyser", 2, 0, 32));
+            addParameter(_start.set("start", 12, 1, 16));
             addParameter(_amount);
-            addParameter(_minValue);
-            addParameter(_maxValue);
-            addParameter(_addPeakEnergy);
-            addParameter(_speed);
-            addParameter(_add);
-            addParameter(_remove);
+            addParameter(_minValue.set("minValue", 0, 0, 255));
+            addParameter(_maxValue.set("maxValue", 0, 0, 255));
+            addParameter(_addPeakEnergy.set("addPeakEnergy", false));
+            addParameter(_speed.set("speed", .1, 0, 1));
+            addParameter(_add.set("add"));
+            addParameter(_remove.set("remove"));
             
 //            _add.newListener([this](){_amount = _amount+1;});
 //            _remove.newListener([this](){_amount = _amount-1;});

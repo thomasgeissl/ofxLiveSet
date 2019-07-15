@@ -15,13 +15,10 @@ namespace clips {
         strobe(int frequencyChannel, int velocityChannel) : dmx(), _frequencyChannel(frequencyChannel), _velocityChannel(velocityChannel) {
             _name = "strobe";
             _active.setName("strobe");
-            _frequency.set("frequency", 15, 15, 255);
-            _velocity.set("velocity", 15, 15, 255);
-            _singleShot.set("singleShot");
-            
-            addParameter(_frequency);
-            addParameter(_velocity);
-            addParameter(_singleShot);
+        
+            addParameter(_frequency.set("frequency", 15, 15, 255));
+            addParameter(_velocity.set("velocity", 15, 15, 255));
+            addParameter(_singleShot.set("singleShot"));
             
             _active.addListener(this, &strobe::onActiveChange);
             _frequency.addListener(this, &strobe::onValueChange);

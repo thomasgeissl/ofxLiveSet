@@ -1,6 +1,9 @@
 #include "ofApp.h"
 
 ofApp::ofApp() : _project(ofxLiveSet::project::create()){
+    setApplicationName("klangLichtStrom");
+    setApplicationVersion("1.1.0");
+    
     _session = _project->_sessions.back();
 }
 
@@ -22,7 +25,7 @@ void ofApp::setup(){
     lightBulbsTrack->addClip(clips::firn::create())->setup();
     lightBulbsTrack->addClip(clips::wind::create())->setup();
 
-    strobeTrack->addClip(clips::strobe::create(17, 18), 3)->setup();
+    strobeTrack->addClip(clips::strobe::create(21, 22), 3)->setup();
 
     utilsTrack->addClip(clips::still::create(), 7)->setup();
     utilsTrack->addClip(clips::midi2dmx::create())->setup();
@@ -61,7 +64,7 @@ void ofApp::setup(){
 }
 
 void ofApp::exit(){
-    for(auto i = 1; i <= 18; i++){
+    for(auto i = 1; i <= 22; i++){
         _dmx.setLevel(i, 0);
     }
     _dmx.update();
@@ -83,29 +86,33 @@ void ofApp::draw(){
             int channel = (row * 2 + column) * 4 +1;
             ofSetColor(255,255,255, _dmx.getLevel(channel));
             ofDrawCircle(x,y,radius);
-            ofNoFill();
             ofSetColor(255,255,255, 32);
+            ofDrawBitmapString(ofToString(channel), x, y);
+            ofNoFill();
             ofDrawCircle(x,y,radius);
             ofFill();
 
             ofSetColor(255,255,255, _dmx.getLevel(channel+1));
             ofDrawCircle(x+offset,y,radius);
-            ofNoFill();
             ofSetColor(255,255,255, 32);
+            ofDrawBitmapString(ofToString(channel+1), x+offset, y);
+            ofNoFill();
             ofDrawCircle(x+offset,y,radius);
             ofFill();
             
             ofSetColor(255,255,255, _dmx.getLevel(channel+2));
             ofDrawCircle(x,y+offset,radius);
-            ofNoFill();
             ofSetColor(255,255,255, 32);
+            ofDrawBitmapString(ofToString(channel+2), x, y+offset);
+            ofNoFill();
             ofDrawCircle(x,y+offset,radius);
             ofFill();
             
             ofSetColor(255,255,255, _dmx.getLevel(channel+3));
             ofDrawCircle(x+offset,y+offset,radius);
-            ofNoFill();
             ofSetColor(255,255,255, 32);
+            ofDrawBitmapString(ofToString(channel+3), x+offset, y+offset);
+            ofNoFill();
             ofDrawCircle(x+offset,y+offset,radius);
             ofFill();
             
@@ -119,6 +126,9 @@ void ofApp::draw(){
 
 void ofApp::keyPressed(int key){
     _session->onKeyPressed(key);
+    if(key == 'f'){
+        ofToggleFullscreen();
+    }
 }
 void ofApp::keyReleased(int key){}
 void ofApp::mouseMoved(int x, int y){}

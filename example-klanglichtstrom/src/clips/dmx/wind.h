@@ -12,18 +12,20 @@ namespace clips {
         wind() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
             _name = "wind";
             _active.setName(_name);
-
-            _rightSoundAnalyserId.set("right analyser", 2, 0, 32);
-            _static.set("static", false);
-            _minValueChimes.set("minValueChimes", 0, 0, 255);
-            _maxValueChimes.set("maxValueChimes", 0, 0, 255);
-            _speedChimes.set("speedChimes", .1, 0, 1);
             addParameter(_soundAnalyserId);
-            addParameter(_rightSoundAnalyserId);
-            addParameter(_minValueChimes);
-            addParameter(_maxValueChimes);
-            addParameter(_speedChimes);
-            addParameter(_static);
+            addParameter(_rightSoundAnalyserId.set("right analyser", 2, 0, 32));
+            addParameter(_minValueChimes.set("minValueChimes", 0, 0, 255));
+            addParameter(_maxValueChimes.set("maxValueChimes", 0, 0, 255));
+            addParameter(_speedChimes.set("speedChimes", .1, 0, 1));
+            addParameter(_static.set("static", false));
+            addParameter(_innerLeftLight.set("innerLeftLight", 10, 0, 16));
+            addParameter(_middleLeftLight.set("middleLeftLight", 0, 0, 16));
+            addParameter(_outerLeftLight.set("outerLeftLight", 0, 0, 16));
+            addParameter(_innerRightLight.set("innerRightLight", 7, 0, 16));
+            addParameter(_middleRightLight.set("middleRightLight", 0, 0, 16));
+            addParameter(_outerRightLight.set("outerRightLight", 0, 0, 16));
+            addParameter(_debounceTime.set("debounceTime", 100, 0, 500));
+            addParameter(_threshold.set("threshold", 0.8, 0, 1));
         }
         
         void update(){
@@ -42,11 +44,24 @@ namespace clips {
         }
 
         void setPeakEnergy(int analyserId, float value){
+            auto timestamp = ofGetElapsedTimeMillis();
             if(analyserId == _soundAnalyserId){
                 _leftPeakEnergy = value;
-            }else if(analyserId == _rightSoundAnalyserId){
-                _rightPeakEnergy = value;
+                if(value > _threshold && timestamp - _leftTimestamp  > _debounceTime){
+                    _leftTimestamp = ofGetElapsedTimeMillis();
+                    ofLogNotice() << "left beat";
+                }
             }
+            if(analyserId == _rightSoundAnalyserId){
+                _rightPeakEnergy = value;
+                if(value > _threshold && timestamp - _rightTimestamp  > _debounceTime){
+                    _rightTimestamp = ofGetElapsedTimeMillis();
+                    ofLogNotice() << "right beat";
+                }
+            }
+        }
+        void peak(bool left){
+
         }
 
         ofParameter<int> _rightSoundAnalyserId;
@@ -54,9 +69,21 @@ namespace clips {
         ofParameter<int> _minValueChimes;
         ofParameter<int> _maxValueChimes;
         ofParameter<bool> _static;
-        
+
+        ofParameter<int> _innerLeftLight;
+        ofParameter<int> _middleLeftLight;
+        ofParameter<int> _outerLeftLight;
+        ofParameter<int> _innerRightLight;
+        ofParameter<int> _middleRightLight;
+        ofParameter<int> _outerRightLight;
+        ofParameter<float> _threshold;
+        ofParameter<int> _debounceTime;
+
+        int _chimesChannel = 17; //TODO: change
+
         float _leftPeakEnergy;
         float _rightPeakEnergy;
-        int _chimesChannel = 5; //TODO: change
+        u_int64_t _leftTimestamp;
+        u_int64_t _rightTimestamp;
     };
 };

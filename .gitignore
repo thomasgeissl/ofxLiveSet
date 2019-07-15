@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+.vscode
 # Prerequisites
 *.d
 
@@ -97,7 +97,3 @@ Desktop.ini
 # Android
 .csettings
 # End of https://www.gitignore.io/api/openframeworks
-=======
-example*/bin
-example*/obj
->>>>>>> master

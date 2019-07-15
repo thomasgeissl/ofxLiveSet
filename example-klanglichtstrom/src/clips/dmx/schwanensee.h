@@ -13,30 +13,20 @@ namespace clips {
             _name = "schwanensee";
             _amount.set("amount", 16, 1, 16);
             _minValue.set("minValue", 0, 0, 255);
-            _maxValue.set("maxValue", 0, 0, 255);
-            _fadeOutTime.set("fadeOutTime", 300, 0, 3000);
-            _debounceTime.set("debounceTime", 20, 0, 1000);
 
-            _addPeakEnergy.set("addPeakEnergy", false);
-            _pitchThreshold.set("pitchThreshold", .01, 0, 1);
-            _blackoutDimmer2.set("blackoutDimmer2");
             _blackoutDimmer2.addListener(this, &schwanensee::onBlackoutDimmer2);
-            _staticLight.set("staticLight", false);
-            _staticLightValue.set("staticLightValue", 100, 0, 255);
-
             _active.setName(_name);
             
             addParameter(_soundAnalyserId);
 //            addParameter.add(_minValue);
-            addParameter(_maxValue);
-            addParameter(_fadeOutTime);
-            addParameter(_debounceTime);
-            addParameter(_addPeakEnergy);
-            addParameter(_pitchThreshold);
-            addParameter(_blackoutDimmer2);
-            addParameter(_staticLight);
-            addParameter(_staticLightValue);
-
+            addParameter(_maxValue.set("maxValue", 0, 0, 255));
+            addParameter(_fadeOutTime.set("fadeOutTime", 300, 0, 3000));
+            addParameter(_debounceTime.set("debounceTime", 20, 0, 1000));
+            addParameter(_addPeakEnergy.set("addPeakEnergy", false));
+            addParameter(_pitchThreshold.set("pitchThreshold", .01, 0, 1));
+            addParameter(_blackoutDimmer2.set("blackoutDimmer2"));
+            addParameter(_staticLight.set("staticLight", false));
+            addParameter(_staticLightValue.set("staticLightValue", 100, 0, 255));
             _values.resize(_amount);
             _timestamps.resize(_amount);
         }
