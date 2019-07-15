@@ -5,8 +5,8 @@ ofxLiveSet is an openframeworks addon, developed for the *klanglichtstrom* perfo
 
 This is a work in progress, it is sill buggy, incomplete and not yet clean. It is very likely that the codebase will change.
 
-![screenshot](.docs/screenshots/screenshot_gui.png)
-![screenshot](.docs/screenshots/screenshot_output.png)
+![screenshot](./docs/screenshots/screenshot_gui.png)
+![screenshot](./docs/screenshots/screenshot_output.png)
 
 ## Build status
 [![Build Status](https://travis-ci.org/thomasgeissl/ofxLiveSet.svg?branch=master)](https://travis-ci.org/thomasgeissl/ofxLiveSet)
