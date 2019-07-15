@@ -5,8 +5,8 @@ ofxLiveSet is an openframeworks addon, developed for the *klanglichtstrom* perfo
 
 This is a work in progress, it is sill buggy, incomplete and not yet clean. It is very likely that the codebase will change.
 
-![screenshot](./screenshot_gui.png)
-![screenshot](./screenshot_output.png)
+![screenshot](.docs/screenshots/screenshot_gui.png)
+![screenshot](.docs/screenshots/screenshot_output.png)
 
 ## Build status
 [![Build Status](https://travis-ci.org/thomasgeissl/ofxLiveSet.svg?branch=master)](https://travis-ci.org/thomasgeissl/ofxLiveSet)
@@ -32,11 +32,13 @@ You can download a fresh version of openFrameworks, as well as ofxLiveSet and it
 sh -c "$(curl -sSL https://raw.githubusercontent.com/thomasgeissl/ofxLiveSet/master/scripts/install.sh)"
 ```
 ## Changelog
+### 2.0.0
+    * using smart pointers instead of raw pointers
 ### 1.0.0 - first more or less stable version
 
 ## TODOs
 ### core
-* getting rid of pointers and fix constructor, setup order
+* fix constructor, setup order
 * load/save
 * dynamically adding tracks and clips
 * lot of performance improvements
@@ -52,7 +54,7 @@ sh -c "$(curl -sSL https://raw.githubusercontent.com/thomasgeissl/ofxLiveSet/mas
 ## License
 This project is released under MIT license, please note that dependencies might be released differently.
 
-Copyright (c) 2018 Thomas Geissl
+Copyright (c) 2019 Thomas Geissl
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
