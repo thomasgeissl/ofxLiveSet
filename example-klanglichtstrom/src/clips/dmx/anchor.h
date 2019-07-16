@@ -48,6 +48,11 @@ namespace clips {
             addParameter(_randomiseHighsQuadrant);
             addParameter(_highsMaxValue);
 
+            _meters.setName("meters");
+            _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
+            _meters.add(_pitchChangeTriggerPeakEnergy.set("pitchChangeTriggerPeakEnergy", 0, 0, 5));
+            _parameters.add(_meters);
+
             _values.resize(16);
             _timestamps.resize(16);
         }
@@ -157,8 +162,9 @@ namespace clips {
 
         ofParameter<void> _randomiseHighsQuadrant;
 
-        float _peakEnergy;
-        float _pitchChangeTriggerPeakEnergy;
+        ofParameterGroup _meters;
+        ofParameter<float> _peakEnergy;
+        ofParameter<float> _pitchChangeTriggerPeakEnergy;
         
         std::vector<int> _values;
         std::vector<u_int64_t> _timestamps;

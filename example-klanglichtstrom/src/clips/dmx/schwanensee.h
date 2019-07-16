@@ -27,6 +27,10 @@ namespace clips {
             addParameter(_blackoutDimmer2.set("blackoutDimmer2"));
             addParameter(_staticLight.set("staticLight", false));
             addParameter(_staticLightValue.set("staticLightValue", 100, 0, 255));
+            _meters.setName("meters");
+            _meters.add(_pitch.set("pitch", 0, 0, 127));
+            _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
+            _parameters.add(_meters);
             _values.resize(_amount);
             _timestamps.resize(_amount);
         }
@@ -90,14 +94,15 @@ namespace clips {
         ofParameter<void> _blackoutDimmer2;
         ofParameter<bool> _staticLight;
         ofParameter<int> _staticLightValue;
+        ofParameterGroup _meters;
+        ofParameter<float> _pitch;
+        ofParameter<float> _peakEnergy;
 
         u_int64_t _timestamp;
         bool _onsetDetected = false;
         std::vector<u_int64_t> _timestamps;
 
         std::vector<int> _values;
-        float _peakEnergy;
-        float _pitch;
         int _lastIndex;
     };
 };

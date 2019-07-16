@@ -24,6 +24,10 @@ namespace clips {
             addParameter(_peakEnergyDebounceTime.set("debounce", 300, 30, 500));
             addParameter(_minDistance.set("minDistance", 7, 1, 12));
             
+            _meters.setName("meters");
+            _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
+            _parameters.add(_meters);
+            
             _timestamp = ofGetElapsedTimeMillis();
         }
         
@@ -44,8 +48,9 @@ namespace clips {
             base::stop();
         }
         void setPeakEnergy(int analyserId, float value) {
-            if(value < _threshold){return;}
             if(analyserId != _soundAnalyserId){return;}
+            _peakEnergy = value;
+            if(value < _threshold){return;}
             auto timestamp = ofGetElapsedTimeMillis();
             if(timestamp - _timestamp < _peakEnergyDebounceTime){
                 return;
@@ -76,10 +81,15 @@ namespace clips {
         ofParameter<float> _threshold;
         ofParameter<int> _peakEnergyDebounceTime;
         ofParameter<int> _minDistance;
+
+        ofParameterGroup _meters;
+        ofParameter<float> _peakEnergy;
         
         u_int64_t _timestamp;
         std::vector<u_int64_t> _timestamps;
         int _lastIndex;
+
+        
     };
 };
 

@@ -57,10 +57,9 @@ void ofApp::setup(){
     _session->renameScene(2, "schwanensee");
     _session->renameScene(3, "firn");
     _session->renameScene(4, "wind");
-    _session->_sceneInformation[0]._text = "";
-    _session->_sceneInformation[1]._text = "activate analyser\non beats track\nin ableton live";
-    _session->_sceneInformation[2]._text = "";
-    _session->_sceneInformation[3]._text = "";
+    for(auto i = 5; i <=8; i++){
+        _session->renameScene(i, "");
+    }
 }
 
 void ofApp::exit(){

@@ -1,6 +1,5 @@
 ofxGui
 ofxLiveSet
-#ofxMidi
 ofxOsc
 local_addons/ofxDmx #https://github.com/npisanti/ofxDmx.git@f14699718
 local_addons/ofxMQTT #https://github.com/256dpi/ofxMQTT.git@eb916edda
@@ -13,3 +12,5 @@ local_addons/ofxAudioFile #https://github.com/npisanti/ofxAudioFile.git@53636bbe
 local_addons/ofxSIMDFloats #https://github.com/npisanti/ofxSIMDFloats.git@d861d55c3
 local_addons/ofxMidi #https://github.com/danomatika/ofxMidi.git@c80fba1ca
 local_addons/ofxApp #http://github.com/thomasgeissl/ofxApp.git@2afbb845f
+local_addons/ofxEasing #https://github.com/arturoc/ofxEasing.git@3a15beffb
+local_addons/ofxMovingAverage #http://github.com/thomasgeissl/ofxMovingAverage.git@81a663116

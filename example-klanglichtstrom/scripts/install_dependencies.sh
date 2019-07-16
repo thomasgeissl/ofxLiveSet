@@ -2,7 +2,4 @@
 cd "$(dirname "$0")"
 cd ..
 
-mkdir local_addons
-cd local_addons
-
-../../scripts/install_dependencies.sh
+bash -c "$(curl -sSL https://raw.githubusercontent.com/thomasgeissl/ofPackageManager/master/scripts/ofPackageManager.sh)" install

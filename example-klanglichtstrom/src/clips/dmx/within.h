@@ -25,6 +25,10 @@ namespace clips {
             addParameter(_speed.set("speed", .1, 0, 1));
             addParameter(_add.set("add"));
             addParameter(_remove.set("remove"));
+
+            _meters.setName("meters");
+            _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
+            _parameters.add(_meters);
             
 //            _add.newListener([this](){_amount = _amount+1;});
 //            _remove.newListener([this](){_amount = _amount-1;});
@@ -98,12 +102,11 @@ namespace clips {
         ofParameter<float> _speed;
         ofParameter<void> _add;
         ofParameter<void> _remove;
-
         ofParameter<int> _climaxSoundAnalyserId;
+        ofParameterGroup _meters;
+        ofParameter<float> _peakEnergy;
 
         bool _climax;
         u_int64_t _climaxTimestamp;
-        
-        float _peakEnergy;
     };
 };
