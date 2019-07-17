@@ -14,3 +14,4 @@ local_addons/ofxMidi #https://github.com/danomatika/ofxMidi.git@c80fba1ca
 local_addons/ofxApp #http://github.com/thomasgeissl/ofxApp.git@2afbb845f
 local_addons/ofxEasing #https://github.com/arturoc/ofxEasing.git@3a15beffb
 local_addons/ofxMovingAverage #http://github.com/thomasgeissl/ofxMovingAverage.git@81a663116
+local_addons/ofxLua #https://github.com/danomatika/ofxLua.git@1.3.5
