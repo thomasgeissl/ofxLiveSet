@@ -21,7 +21,7 @@ namespace clips {
 //            addParameter.add(_minValue);
             addParameter(_maxValue.set("maxValue", 0, 0, 255));
             addParameter(_fadeOutTime.set("fadeOutTime", 300, 0, 3000));
-            addParameter(_debounceTime.set("debounceTime", 20, 0, 1000));
+            addParameter(_debounceTime.set("debounceTime", 190, 0, 1000));
             addParameter(_addPeakEnergy.set("addPeakEnergy", false));
             addParameter(_pitchThreshold.set("pitchThreshold", .01, 0, 1));
             addParameter(_blackoutDimmer2.set("blackoutDimmer2"));
@@ -33,6 +33,8 @@ namespace clips {
             _parameters.add(_meters);
             _values.resize(_amount);
             _timestamps.resize(_amount);
+
+            _staticLight.addListener(this, &schwanensee::onStaticLightChange);
         }
         
         void update(){
@@ -81,6 +83,11 @@ namespace clips {
         void onBlackoutDimmer2(){
             for(auto i = 2 * 4; i < _amount; i++) {
                 setValue(i+1, 0);
+            }
+        }
+        void onStaticLightChange(bool & value){
+            if(!value){
+                setValue(5, 0);
             }
         }
         

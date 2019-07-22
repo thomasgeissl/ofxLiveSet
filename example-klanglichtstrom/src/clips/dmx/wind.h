@@ -21,18 +21,20 @@ namespace clips {
             addParameter(_static.set("static", false));
             addParameter(_minValueChimes.set("minValueChimes", 0, 0, 255));
             addParameter(_maxValueChimes.set("maxValueChimes", 0, 0, 255));
-            addParameter(_minValue.set("minValue", 60, 0, 255));
+            addParameter(_minValue.set("minValue", 0, 0, 255));
             addParameter(_maxValue.set("maxValue", 255, 0, 255));
             addParameter(_speedChimes.set("speedChimes", .1, 0, 1));
             addParameter(_innerLeftLight.set("innerLeftLight", 10, 0, 16));
             addParameter(_middleLeftLight.set("middleLeftLight", 0, 0, 16));
-            addParameter(_outerLeftLight.set("outerLeftLight", 0, 0, 16));
+            addParameter(_outerLeftLight.set("outerLeftLight", 11, 0, 16));
             addParameter(_innerRightLight.set("innerRightLight", 7, 0, 16));
             addParameter(_middleRightLight.set("middleRightLight", 0, 0, 16));
-            addParameter(_outerRightLight.set("outerRightLight", 0, 0, 16));
+            addParameter(_outerRightLight.set("outerRightLight", 6, 0, 16));
             addParameter(_debounceTime.set("debounceTime", 150, 0, 1000));
             addParameter(_threshold.set("threshold", 0.8, 0, 1));
             addParameter(_peakFactor.set("peakFactor", 1.3, 1, 2));
+            addParameter(_pingPong.set("pingPong", false));
+            addParameter(_pingPongTime.set("pingPongTime", 500, 0, 1000));
             _meters.setName("meters");
             _meters.add(_leftPeakEnergy.set("leftPeakEnergy", 0, 0, 5));
             _meters.add(_rightPeakEnergy.set("rightPeakEnergy", 0, 0, 5));
@@ -48,13 +50,26 @@ namespace clips {
                     setValue(i + 1, value);
                 }
                 setValue(_chimesChannel, 255);
-                setValue(1, ofMap(_leftPeakEnergyMovingAverage.avg(), 0, 2, _minValue, _maxValue));
-                setValue(16, ofMap(_rightPeakEnergyMovingAverage.avg(), 0, 2, _minValue, _maxValue));
+                setValue(1, ofMap(_leftPeakEnergyMovingAverage.avg() * 4, 0, 2, _minValue, _maxValue));
+                setValue(16, ofMap(_rightPeakEnergyMovingAverage.avg() * 4, 0, 2, _minValue, _maxValue));
                 if(_leftPeakEnergy > _leftPeakEnergyMovingAverage.avg() * 1.5){
                     peak(true);
                 }
                 if(_rightPeakEnergy > _rightPeakEnergyMovingAverage.avg() * 1.5){
                     peak(false);
+                }
+                if(_pingPong){
+                    if(timestamp - _pingPongTimestamp > _pingPongTime){
+                        if(_pingPongLeft){
+                            _values[_outerLeftLight -1] = _maxValue;
+                            _timestamps[_outerLeftLight -1] = timestamp;
+                        }else{
+                            _values[_outerRightLight -1] = _maxValue;
+                            _timestamps[_outerRightLight -1] = timestamp;
+                        }
+                        _pingPongTimestamp = timestamp;
+                        _pingPongLeft = !_pingPongLeft;
+                    }
                 }
             }else{
                 setValue(_chimesChannel, ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speedChimes)), 0, 1, _minValueChimes, _maxValueChimes));
@@ -85,12 +100,10 @@ namespace clips {
             if(timestamp - oldTimestamp  > _debounceTime){
                 if(left){
                     _leftTimestamp = timestamp;
-                    ofLogNotice() << "left beat";
                     _values[_innerLeftLight - 1] = _maxValue;
                     _timestamps[_innerLeftLight -1] = timestamp;
                 }else{
                     _rightTimestamp = timestamp;
-                    ofLogNotice() << "right beat";
                     _values[_innerRightLight -1] = _maxValue;
                     _timestamps[_innerRightLight-1] = timestamp;
                 }
@@ -115,6 +128,8 @@ namespace clips {
         ofParameter<float> _threshold;
         ofParameter<int> _debounceTime;
         ofParameter<float> _peakFactor;
+        ofParameter<bool> _pingPong;
+        ofParameter<int> _pingPongTime;
 
         ofParameterGroup _meters;
         ofParameter<float> _leftPeakEnergy;
@@ -128,6 +143,8 @@ namespace clips {
         // float _rightPeakEnergy;
         u_int64_t _leftTimestamp;
         u_int64_t _rightTimestamp;
+        u_int64_t _pingPongTimestamp;
+        bool _pingPongLeft;
         int _values[16];
         u_int64_t _timestamps[16];
     };

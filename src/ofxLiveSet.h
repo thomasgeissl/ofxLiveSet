@@ -1,4 +1,5 @@
 #pragma once
+#include "./config.h"
 #include "./project.h"
 #include "./session.h"
 #include "./tracks/base.h"
@@ -17,3 +18,4 @@
 #include "./clips/null.h"
 #include "./clips/soundReactive.h"
 #include "./clips/midiReactive.h"
+#include "./clips/lua.h"
