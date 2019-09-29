@@ -1,18 +1,20 @@
 #include "ofApp.h"
 
-ofApp::ofApp() : _project(ofxLiveSet::project::create()){
+ofApp::ofApp() : _project(ofxLiveSet::project::create())
+{
     setApplicationName("klangLichtStrom");
     setApplicationVersion("1.1.0");
-    
+
     _session = _project->_sessions.back();
 }
 
-void ofApp::setup(){
+void ofApp::setup()
+{
     ofSetBackgroundColor(16, 16, 16);
 
     _dmx.connect("/dev/cu.usbserial-EN160415");
     _dmx.setChannels(18);
-    
+
     auto lightBulbsTrack = ofxLiveSet::track::dmx::create("light bulbs");
     auto strobeTrack = ofxLiveSet::track::dmx::create("strobe");
     auto hazerTrack = ofxLiveSet::track::dmx::create("hazer");
@@ -29,7 +31,7 @@ void ofApp::setup(){
 
     utilsTrack->addClip(clips::still::create(), 7)->setup();
     utilsTrack->addClip(clips::midi2dmx::create())->setup();
-    
+
     utilsTrack->mute();
     afterShowTrack->mute();
 
@@ -38,9 +40,11 @@ void ofApp::setup(){
     _session->addTrack(hazerTrack);
     _session->addTrack(utilsTrack);
     _session->addTrack(afterShowTrack);
-    
-    for(auto track : _session->_tracks){
-        if(auto dmxTrack = std::dynamic_pointer_cast<ofxLiveSet::track::dmx>(track)){
+
+    for (auto track : _session->_tracks)
+    {
+        if (auto dmxTrack = std::dynamic_pointer_cast<ofxLiveSet::track::dmx>(track))
+        {
             dmxTrack->setup(&_dmx);
         }
     }
@@ -48,7 +52,8 @@ void ofApp::setup(){
     _session->setup();
     _session->setupGui();
     _session->openOscControlInPort(9000);
-    _session->openMidiMapperInPort(0);
+    // _session->openMidiMapperInPort(0);
+    _session->openMidiInPort(0);
     _session->stop();
     _session->_mqttSynchroniserEnabled = false;
 
@@ -57,85 +62,94 @@ void ofApp::setup(){
     _session->renameScene(2, "schwanensee");
     _session->renameScene(3, "firn");
     _session->renameScene(4, "wind");
-    for(auto i = 5; i <=8; i++){
+    for (auto i = 5; i <= 8; i++)
+    {
         _session->renameScene(i, "");
     }
 }
 
-void ofApp::exit(){
-    for(auto i = 1; i <= 22; i++){
+void ofApp::exit()
+{
+    for (auto i = 1; i <= 22; i++)
+    {
         _dmx.setLevel(i, 0);
     }
     _dmx.update();
 }
 
-void ofApp::update(){
+void ofApp::update()
+{
 #ifdef SENDDMX
     _dmx.update();
 #endif
 }
 
-void ofApp::draw(){
+void ofApp::draw()
+{
     auto offset = 80;
     auto radius = 20;
-    auto x = ofGetWidth()/3*2;
-    auto y = ofGetHeight()/2;
-    for(auto row = 0; row < 2; row++){
-        for(auto column = 0; column < 2; column++){
-            int channel = (row * 2 + column) * 4 +1;
-            ofSetColor(255,255,255, _dmx.getLevel(channel));
-            ofDrawCircle(x,y,radius);
-            ofSetColor(255,255,255, 32);
+    auto x = ofGetWidth() / 3 * 2;
+    auto y = ofGetHeight() / 2;
+    for (auto row = 0; row < 2; row++)
+    {
+        for (auto column = 0; column < 2; column++)
+        {
+            int channel = (row * 2 + column) * 4 + 1;
+            ofSetColor(255, 255, 255, _dmx.getLevel(channel));
+            ofDrawCircle(x, y, radius);
+            ofSetColor(255, 255, 255, 32);
             ofDrawBitmapString(ofToString(channel), x, y);
             ofNoFill();
-            ofDrawCircle(x,y,radius);
+            ofDrawCircle(x, y, radius);
             ofFill();
 
-            ofSetColor(255,255,255, _dmx.getLevel(channel+1));
-            ofDrawCircle(x+offset,y,radius);
-            ofSetColor(255,255,255, 32);
-            ofDrawBitmapString(ofToString(channel+1), x+offset, y);
+            ofSetColor(255, 255, 255, _dmx.getLevel(channel + 1));
+            ofDrawCircle(x + offset, y, radius);
+            ofSetColor(255, 255, 255, 32);
+            ofDrawBitmapString(ofToString(channel + 1), x + offset, y);
             ofNoFill();
-            ofDrawCircle(x+offset,y,radius);
+            ofDrawCircle(x + offset, y, radius);
             ofFill();
-            
-            ofSetColor(255,255,255, _dmx.getLevel(channel+2));
-            ofDrawCircle(x,y+offset,radius);
-            ofSetColor(255,255,255, 32);
-            ofDrawBitmapString(ofToString(channel+2), x, y+offset);
+
+            ofSetColor(255, 255, 255, _dmx.getLevel(channel + 2));
+            ofDrawCircle(x, y + offset, radius);
+            ofSetColor(255, 255, 255, 32);
+            ofDrawBitmapString(ofToString(channel + 2), x, y + offset);
             ofNoFill();
-            ofDrawCircle(x,y+offset,radius);
+            ofDrawCircle(x, y + offset, radius);
             ofFill();
-            
-            ofSetColor(255,255,255, _dmx.getLevel(channel+3));
-            ofDrawCircle(x+offset,y+offset,radius);
-            ofSetColor(255,255,255, 32);
-            ofDrawBitmapString(ofToString(channel+3), x+offset, y+offset);
+
+            ofSetColor(255, 255, 255, _dmx.getLevel(channel + 3));
+            ofDrawCircle(x + offset, y + offset, radius);
+            ofSetColor(255, 255, 255, 32);
+            ofDrawBitmapString(ofToString(channel + 3), x + offset, y + offset);
             ofNoFill();
-            ofDrawCircle(x+offset,y+offset,radius);
+            ofDrawCircle(x + offset, y + offset, radius);
             ofFill();
-            
-            x += offset*2;
+
+            x += offset * 2;
         }
-        y += ofGetHeight()/4;
-        x = ofGetWidth()/3*2;
+        y += ofGetHeight() / 4;
+        x = ofGetWidth() / 3 * 2;
     }
     _session->drawGui();
 }
 
-void ofApp::keyPressed(int key){
+void ofApp::keyPressed(int key)
+{
     _session->onKeyPressed(key);
-    if(key == 'f'){
+    if (key == 'f')
+    {
         ofToggleFullscreen();
     }
 }
-void ofApp::keyReleased(int key){}
-void ofApp::mouseMoved(int x, int y){}
-void ofApp::mouseDragged(int x, int y, int button){}
-void ofApp::mousePressed(int x, int y, int button){}
-void ofApp::mouseReleased(int x, int y, int button){}
-void ofApp::mouseEntered(int x, int y){}
-void ofApp::mouseExited(int x, int y){}
-void ofApp::windowResized(int w, int h){}
-void ofApp::gotMessage(ofMessage msg){}
-void ofApp::dragEvent(ofDragInfo dragInfo){}
+void ofApp::keyReleased(int key) {}
+void ofApp::mouseMoved(int x, int y) {}
+void ofApp::mouseDragged(int x, int y, int button) {}
+void ofApp::mousePressed(int x, int y, int button) {}
+void ofApp::mouseReleased(int x, int y, int button) {}
+void ofApp::mouseEntered(int x, int y) {}
+void ofApp::mouseExited(int x, int y) {}
+void ofApp::windowResized(int w, int h) {}
+void ofApp::gotMessage(ofMessage msg) {}
+void ofApp::dragEvent(ofDragInfo dragInfo) {}
