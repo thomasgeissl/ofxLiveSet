@@ -1,7 +1,8 @@
 ofxGui
 ofxLiveSet
-ofxMidi
 ofxOsc
+ofxMidi
+local_addons/ofxBeat
 local_addons/ofxDmx #https://github.com/npisanti/ofxDmx.git@f14699718
 local_addons/ofxMQTT #https://github.com/256dpi/ofxMQTT.git@eb916edda
 local_addons/ofxMidiMapper #https://github.com/thomasgeissl/ofxMidiMapper.git@e338553c6
@@ -11,6 +12,8 @@ local_addons/ofxSoundAnalyser #https://github.com/thomasgeissl/ofxSoundAnalyser.
 local_addons/ofxPDSP #https://github.com/npisanti/ofxPDSP.git@770469109
 local_addons/ofxAudioFile #https://github.com/npisanti/ofxAudioFile.git@53636bbe5
 local_addons/ofxSIMDFloats #https://github.com/npisanti/ofxSIMDFloats.git@d861d55c3
-local_addons/ofxBeat #https://github.com/darrenmothersele/ofxBeat.git@71600c8e2
-#local_addons/ofxLiveSet #https://github.com/thomasgeissl/ofxLiveSet.git@f605434a4
-$local_addons/ofxMidi #https://github.com/danomatika/ofxMidi.git@c80fba1ca
+local_addons/ofxMidi #https://github.com/danomatika/ofxMidi.git@c80fba1ca
+local_addons/ofxApp #http://github.com/thomasgeissl/ofxApp.git@2afbb845f
+local_addons/ofxEasing #https://github.com/arturoc/ofxEasing.git@3a15beffb
+local_addons/ofxMovingAverage #http://github.com/thomasgeissl/ofxMovingAverage.git@81a663116
+local_addons/ofxLua #https://github.com/danomatika/ofxLua.git@1.3.5

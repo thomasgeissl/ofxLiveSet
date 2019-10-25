@@ -1,4 +1,6 @@
 #pragma once
+#include "./config.h"
+
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxOsc.h"
@@ -15,7 +17,9 @@
 #include "./clips/midiReactive.h"
 #include "./gui/infoPanel.h"
 
+#if OFXLIVESET_USE_MQTTSYNCHRONISER
 #include "utils/mqttSynchroniser.h"
+#endif
 
 namespace ofxLiveSet
 {
@@ -39,11 +43,13 @@ public:
         _oscControlEnabled.addListener(this, &session::onOscControlEnabledChange);
         _oscControlEnabled.set("oscControlEnabled", false);
         _autoResizeGraphicTracksEnabled.set("autoResizeGraphicTracksEnabled", true);
-        _mqttSynchroniserEnabled.set("mqttSynchroniserEnabled", false);
 
         _settings.add(_defaultKeyMappingEnabled);
         _settings.add(_oscControlEnabled);
+#if OFXLIVESET_USE_MQTTSYNCHRONISER
+        _mqttSynchroniserEnabled.set("mqttSynchroniserEnabled", false);
         _settings.add(_mqttSynchroniserEnabled);
+#endif
         _settings.add(_autoResizeGraphicTracksEnabled);
 
         _engine.listDevices();
@@ -136,6 +142,7 @@ public:
             _oscMapper.loadMapping(ofToDataPath("mappings/mapping.osc.json"));
         }
 
+#if OFXLIVESET_USE_MQTTSYNCHRONISER
         _mqttSynchroniser.setup();
         for (auto &track : _tracks)
         {
@@ -149,6 +156,7 @@ public:
                 _mqttSynchroniser.addParameters(clip->_parameters, prefix);
             }
         }
+#endif
 
         _fbo.allocate(ofGetWidth(), ofGetHeight());
         _rawFbo.allocate(ofGetWidth(), ofGetHeight());
@@ -237,10 +245,12 @@ public:
     void update()
     {
         _soundAnalyser.update();
+#if OFXLIVESET_USE_MQTTSYNCHRONISER
         if (_mqttSynchroniserEnabled)
         {
             _mqttSynchroniser.update();
         }
+#endif
 
         if (_active)
         {
@@ -758,6 +768,8 @@ public:
 
     ofxPanel _effectsPanel;
 
+#if OFXLIVESET_USE_MQTTSYNCHRONISER
     ofxLiveSet::mqttSynchroniser _mqttSynchroniser;
+#endif
 };
 }; // namespace ofxLiveSet

@@ -1,9 +1,19 @@
 #include "ofApp.h"
 
+#include "./clips/dmx/within.h"
+#include "./clips/dmx/anchor.h"
+#include "./clips/dmx/schwanensee.h"
+#include "./clips/dmx/firn.h"
+#include "./clips/dmx/wind.h"
+#include "./clips/dmx/newClip.h"
+#include "./clips/dmx/strobe.h"
+#include "./clips/dmx/utils/still.h"
+#include "./clips/dmx/utils/midi2dmx.h"
+
 ofApp::ofApp() : _project(ofxLiveSet::project::create())
 {
     setApplicationName("klangLichtStrom");
-    setApplicationVersion("1.1.0");
+    setApplicationVersion("1.2.0");
 
     _session = _project->_sessions.back();
 }
@@ -26,6 +36,7 @@ void ofApp::setup()
     lightBulbsTrack->addClip(clips::schwanensee::create())->setup();
     lightBulbsTrack->addClip(clips::firn::create())->setup();
     lightBulbsTrack->addClip(clips::wind::create())->setup();
+    lightBulbsTrack->addClip(clips::newClip::create())->setup();
 
     strobeTrack->addClip(clips::strobe::create(21, 22), 3)->setup();
 
@@ -52,7 +63,7 @@ void ofApp::setup()
     _session->setup();
     _session->setupGui();
     _session->openOscControlInPort(9000);
-    // _session->openMidiMapperInPort(0);
+    _session->openMidiMapperInPort(1);
     _session->openMidiInPort(0);
     _session->stop();
     _session->_mqttSynchroniserEnabled = false;
@@ -62,7 +73,8 @@ void ofApp::setup()
     _session->renameScene(2, "schwanensee");
     _session->renameScene(3, "firn");
     _session->renameScene(4, "wind");
-    for (auto i = 5; i <= 8; i++)
+    _session->renameScene(5, "new");
+    for (auto i = 6; i <= 8; i++)
     {
         _session->renameScene(i, "");
     }
