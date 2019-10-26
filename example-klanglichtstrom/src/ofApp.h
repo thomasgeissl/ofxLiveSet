@@ -4,6 +4,7 @@
 #include "ofxApp.h"
 #include "ofxDmx.h"
 #include "ofxLiveSet.h"
+#include "./visualisation.h"
 
 // out comment if you dont have an enttec usb interface connected
 #define SENDDMX
@@ -33,4 +34,5 @@ public:
     ofxLiveSet::session::pointer _session;
 
     ofxDmx _dmx;
+    visualisation _visualisation;
 };

@@ -24,6 +24,7 @@ void ofApp::setup()
 
     _dmx.connect("/dev/cu.usbserial-EN160415");
     _dmx.setChannels(18);
+    _visualisation.setup(&_dmx);
 
     auto lightBulbsTrack = ofxLiveSet::track::dmx::create("light bulbs");
     auto strobeTrack = ofxLiveSet::track::dmx::create("strobe");
@@ -91,6 +92,7 @@ void ofApp::exit()
 
 void ofApp::update()
 {
+    _visualisation.update();
 #ifdef SENDDMX
     _dmx.update();
 #endif
@@ -98,52 +100,10 @@ void ofApp::update()
 
 void ofApp::draw()
 {
-    auto offset = 80;
-    auto radius = 20;
-    auto x = ofGetWidth() / 3 * 2;
-    auto y = ofGetHeight() / 2;
-    for (auto row = 0; row < 2; row++)
-    {
-        for (auto column = 0; column < 2; column++)
-        {
-            int channel = (row * 2 + column) * 4 + 1;
-            ofSetColor(255, 255, 255, _dmx.getLevel(channel));
-            ofDrawCircle(x, y, radius);
-            ofSetColor(255, 255, 255, 32);
-            ofDrawBitmapString(ofToString(channel), x, y);
-            ofNoFill();
-            ofDrawCircle(x, y, radius);
-            ofFill();
-
-            ofSetColor(255, 255, 255, _dmx.getLevel(channel + 1));
-            ofDrawCircle(x + offset, y, radius);
-            ofSetColor(255, 255, 255, 32);
-            ofDrawBitmapString(ofToString(channel + 1), x + offset, y);
-            ofNoFill();
-            ofDrawCircle(x + offset, y, radius);
-            ofFill();
-
-            ofSetColor(255, 255, 255, _dmx.getLevel(channel + 2));
-            ofDrawCircle(x, y + offset, radius);
-            ofSetColor(255, 255, 255, 32);
-            ofDrawBitmapString(ofToString(channel + 2), x, y + offset);
-            ofNoFill();
-            ofDrawCircle(x, y + offset, radius);
-            ofFill();
-
-            ofSetColor(255, 255, 255, _dmx.getLevel(channel + 3));
-            ofDrawCircle(x + offset, y + offset, radius);
-            ofSetColor(255, 255, 255, 32);
-            ofDrawBitmapString(ofToString(channel + 3), x + offset, y + offset);
-            ofNoFill();
-            ofDrawCircle(x + offset, y + offset, radius);
-            ofFill();
-
-            x += offset * 2;
-        }
-        y += ofGetHeight() / 4;
-        x = ofGetWidth() / 3 * 2;
-    }
+    _visualisation.draw(
+        ofGetWidth() / 3 * 2,
+        ofGetHeight() / 2,
+        ofGetWidth() / 3, ofGetHeight() / 2);
     _session->drawGui();
 }
 
