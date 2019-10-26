@@ -18,4 +18,7 @@
 #include "./clips/null.h"
 #include "./clips/soundReactive.h"
 #include "./clips/midiReactive.h"
+
+#if OFXLIVESET_USE_LUA
 #include "./clips/lua.h"
+#endif
