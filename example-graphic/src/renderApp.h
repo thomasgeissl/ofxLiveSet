@@ -29,6 +29,9 @@ public:
             case 'f': ofToggleFullscreen(); break;
         }
     }
+    void setSession(ofxLiveSet::session::pointer session){
+        _session = session;
+    }
 
     ofxLiveSet::session::pointer _session;
 };
