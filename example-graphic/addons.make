@@ -16,3 +16,4 @@ local_addons/ofxApp #http://github.com/thomasgeissl/ofxApp.git@2afbb845f
 local_addons/ofxEasing #https://github.com/arturoc/ofxEasing.git@3a15beffb
 local_addons/ofxMovingAverage #http://github.com/thomasgeissl/ofxMovingAverage.git@81a663116
 #local_addons/ofxLua #https://github.com/danomatika/ofxLua.git@825a98fc9
+local_addons/ofxPostProcessing #https://github.com/thomasgeissl/ofxPostProcessing.git@6178d741c
