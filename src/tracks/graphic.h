@@ -3,7 +3,10 @@
 #include "base.h"
 #include "../clips/graphic.h"
 
-#if OFXLIVESET_USE_DOTFRAG
+#if OFXLIVESET_USE_OFXPOSTPROCESSING
+#include "ofxPostProcessing.h"
+#endif
+#if OFXLIVESET_USE_OFXDOTFRAG
 #include "ofxDotFrag.h"
 #endif
 
@@ -20,7 +23,28 @@ public:
         return std::make_shared<graphic>(name);
     }
     graphic(std::string name = "") : base(name)
-#if OFXLIVESET_USE_DOTFRAG
+#if OFXLIVESET_USE_OFXPOSTPROCESSING
+                                     ,
+                                     _postEffects({_post.createPass<ContrastPass>(),
+                                                   _post.createPass<HsbShiftPass>(),
+                                                   _post.createPass<RGBShiftPass>(),
+                                                   _post.createPass<LimbDarkeningPass>(),
+                                                   _post.createPass<FxaaPass>(),
+                                                   _post.createPass<FakeSSSPass>(),
+                                                   _post.createPass<BloomPass>(),
+                                                   _post.createPass<DofPass>(),
+                                                   _post.createPass<KaleidoscopePass>(),
+                                                   _post.createPass<NoiseWarpPass>(),
+                                                   _post.createPass<PixelatePass>(),
+                                                   _post.createPass<EdgePass>(),
+                                                   _post.createPass<HorizontalTiltShifPass>(),
+                                                   _post.createPass<VerticalTiltShifPass>(),
+                                                   _post.createPass<GodRaysPass>(),
+                                                   _post.createPass<SSAOPass>(),
+                                                   _post.createPass<ToonPass>(),
+                                                   _post.createPass<ZoomBlurPass>()})
+#endif
+#if OFXLIVESET_USE_OFXDOTFRAG
                                      ,
                                      _frags({
                                          new ofx::dotfrag::Delay(),
@@ -39,6 +63,7 @@ public:
 
 #endif
     {
+
         _xPosition.set("x", 0, 0, ofGetWidth());
         _yPosition.set("y", 0, 0, ofGetHeight());
         _width.set("width", ofGetWidth(), 0, ofGetWidth());
@@ -58,7 +83,16 @@ public:
         ofClear(255, 0);
         _fbo.end();
 
-#if OFXLIVESET_USE_DOTFRAG
+#if OFXLIVESET_USE_OFXPOSTPROCESSING
+        _post.init(_fbo.getWidth(), _fbo.getHeight());
+        _post.setFlip(true);
+        for (auto &effect : _postEffects)
+        {
+            effect->setEnabled(false);
+            // gui.add(effect->parameters);
+        }
+#endif
+#if OFXLIVESET_USE_OFXDOTFRAG
         for (auto &frag : _frags)
         {
             frag->allocate(_fbo);
@@ -79,7 +113,13 @@ public:
             ofClear(255, 0);
             ofEnableBlendMode(OF_BLENDMODE_ALPHA);
             ofSetColor(255, _gain * 255);
+#if OFXLIVESET_USE_OFXPOSTPROCESSING
+            _post.begin();
+#endif
             clip->_fbo.draw(0, 0);
+#if OFXLIVESET_USE_OFXPOSTPROCESSING
+            _post.end();
+#endif
             _fbo.end();
         }
         if (clip == nullptr)
@@ -88,7 +128,7 @@ public:
             ofClear(255, 0);
             _fbo.end();
         }
-#if OFXLIVESET_USE_DOTFRAG
+#if OFXLIVESET_USE_OFXDOTFRAG
         for (auto &frag : _frags)
         {
             frag->apply(_fbo);
@@ -109,7 +149,7 @@ public:
         _fbo.begin();
         ofClear(255, 0);
         _fbo.end();
-#if OFXLIVESET_USE_DOTFRAG
+#if OFXLIVESET_USE_OFXDOTFRAG
         for (auto &frag : _frags)
         {
             frag->allocate(_fbo);
@@ -148,9 +188,13 @@ public:
     ofParameter<float> _width;
     ofParameter<float> _height;
 
-#if OFXLIVESET_USE_DOTFRAG
+#if OFXLIVESET_USE_OFXDOTFRAG
     ofParameterGroup _effectsParameters;
     std::vector<ofx::dotfrag::Base *> _frags;
+#endif
+#if OFXLIVESET_USE_OFXPOSTPROCESSING
+    ofxPostProcessing _post;
+    std::vector<RenderPass::Ptr> _postEffects;
 #endif
 };
 }; // namespace track

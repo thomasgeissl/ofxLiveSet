@@ -5,4 +5,8 @@ os:
 language: cpp
 sudo: required
 
-script: . scripts/$TRAVIS_OS_NAME/install.sh
+script:
+  - git clone https://github.com/thomasgeissl/ofTravis.git
+  - source ./ofTravis/common/export.sh
+  - source ./ofTravis/${TRAVIS_OS_NAME}/install_oF.sh
+  - source ./ofTravis/common/compile_addon_examples.sh

@@ -8,7 +8,7 @@ local_addons/ofxMQTT #https://github.com/256dpi/ofxMQTT.git@5a9bb835d
 local_addons/ofxMidiMapper #https://github.com/thomasgeissl/ofxMidiMapper.git@e338553c6
 local_addons/ofxKeyMapper #https://github.com/thomasgeissl/ofxKeyMapper.git@14201baf2
 local_addons/ofxOscMapper #https://github.com/thomasgeissl/ofxOscMapper.git@52c3a44a3
-local_addons/ofxSoundAnalyser #https://github.com/thomasgeissl/ofxSoundAnalyser.git@ea56d3e4e
+local_addons/ofxSoundAnalyser #https://github.com/thomasgeissl/ofxSoundAnalyser.git@95b82241b
 local_addons/ofxPDSP #https://github.com/npisanti/ofxPDSP.git@f05a609b9
 local_addons/ofxAudioFile #https://github.com/npisanti/ofxAudioFile.git@e370e0f15
 local_addons/ofxMidi #https://github.com/danomatika/ofxMidi.git@f9d85fd88

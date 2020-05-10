@@ -20,17 +20,11 @@ This is a work in progress, it is sill buggy, incomplete and not yet clean. It i
 * can be easily extended
 
 ### Gui
-It comes with an ofxGui, a web based gui will probably be added in the future
+It comes with an ofxGui, a web based gui will probably be added in the future.
 
 ### Mappable parameters
 Almost all parameters are midi, key and osc mappable. 
 
-## Usage
-You can download a fresh version of openFrameworks, as well as ofxLiveSet and its depedencies via the following command.
-
-```
-sh -c "$(curl -sSL https://raw.githubusercontent.com/thomasgeissl/ofxLiveSet/master/scripts/install.sh)"
-```
 ## Changelog
 ### 2.0.0
     * using smart pointers instead of raw pointers
