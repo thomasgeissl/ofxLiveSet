@@ -15,13 +15,10 @@
 #include "./clips/soundReactive.h"
 #include "./clips/midiReactive.h"
 #include "./gui/infoPanel.h"
+#include "ofxImGui.h"
 
 #if OFXLIVESET_USE_SOUNDANALYSER
 #include "ofxSoundAnalyser.h"
-#endif
-
-#if OFXLIVESET_USE_MQTTSYNCHRONISER
-#include "utils/mqttSynchroniser.h"
 #endif
 
 namespace ofxLiveSet
@@ -50,6 +47,13 @@ namespace ofxLiveSet
         void update();
         void draw();
         void drawGui();
+        void drawMenuGui();
+        void drawBrowserGui();
+        void drawSessionGui();
+        void drawInfoGui();
+        void drawClipGui();
+        void drawPreviewGui();
+        void drawPreferencesGui();
         void exit();
 
         void onUpdate(ofEventArgs &e);
@@ -90,6 +94,7 @@ namespace ofxLiveSet
 #endif
 
         void newMidiMessage(ofxMidiMessage &message);
+        void setPreview(ofFbo fbo);
 
         pdsp::Engine _engine;
         std::vector<track::base::pointer> _tracks;
@@ -128,16 +133,26 @@ namespace ofxLiveSet
         ofParameterGroup _settings;
         ofParameter<bool> _defaultKeyMappingEnabled;
         ofParameter<bool> _oscControlEnabled;
-        ofParameter<bool> _mqttSynchroniserEnabled;
         ofParameter<bool> _autoResizeGraphicTracksEnabled;
 
         ofParameter<int> _focusedTrack;
-        ofParameter<int> _focusedClip;
+        // ofParameter<int> _focusedClip;
+        // ofxLiveSet::track::base::pointer _focusedTrack;
+        ofxLiveSet::clip::base::pointer _focusedClip;
 
         u_int64_t _timestamp;
         u_int64_t _startedTimestamp;
 
+        ofFbo _preview;
+
+
+        bool _showPreferences = false;
+        bool _showInfo = true;
+        bool _showPreview = true;
+        bool _showDemo = false;
+        bool _showStyleEditor = false;
         // gui
+        ofxImGui::Gui _gui;
         ofxPanel _scenesPanel;
         ofxPanel _midiMapperPanel;
         ofxPanel _keyMapperPanel;
@@ -146,9 +161,5 @@ namespace ofxLiveSet
         gui::infoPanel _infoPanel;
 
         ofxPanel _effectsPanel;
-
-#if OFXLIVESET_USE_MQTTSYNCHRONISER
-        ofxLiveSet::mqttSynchroniser _mqttSynchroniser;
-#endif
     };
 }; // namespace ofxLiveSet

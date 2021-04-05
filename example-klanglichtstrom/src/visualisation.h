@@ -8,6 +8,7 @@ public:
     void setup(ofxDmx *dmx)
     {
         _dmx = dmx;
+        _fbo.allocate(ofGetWidth()/2, ofGetHeight()/2);
     }
     void update()
     {
@@ -15,14 +16,17 @@ public:
         {
             _values[i] = _dmx->getLevel(i);
         }
-    }
-    void draw(float x, float y, float width, float height) const
-    {
+        auto x = 0;
+        auto y = 0;
+        auto width = _fbo.getWidth();
+        auto height = _fbo.getHeight();
         auto offset = width / 4;
         auto radius = 20;
         auto xPos = x;
         auto yPos = y;
-        for (auto row = 0; row < 2; row++)
+        _fbo.begin();
+        ofClear(255, 0);
+         for (auto row = 0; row < 2; row++)
         {
             for (auto column = 0; column < 2; column++)
             {
@@ -64,6 +68,11 @@ public:
             yPos += height / 2;
             xPos = x;
         }
+        _fbo.end();
+    }
+    void draw(float x, float y, float width, float height) const
+    {
+        _fbo.draw(x, y);
     }
     float getHeight() const
     {
@@ -73,6 +82,11 @@ public:
     {
         return 0;
     }
+
+    ofFbo getFbo() {
+        return _fbo;
+    }
     ofxDmx *_dmx;
     int _values[24];
+    ofFbo _fbo;
 };

@@ -198,6 +198,18 @@ namespace ofxLiveSet
                 return _clip;
             }
 
+            clip::base::pointer getClip(int index){
+                if(index < 0 || index >= _clips.size()){
+                    return nullptr;
+                }
+                return _clips[index];
+            }
+
+            std::string getName() {
+                return _name;
+            }
+
+
             std::vector<clip::base::pointer> _clips;
             clip::base::pointer _clip;
             ofParameterGroup _parameters;

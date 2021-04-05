@@ -67,7 +67,6 @@ void ofApp::setup()
     _session->openMidiMapperInPort(1);
     _session->openMidiInPort(0);
     _session->stop();
-    _session->_mqttSynchroniserEnabled = false;
 
     _session->renameScene(0, "within");
     _session->renameScene(1, "anchor");
@@ -100,11 +99,9 @@ void ofApp::update()
 
 void ofApp::draw()
 {
-    _visualisation.draw(
-        ofGetWidth() / 3 * 2,
-        ofGetHeight() / 2,
-        ofGetWidth() / 3, ofGetHeight() / 2);
+    _session->setPreview(_visualisation.getFbo());
     _session->drawGui();
+    _visualisation.draw(ofGetWidth()/2, ofGetHeight()/2, ofGetWidth()/2, ofGetHeight()/2);
 }
 
 void ofApp::keyPressed(int key)

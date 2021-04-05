@@ -61,6 +61,17 @@ public:
         _parameters.add(parameter);
     }
 
+    std::string getName(){
+        return _name;
+    }
+
+    bool isActive(){
+        return _active;
+    }
+    void setActive(bool value){
+        _active = value;
+    }
+
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
 	ofParameter<bool> _active;

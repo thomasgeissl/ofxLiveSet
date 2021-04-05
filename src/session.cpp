@@ -2,8 +2,23 @@
 
 #include "ofMain.h"
 #include "./session.h"
+#include "./gui/Theme.h"
 
 #include "./session.soundAnalyser.cpp"
+
+// Make the UI compact because there are so many fields
+static void PushStyleCompact()
+{
+    ImGuiStyle& style = ImGui::GetStyle();
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(style.FramePadding.x, (float)(int)(style.FramePadding.y * 0.60f)));
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(style.ItemSpacing.x, (float)(int)(style.ItemSpacing.y * 0.60f)));
+}
+
+static void PopStyleCompact()
+{
+    ImGui::PopStyleVar(2);
+}
+
 
 ofxLiveSet::session::session()
 #if OFXLIVESET_USE_SOUNDANALYSER
@@ -16,6 +31,11 @@ ofxLiveSet::session::session()
     ofAddListener(ofEvents().exit, this, &ofxLiveSet::session::onExit, OF_EVENT_ORDER_AFTER_APP);
     // ofAddListener(ofEvents().keyPressed, this, &ofxLiveSet::session::onKeyPressed, OF_EVENT_ORDER_AFTER_APP);
 
+    _gui.setup();
+    // ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    ImGui::GetIO().MouseDrawCursor = false;
+    _gui.setTheme(new Theme());
+
     _defaultKeyMappingEnabled.set("defaultKeyMappingEnabled", true);
     _oscControlEnabled.addListener(this, &ofxLiveSet::session::onOscControlEnabledChange);
     _oscControlEnabled.set("oscControlEnabled", false);
@@ -23,10 +43,6 @@ ofxLiveSet::session::session()
 
     _settings.add(_defaultKeyMappingEnabled);
     _settings.add(_oscControlEnabled);
-#if OFXLIVESET_USE_MQTTSYNCHRONISER
-    _mqttSynchroniserEnabled.set("mqttSynchroniserEnabled", false);
-    _settings.add(_mqttSynchroniserEnabled);
-#endif
     _settings.add(_autoResizeGraphicTracksEnabled);
 
     _engine.listDevices();
@@ -90,7 +106,7 @@ void ofxLiveSet::session::setup()
     }
 
     _focusedTrack.set("focusedTrack", 0);
-    _focusedClip.set("focusedClip", 0);
+    // _focusedClip.set("focusedClip", 0);
 
     for (auto &track : _tracks)
     {
@@ -119,67 +135,51 @@ void ofxLiveSet::session::setup()
         _oscMapper.loadMapping(ofToDataPath("mappings/mapping.osc.json"));
     }
 
-#if OFXLIVESET_USE_MQTTSYNCHRONISER
-    _mqttSynchroniser.setup();
-    for (auto &track : _tracks)
-    {
-        std::string prefix = "ofxLiveSet/mqttSynchroniser/session/" + ofToString(track->_name) + "/parameters/";
-        _mqttSynchroniser.addParameters(track->_parameters, prefix);
-        prefix = "ofxLiveSet/mqttSynchroniser/session/" + ofToString(track->_name) + "/ioParameters/";
-        _mqttSynchroniser.addParameters(track->_ioParameters, prefix);
-        for (auto &clip : track->_clips)
-        {
-            prefix = "ofxLiveSet/mqttSynchroniser/session/" + ofToString(track->_name) + "/" + ofToString(clip->_name) + "/parameters/";
-            _mqttSynchroniser.addParameters(clip->_parameters, prefix);
-        }
-    }
-#endif
-
     _fbo.allocate(ofGetWidth(), ofGetHeight());
     _rawFbo.allocate(ofGetWidth(), ofGetHeight());
 }
 void ofxLiveSet::session::setupGui(float panelWidth)
 {
-    ofAddListener(ofEvents().windowResized, this, &ofxLiveSet::session::onWindowResized, OF_EVENT_ORDER_AFTER_APP);
+    // ofAddListener(ofEvents().windowResized, this, &ofxLiveSet::session::onWindowResized, OF_EVENT_ORDER_AFTER_APP);
 
-    ofxPanel::setDefaultWidth(panelWidth);
-    ofxPanel::setDefaultFillColor(ofColor::green);
-    _midiMapper.getParameters().setName("midi mapper");
-    _midiMapperPanel.setup(_midiMapper.getParameters());
-    _midiMapperPanel.setPosition(0, ofGetHeight() / 2);
-    _midiMapperPanel.setHeaderBackgroundColor(ofColor::green);
-    _keyMapper.getParameters().setName("key mapper");
-    _keyMapperPanel.setup(_keyMapper.getParameters());
-    _keyMapperPanel.setPosition(_midiMapperPanel.getPosition().x, _midiMapperPanel.getPosition().y + _midiMapperPanel.getHeight());
-    _keyMapperPanel.setHeaderBackgroundColor(ofColor::green);
-    _oscMapper.getParameters().setName("osc mapper");
-    _oscMapperPanel.setup(_oscMapper.getParameters());
-    _oscMapperPanel.setPosition(_keyMapperPanel.getPosition().x, _keyMapperPanel.getPosition().y + _keyMapperPanel.getHeight());
-    _oscMapperPanel.setHeaderBackgroundColor(ofColor::green);
+    // ofxPanel::setDefaultWidth(panelWidth);
+    // ofxPanel::setDefaultFillColor(ofColor::green);
+    // _midiMapper.getParameters().setName("midi mapper");
+    // _midiMapperPanel.setup(_midiMapper.getParameters());
+    // _midiMapperPanel.setPosition(0, ofGetHeight() / 2);
+    // _midiMapperPanel.setHeaderBackgroundColor(ofColor::green);
+    // _keyMapper.getParameters().setName("key mapper");
+    // _keyMapperPanel.setup(_keyMapper.getParameters());
+    // _keyMapperPanel.setPosition(_midiMapperPanel.getPosition().x, _midiMapperPanel.getPosition().y + _midiMapperPanel.getHeight());
+    // _keyMapperPanel.setHeaderBackgroundColor(ofColor::green);
+    // _oscMapper.getParameters().setName("osc mapper");
+    // _oscMapperPanel.setup(_oscMapper.getParameters());
+    // _oscMapperPanel.setPosition(_keyMapperPanel.getPosition().x, _keyMapperPanel.getPosition().y + _keyMapperPanel.getHeight());
+    // _oscMapperPanel.setHeaderBackgroundColor(ofColor::green);
 
-    ofxPanel::setDefaultFillColor(ofColor::green);
-    //        _scenesPanel.setDefaultBorderColor(ofColor::green);
-    _scenesPanel.setup(_parameters);
-    _scenesPanel.setHeaderBackgroundColor(ofColor::green);
-    _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(), 0);
-    _scenesPanel.setUseTTF(true);
+    // ofxPanel::setDefaultFillColor(ofColor::green);
+    // //        _scenesPanel.setDefaultBorderColor(ofColor::green);
+    // _scenesPanel.setup(_parameters);
+    // _scenesPanel.setHeaderBackgroundColor(ofColor::green);
+    // _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(), 0);
+    // _scenesPanel.setUseTTF(true);
 
-    auto x = 0;
-    auto y = 0;
-    for (auto &track : _tracks)
-    {
-        track->setupGui();
-        track->_gui.setPosition(x, y);
-        track->_ioGui.setPosition(_midiMapperPanel.getPosition().x + _midiMapperPanel.getWidth(), ofGetHeight() / 2);
+    // auto x = 0;
+    // auto y = 0;
+    // for (auto &track : _tracks)
+    // {
+    //     track->setupGui();
+    //     track->_gui.setPosition(x, y);
+    //     track->_ioGui.setPosition(_midiMapperPanel.getPosition().x + _midiMapperPanel.getWidth(), ofGetHeight() / 2);
 
-        x += track->_gui.getWidth() + 1; //TODO: get border width
+    //     x += track->_gui.getWidth() + 1; //TODO: get border width
 
-        for (auto clip : track->_clips)
-        {
-            clip->_gui.setPosition(track->_ioGui.getPosition().x + track->_ioGui.getWidth(), ofGetHeight() / 2);
-        }
-    }
-    _infoPanel.setup();
+    //     for (auto clip : track->_clips)
+    //     {
+    //         clip->_gui.setPosition(track->_ioGui.getPosition().x + track->_ioGui.getWidth(), ofGetHeight() / 2);
+    //     }
+    // }
+    // _infoPanel.setup();
 }
 void ofxLiveSet::session::setupAudioEngine(int id, int inChannels, int outChannels)
 {
@@ -223,12 +223,6 @@ void ofxLiveSet::session::update()
 {
 #if OFXLIVESET_USE_SOUNDANALYSER
     _soundAnalyser.update();
-#endif
-#if OFXLIVESET_USE_MQTTSYNCHRONISER
-    if (_mqttSynchroniserEnabled)
-    {
-        _mqttSynchroniser.update();
-    }
 #endif
 
     if (_active)
@@ -306,22 +300,273 @@ void ofxLiveSet::session::draw()
 }
 void ofxLiveSet::session::drawGui()
 {
-    for (auto &track : _tracks)
-    {
-        track->drawGui();
-    }
-    _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(), 0); //TODO: only set position on resize
+    _gui.begin();
+    drawMenuGui();
+ 
+//     auto settings = ofxImGui::Settings();
+//     auto sessionWindowPosition = glm::vec2(0, 0);
+//     auto sessionWindowSize = glm::vec2(0, 0);
 
-    _scenesPanel.draw();
-    _midiMapperPanel.draw();
-    _keyMapperPanel.draw();
-    _oscMapperPanel.draw();
+//     // ImGui::SetNextWindowPos(sessionWindowPosition); 
+//     ImGui::SetNextWindowSize(glm::vec2(ofGetWidth(), 400)); 
+//     if (ImGui::Begin("session")){
+//         if (ImGui::TreeNode("transport")){
+//             // ImGui::PushItemWidth(ImGui::GetWindowContentRegionWidth()/2);
+//             ImGui::TreePop();
+//         }
 
-    if (_focusedTrack < _tracks.size() && _focusedClip < _tracks[_focusedTrack]->_clips.size())
-    {
-        _tracks[_focusedTrack]->_clips[_focusedClip]->_gui.draw();
+       
+//    ImGui::SetNextItemOpen(true);
+//    if (ImGui::TreeNode("session"))
+//     {
+//        {
+//            auto windowSize = ImGui::GetWindowSize();
+//            auto scenesWidth = 200;
+//             
+//     }
+//     ImGui::End();
+    // }
+
+        auto yOffset = 24;
+        auto height = ofGetHeight() - yOffset;
+        ImGui::SetNextWindowPos(ImVec2(0, yOffset), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSize(ImVec2(ofGetWidth(), height));
+        ImGui::Begin("Splitter test", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
+
+        static float w = 200.0f;
+        static float lowerW = 800.0f;
+        static float h = 700.0f;
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
+
+        ImGui::BeginChild("child1", ImVec2(w, h), true);
+            drawBrowserGui();
+        ImGui::EndChild();
+
+
+        ImGui::SameLine();
+        ImGui::InvisibleButton("vsplitter", ImVec2(8.0f,h)); 
+        if (ImGui::IsItemActive())
+            w += ImGui::GetIO().MouseDelta.x;
+        ImGui::SameLine();
+
+
+        ImGui::BeginChild("child2", ImVec2(0, h), true);
+            drawSessionGui();
+        ImGui::EndChild();
+
+
+        ImGui::InvisibleButton("hsplitter", ImVec2(-1,8.0f));
+        if (ImGui::IsItemActive())
+            h += ImGui::GetIO().MouseDelta.y;
+
+
+        ImGui::BeginChild("child3", ImVec2(lowerW,-1), true);
+            if(_showInfo){
+                drawInfoGui();
+                auto padding = ImVec2(10, 0);
+                ImVec2 p0 = ImGui::GetCursorScreenPos();
+                ImGui::SetCursorScreenPos(p0 + padding);
+                ImGui::SameLine();
+            }
+            drawClipGui();
+        ImGui::EndChild();
+
+
+        ImGui::SameLine();
+        ImGui::InvisibleButton("lvsplitter", ImVec2(8.0f, -1));
+        if (ImGui::IsItemActive())
+            lowerW += ImGui::GetIO().MouseDelta.x;
+        ImGui::SameLine();
+
+
+        ImGui::BeginChild("child4", ImVec2(0,-1), true);
+            if(_showPreview){
+                drawPreviewGui();
+            }
+        ImGui::EndChild();
+
+
+
+        ImGui::PopStyleVar();
+        ImGui::End();
+
+
+    drawPreferencesGui();
+    if(_showDemo){
+        ImGui::ShowDemoWindow();
     }
-    _infoPanel.draw(0, ofGetHeight() - 100, ofGetWidth() / 4, 100);
+    if(_showStyleEditor){
+        ImGui::ShowStyleEditor();
+    }
+    _gui.end();
+}
+void ofxLiveSet::session::drawMenuGui()
+{
+       if(ImGui::BeginMainMenuBar()) {
+        if (ImGui::BeginMenu("ofxLiveSet"))
+        {
+            if(ImGui::MenuItem("About"))
+            {
+            }
+            if(ImGui::MenuItem("Preferences"))
+            {
+                ImGui::OpenPopup("Preferences");
+            }
+            if(ImGui::MenuItem("Quit"))
+            {
+                ofExit();
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("File"))
+        {
+            if(ImGui::MenuItem("New"))
+            {
+                //Do something
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("View"))
+        {
+            if (ImGui::MenuItem("Info", NULL, _showInfo)) {
+                _showInfo = !_showInfo;
+            }
+            if (ImGui::MenuItem("Preview", NULL, _showPreview)) {
+                _showPreview = !_showPreview;
+            }
+            if (ImGui::MenuItem("Demo", NULL, _showDemo)) {
+                _showDemo = !_showDemo;
+            }
+            if (ImGui::MenuItem("Style editor", NULL, _showStyleEditor)) {
+                _showStyleEditor = !_showStyleEditor;
+            }
+            ImGui::EndMenu();
+        }
+
+        ImGui::SameLine(ImGui::GetWindowWidth()-50);
+        auto fps = ofToString((int)(ofGetFrameRate()));
+        fps += "fps";
+        ImGui::Text(fps.c_str());
+        ImGui::EndMainMenuBar();
+    }
+}
+void ofxLiveSet::session::drawBrowserGui()
+{
+    ImGui::Text("browserGui");
+}
+void ofxLiveSet::session::drawSessionGui()
+{
+    
+    ImGuiTableFlags flags = ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
+    if (ImGui::BeginTable("table_scrollx", _tracks.size()+1, flags))
+    {
+        ImGui::TableSetupScrollFreeze(1, 1);
+        ImGui::TableSetupColumn("Scene", ImGuiTableColumnFlags_NoHide);
+        auto maxNumberOfClips = 0;
+        for(auto & track : _tracks){
+            if(track->_clips.size() > maxNumberOfClips){
+                maxNumberOfClips = track->_clips.size();
+            }
+            ImGui::TableSetupColumn(track->getName().c_str());
+        }
+        ImGui::TableHeadersRow();
+
+        for (int row = 0; row < maxNumberOfClips; row++)
+        {
+            ImGui::TableNextRow();
+    
+            for (int column = 0; column < _tracks.size() + 1; column++)
+            {
+                auto track = column == 0 || column > _tracks.size() ? nullptr : _tracks[column -1];
+                // Both TableNextColumn() and TableSetColumnIndex() return true when a column is visible or performing width measurement.
+                // Because here we know that:
+                // - A) all our columns are contributing the same to row height
+                // - B) column 0 is always visible,
+                // We only always submit this one column and can skip others.
+                // More advanced per-column clipping behaviors may benefit from polling the status flags via TableGetColumnFlags().
+                if (!ImGui::TableSetColumnIndex(column) && column > 0)
+                    continue;
+                if (column == 0){
+                    if(row < _sceneTriggers.size()){
+                        auto scene = _sceneTriggers[row];
+                        // ImGui::Text("Line %d", row);
+                        bool value = false;
+                        if(ImGui::Checkbox(scene.getName().c_str(), &value )){
+                            triggerScene(row);
+                        }
+                    }
+                }
+                else{
+                    if(track){
+                        auto clip = track->getClip(row);
+                        if(clip){
+                            auto active = clip->isActive();
+                            std::string id = "##"; id+=clip->getName();
+                            if(ImGui::Checkbox(id.c_str(), &active )){
+                                clip->setActive(true);
+                            }
+                            if(std::dynamic_pointer_cast<ofxLiveSet::clip::nullClip>(clip)){
+                            }else{
+                                ImGui::SameLine();
+                                if(ImGui::Button((clip->getName()+"##focus").c_str())){
+                                    _focusedClip = clip;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        ImGui::EndTable();
+    }
+}
+void ofxLiveSet::session::drawInfoGui()
+{
+    ImGui::BeginChild("info", ImVec2(200, 0), true);
+        ImGui::Text("info");
+    ImGui::EndChild();
+}
+void ofxLiveSet::session::drawClipGui()
+{
+    auto title = !_focusedClip ? "clip" : _focusedClip->getName();
+    title += "##clipGui";
+    ImGui::BeginChild(title.c_str(), ImVec2(0, 0), true);
+        if(_focusedClip){
+            // ImGui::Text(_focusedClip->getName().c_str());
+            ofxImGui::AddGroup(_focusedClip->_parameters, 0);
+        }
+    ImGui::EndChild();
+}
+void ofxLiveSet::session::drawPreviewGui()
+{
+    if(_preview.isAllocated()){
+        ofxImGui::AddImage(_preview.getTexture(), glm::vec2(_preview.getWidth(), _preview.getHeight()));
+    }
+}
+void ofxLiveSet::session::drawPreferencesGui()
+{
+        ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+        ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+        if (ImGui::BeginPopupModal("Preferences", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            ofLogNotice() << "pref popup modal";
+            ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");
+            ImGui::Separator();
+
+            //static int unused_i = 0;
+            //ImGui::Combo("Combo", &unused_i, "Delete\0Delete harder\0");
+
+            static bool dont_ask_me_next_time = false;
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+            ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
+            ImGui::PopStyleVar();
+
+            if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+            ImGui::SetItemDefaultFocus();
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+            ImGui::EndPopup();
+        }
 }
 void ofxLiveSet::session::exit()
 {
@@ -426,20 +671,19 @@ void ofxLiveSet::session::onKeyPressed(int key)
         }
         case OF_KEY_UP:
         {
-            _focusedClip = std::max(0, _focusedClip - 1);
+            // _focusedClip = std::max(0, _focusedClip - 1);
             break;
         }
         case OF_KEY_DOWN:
         {
-            _focusedClip = std::min((int)(_tracks[_focusedTrack]->_clips.size()) - 1, _focusedClip + 1);
+            // _focusedClip = std::min((int)(_tracks[_focusedTrack]->_clips.size()) - 1, _focusedClip + 1);
             break;
         }
         case OF_KEY_RETURN:
         {
-            auto clip = getClip(_focusedTrack, _focusedClip);
-            if (clip != nullptr)
+            if (_focusedClip != nullptr)
             {
-                clip->toggle();
+                _focusedClip->toggle();
             }
             break;
         }
@@ -547,8 +791,7 @@ void ofxLiveSet::session::onActiveChange(bool &value)
 void ofxLiveSet::session::onClipStarted(const void *sender, bool &value)
 {
     auto clip = (clip::base *)(sender);
-    auto nullClip = dynamic_cast<ofxLiveSet::clip::nullClip *>(clip);
-    if (nullClip != nullptr)
+    if (dynamic_cast<ofxLiveSet::clip::nullClip *>(clip) != nullptr)
     {
         return;
     }
@@ -565,7 +808,8 @@ void ofxLiveSet::session::onClipStarted(const void *sender, bool &value)
             if (clip == clipToCompareWith.get())
             {
                 _focusedTrack = trackIndex;
-                _focusedClip = clipIndex;
+                // _focusedClip = clip;
+                // _focusedClip = clipIndex;
             }
             clipIndex++;
         }
@@ -637,4 +881,8 @@ void ofxLiveSet::session::newMidiMessage(ofxMidiMessage &message)
             }
         }
     }
+}
+
+void ofxLiveSet::session::setPreview(ofFbo fbo){
+    _preview = fbo;
 }
