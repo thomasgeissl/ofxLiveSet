@@ -5,24 +5,12 @@
 #include "./gui/Theme.h"
 
 #include "./session.soundAnalyser.cpp"
-
-// Make the UI compact because there are so many fields
-static void PushStyleCompact()
-{
-    ImGuiStyle& style = ImGui::GetStyle();
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(style.FramePadding.x, (float)(int)(style.FramePadding.y * 0.60f)));
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(style.ItemSpacing.x, (float)(int)(style.ItemSpacing.y * 0.60f)));
-}
-
-static void PopStyleCompact()
-{
-    ImGui::PopStyleVar(2);
-}
+#include "./utils/IconsFontAwesome5.h"
 
 
-ofxLiveSet::session::session()
+ofxLiveSet::session::session() : _fps(ofxMovingAverage<float>(60))
 #if OFXLIVESET_USE_SOUNDANALYSER
-    : _soundAnalyser(ofxSoundAnalyser::Analyser(8000))
+    , _soundAnalyser(ofxSoundAnalyser::Analyser(8000))
 #endif
 {
     ofSetEscapeQuitsApp(false);
@@ -137,50 +125,16 @@ void ofxLiveSet::session::setup()
 
     _fbo.allocate(ofGetWidth(), ofGetHeight());
     _rawFbo.allocate(ofGetWidth(), ofGetHeight());
+
+
+       // Add fontawesome fonts by merging new glyphs
+    ImFontConfig config;
+    config.MergeMode = true;
+    config.GlyphMinAdvanceX = 13.0f; // Use if you want to make the icon monospaced
+    static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+    _gui.addFont("fa-regular-400.ttf", 12.f, &config, icon_ranges);
 }
-void ofxLiveSet::session::setupGui(float panelWidth)
-{
-    // ofAddListener(ofEvents().windowResized, this, &ofxLiveSet::session::onWindowResized, OF_EVENT_ORDER_AFTER_APP);
 
-    // ofxPanel::setDefaultWidth(panelWidth);
-    // ofxPanel::setDefaultFillColor(ofColor::green);
-    // _midiMapper.getParameters().setName("midi mapper");
-    // _midiMapperPanel.setup(_midiMapper.getParameters());
-    // _midiMapperPanel.setPosition(0, ofGetHeight() / 2);
-    // _midiMapperPanel.setHeaderBackgroundColor(ofColor::green);
-    // _keyMapper.getParameters().setName("key mapper");
-    // _keyMapperPanel.setup(_keyMapper.getParameters());
-    // _keyMapperPanel.setPosition(_midiMapperPanel.getPosition().x, _midiMapperPanel.getPosition().y + _midiMapperPanel.getHeight());
-    // _keyMapperPanel.setHeaderBackgroundColor(ofColor::green);
-    // _oscMapper.getParameters().setName("osc mapper");
-    // _oscMapperPanel.setup(_oscMapper.getParameters());
-    // _oscMapperPanel.setPosition(_keyMapperPanel.getPosition().x, _keyMapperPanel.getPosition().y + _keyMapperPanel.getHeight());
-    // _oscMapperPanel.setHeaderBackgroundColor(ofColor::green);
-
-    // ofxPanel::setDefaultFillColor(ofColor::green);
-    // //        _scenesPanel.setDefaultBorderColor(ofColor::green);
-    // _scenesPanel.setup(_parameters);
-    // _scenesPanel.setHeaderBackgroundColor(ofColor::green);
-    // _scenesPanel.setPosition(ofGetWidth() - _scenesPanel.getWidth(), 0);
-    // _scenesPanel.setUseTTF(true);
-
-    // auto x = 0;
-    // auto y = 0;
-    // for (auto &track : _tracks)
-    // {
-    //     track->setupGui();
-    //     track->_gui.setPosition(x, y);
-    //     track->_ioGui.setPosition(_midiMapperPanel.getPosition().x + _midiMapperPanel.getWidth(), ofGetHeight() / 2);
-
-    //     x += track->_gui.getWidth() + 1; //TODO: get border width
-
-    //     for (auto clip : track->_clips)
-    //     {
-    //         clip->_gui.setPosition(track->_ioGui.getPosition().x + track->_ioGui.getWidth(), ofGetHeight() / 2);
-    //     }
-    // }
-    // _infoPanel.setup();
-}
 void ofxLiveSet::session::setupAudioEngine(int id, int inChannels, int outChannels)
 {
     _engine.setDeviceID(id);
@@ -303,31 +257,8 @@ void ofxLiveSet::session::drawGui()
     _gui.begin();
     drawMenuGui();
  
-//     auto settings = ofxImGui::Settings();
-//     auto sessionWindowPosition = glm::vec2(0, 0);
-//     auto sessionWindowSize = glm::vec2(0, 0);
 
-//     // ImGui::SetNextWindowPos(sessionWindowPosition); 
-//     ImGui::SetNextWindowSize(glm::vec2(ofGetWidth(), 400)); 
-//     if (ImGui::Begin("session")){
-//         if (ImGui::TreeNode("transport")){
-//             // ImGui::PushItemWidth(ImGui::GetWindowContentRegionWidth()/2);
-//             ImGui::TreePop();
-//         }
-
-       
-//    ImGui::SetNextItemOpen(true);
-//    if (ImGui::TreeNode("session"))
-//     {
-//        {
-//            auto windowSize = ImGui::GetWindowSize();
-//            auto scenesWidth = 200;
-//             
-//     }
-//     ImGui::End();
-    // }
-
-        auto yOffset = 24;
+        auto yOffset = 20;
         auto height = ofGetHeight() - yOffset;
         ImGui::SetNextWindowPos(ImVec2(0, yOffset), ImGuiCond_FirstUseEver);
         ImGui::SetNextWindowSize(ImVec2(ofGetWidth(), height));
@@ -335,11 +266,20 @@ void ofxLiveSet::session::drawGui()
 
         static float w = 200.0f;
         static float lowerW = 800.0f;
-        static float h = 700.0f;
+        static float h = 400.0f;
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
 
         ImGui::BeginChild("child1", ImVec2(w, h), true);
+        if(_midiMapper.getActiveMappingParameter()){
+            drawMidiMapperGui();
+        }
+        // else if(_keyMapper.getActiveMappingParameter()){
+        //     drawKeyMapperGui();
+        // }
+        else if(_showBrowser)
+        {
             drawBrowserGui();
+        }
         ImGui::EndChild();
 
 
@@ -396,7 +336,9 @@ void ofxLiveSet::session::drawGui()
         ImGui::ShowDemoWindow();
     }
     if(_showStyleEditor){
+        ImGui::Begin("Dear ImGui Style Editor");
         ImGui::ShowStyleEditor();
+        ImGui::End();
     }
     _gui.end();
 }
@@ -428,6 +370,9 @@ void ofxLiveSet::session::drawMenuGui()
         }
         if (ImGui::BeginMenu("View"))
         {
+            if (ImGui::MenuItem("Browser", NULL, _showBrowser)) {
+                _showBrowser = !_showBrowser;
+            }
             if (ImGui::MenuItem("Info", NULL, _showInfo)) {
                 _showInfo = !_showInfo;
             }
@@ -443,8 +388,29 @@ void ofxLiveSet::session::drawMenuGui()
             ImGui::EndMenu();
         }
 
-        ImGui::SameLine(ImGui::GetWindowWidth()-50);
-        auto fps = ofToString((int)(ofGetFrameRate()));
+        ImGui::SameLine(ImGui::GetWindowWidth()-150);
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 1, 1.0));
+        ImGui::Button("Key");
+        ImGui::PopStyleColor(1);
+        ImGui::SameLine();
+        bool activeMidiMapper = _midiMapper.getActiveMappingParameter();
+        if(activeMidiMapper)
+        {
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0, 0, 0, 1.0));
+            if(ImGui::Button("MIDI"))
+            {
+                _midiMapper.setActiveMapping(false);
+            }
+            ImGui::PopStyleColor(1);
+        }
+        else{
+            if(ImGui::Button("MIDI"))
+            {
+                _midiMapper.setActiveMapping(true);
+            }
+        }
+        ImGui::SameLine();
+        auto fps = ofToString((int)(_fps.add(ofGetFrameRate())));
         fps += "fps";
         ImGui::Text(fps.c_str());
         ImGui::EndMainMenuBar();
@@ -456,20 +422,65 @@ void ofxLiveSet::session::drawBrowserGui()
 }
 void ofxLiveSet::session::drawSessionGui()
 {
+    // ImGui::PushStyleColor(ImGuiCol_WindowBg, ImColor(255, 0, 0));
     
-    ImGuiTableFlags flags = ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
+    ImGuiTableFlags flags = ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersH |ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
     if (ImGui::BeginTable("table_scrollx", _tracks.size()+1, flags))
     {
         ImGui::TableSetupScrollFreeze(1, 1);
-        ImGui::TableSetupColumn("Scene", ImGuiTableColumnFlags_NoHide);
+        ImGui::TableSetupColumn("Scene", ImGuiTableColumnFlags_NoHide | ImGuiTableFlags_SizingFixedSame);
         auto maxNumberOfClips = 0;
         for(auto & track : _tracks){
             if(track->_clips.size() > maxNumberOfClips){
                 maxNumberOfClips = track->_clips.size();
             }
-            ImGui::TableSetupColumn(track->getName().c_str());
+            ImGui::TableSetupColumn(ofToUpper(track->getName()).c_str(), ImGuiTableColumnFlags_WidthFixed, 100);
         }
         ImGui::TableHeadersRow();
+
+
+        // stop buttons
+        ImGui::TableNextRow();
+        for(auto i = 0; i < _tracks.size() + 1; i++)
+        {
+            ImGui::TableSetColumnIndex(i);
+            std::string label = "stop##track_"; label += ofToString(i);
+            if(ImGui::Button(label.c_str())){
+                if(i == 0){
+                    stop();
+                }else{
+                    _tracks[i - 1]->stop();
+                }
+            }
+        }
+            ImGui::TableNextRow();
+        for(auto i = 0; i < _tracks.size() + 1; i++)
+        {
+            ImGui::TableSetColumnIndex(i);
+            std::string label = "solo##track_"; label += ofToString(i);
+            if(i == 0){
+            }else{
+                bool value = _tracks[i-1]->isSoloed();
+                if(ImGui::Checkbox(label.c_str(), &value)){
+                    _tracks[i-1]->setSolo(value);
+                }
+            }
+        }
+        ImGui::TableNextRow();
+        for(auto i = 0; i < _tracks.size() + 1; i++)
+        {
+            ImGui::TableSetColumnIndex(i);
+            std::string label = "mute##track_"; label += ofToString(i);
+
+            if(i == 0){
+            }else{
+                bool value = _tracks[i-1]->isMuted();
+                if(ImGui::Checkbox(label.c_str(), &value)){
+                    _tracks[i-1]->mute(value);
+                }
+            }
+        }
+        ImGui::Separator();
 
         for (int row = 0; row < maxNumberOfClips; row++)
         {
@@ -487,6 +498,9 @@ void ofxLiveSet::session::drawSessionGui()
                 if (!ImGui::TableSetColumnIndex(column) && column > 0)
                     continue;
                 if (column == 0){
+                    ImGui::GetStyle().Colors;
+                    ImU32 cell_bg_color = ImGui::GetColorU32(ImVec4(1.000f, 0.391f, 0.000f, 1.000f));
+                    ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
                     if(row < _sceneTriggers.size()){
                         auto scene = _sceneTriggers[row];
                         // ImGui::Text("Line %d", row);
@@ -519,6 +533,7 @@ void ofxLiveSet::session::drawSessionGui()
         }
         ImGui::EndTable();
     }
+    // ImGui::PopStyleColor();
 }
 void ofxLiveSet::session::drawInfoGui()
 {
@@ -533,15 +548,169 @@ void ofxLiveSet::session::drawClipGui()
     ImGui::BeginChild(title.c_str(), ImVec2(0, 0), true);
         if(_focusedClip){
             // ImGui::Text(_focusedClip->getName().c_str());
-            ofxImGui::AddGroup(_focusedClip->_parameters, 0);
+            // ofxImGui::AddGroup(_focusedClip->_parameters, 0);
+
+            for(std::size_t i = 0; i < _focusedClip->_parameters.size(); i++){
+                auto type = _focusedClip->_parameters.getType(i);
+                // ofLogNotice() << type;
+                if(type == typeid(ofParameter <int32_t> ).name()){
+                    auto p = _focusedClip->_parameters.getInt(i);
+                    ofLogNotice() << "int32 " << p.getName();
+                    int value = p.get();
+                    if(p.getMax() - p.getMin() <= 10)
+                    {
+                        if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
+                            p = value;
+                        }
+                    }
+                    else{
+                        if(ImGui::SliderInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
+                            p = value;
+                        }
+                    }
+                }else if(type == typeid(ofParameter <uint32_t> ).name()){
+                    auto p = _focusedClip->_parameters.get<uint32_t>(i);
+                    int value = p.get();
+                    if(p.getMax() - p.getMin() <= 10)
+                    {
+                        if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
+                            p = value;
+                        }
+                    }
+                    else{
+                        if(ImGui::SliderInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
+                            p = value;
+                        }
+                    }
+                }else if(type == typeid(ofParameter <int64_t> ).name()){
+                    auto p = _focusedClip->_parameters.get<int64_t>(i);
+                    // ofLogNotice() << "int64 " << p.getName();
+                    int value = p.get();
+                    if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
+                        p = value;
+                    }
+                }else if(type == typeid(ofParameter <uint64_t> ).name()){
+                    auto p = _focusedClip->_parameters.get<uint64_t>(i);
+                    int value = p.get();
+                    if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
+                        p = value;
+                    }
+                }else if(type == typeid(ofParameter <int8_t> ).name()){
+                    auto p = _focusedClip->_parameters.get<int8_t>(i);
+                    int value = p.get();
+                    if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
+                        p = value;
+                    }
+                }else if(type == typeid(ofParameter <uint8_t> ).name()){
+                    auto p = _focusedClip->_parameters.get<uint8_t>(i);
+                    int value = p.get();
+                    if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
+                        p = value;
+                    }
+                }else if(type == typeid(ofParameter <int16_t> ).name()){
+                    auto p = _focusedClip->_parameters.get<int16_t>(i);
+                    int value = p.get();
+                    if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
+                        p = value;
+                    }
+                }else if(type == typeid(ofParameter <uint16_t> ).name()){
+                    auto p = _focusedClip->_parameters.get<uint16_t>(i);
+                    int value = p.get();
+                    if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
+                        p = value;
+                    }
+                }else if(type == typeid(ofParameter <size_t> ).name()){
+                    auto p = _focusedClip->_parameters.get<size_t>(i);
+                    // add(p);
+                }else if(type == typeid(ofParameter <float> ).name()){
+                    auto p = _focusedClip->_parameters.getFloat(i);
+                    auto value = p.get();
+                    if(ImGui::SliderFloat(p.getName().c_str(), &value, p.getMin(), p.getMax())){
+                        p = value;
+                    }
+                }else if(type == typeid(ofParameter <double> ).name()){
+                    auto p = _focusedClip->_parameters.get<double>(i);
+                }else if(type == typeid(ofParameter <bool> ).name()){
+                    auto p = _focusedClip->_parameters.getBool(i);
+                    auto value = p.get();
+                    if(ImGui::Checkbox(p.getName().c_str(), &value )){
+                        p = !p;
+                    }
+                }else if(type == typeid(ofParameter <void> ).name()){
+                    auto p = _focusedClip->_parameters.getVoid(i);
+                    if(ImGui::Button((p.getName()+"##clip_"+_focusedClip->getName()).c_str())){
+                        p.trigger();
+                    }
+                }else if(type == typeid(ofParameter <ofVec2f> ).name()){
+                    auto p = _focusedClip->_parameters.get<ofVec2f>(i);
+                    // add(p);
+                }else if(type == typeid(ofParameter <ofVec3f> ).name()){
+                    auto p = _focusedClip->_parameters.get<ofVec3f>(i);
+                    // add(p);
+                }else if(type == typeid(ofParameter <ofVec4f> ).name()){
+                    auto p = _focusedClip->_parameters.get<ofVec4f>(i);
+                    // add(p);
+                }else if(type == typeid(ofParameter <glm::vec2> ).name()){
+                    auto p = _focusedClip->_parameters.get<glm::vec2>(i);
+                    // add(p);
+                }else if(type == typeid(ofParameter <glm::vec3> ).name()){
+                    auto p = _focusedClip->_parameters.get<glm::vec3>(i);
+                    // add(p);
+                }else if(type == typeid(ofParameter <glm::vec4> ).name()){
+                    auto p = _focusedClip->_parameters.get<glm::vec4>(i);
+                    // add(p);
+                }else if(type == typeid(ofParameter <ofColor> ).name()){
+                    auto p = _focusedClip->_parameters.getColor(i);
+                    // add(p);
+                }else if(type == typeid(ofParameter <ofShortColor> ).name()){
+                    auto p = _focusedClip->_parameters.getShortColor(i);
+                    // add(p);
+                }else if(type == typeid(ofParameter <ofFloatColor> ).name()){
+                    auto p = _focusedClip->_parameters.getFloatColor(i);
+                    // add(p);
+                }else if(type == typeid(ofParameter <ofRectangle> ).name()){
+                    auto p = _focusedClip->_parameters.getRectangle(i);
+                    // add(p);
+                }else if(_focusedClip->_parameters[i].valueType() == typeid(string).name()){
+                    if(_focusedClip->_parameters[i].isReadOnly()){
+                        auto p = _focusedClip->_parameters.get(i).castReadOnly<std::string, void>();
+                        // add(p);
+                    }else{
+                        auto p = _focusedClip->_parameters.getString(i);
+                        // add(p);
+                    }
+                }else if(type == typeid(ofParameterGroup).name()){
+                    auto p = _focusedClip->_parameters.getGroup(i);
+                    // add(createGuiGroup(p));
+                }else{
+                    ofLogWarning() << "ofxBaseGroup; no control for parameter of type " << type;
+                }
+                // ofLogNotice() << "adding type " << type;
+            }
         }
     ImGui::EndChild();
 }
 void ofxLiveSet::session::drawPreviewGui()
 {
     if(_preview.isAllocated()){
-        ofxImGui::AddImage(_preview.getTexture(), glm::vec2(_preview.getWidth(), _preview.getHeight()));
+        ImTextureID textureID = ( ImTextureID )( uintptr_t )_preview.getTexture().getTextureData().textureID ;
+        auto size = ImGui::GetContentRegionAvail() ; // for example
+        ImGui::Image( textureID, glm::vec2(_preview.getWidth(), _preview.getHeight())) ;
+        // ofxImGui::AddImage(_preview.getTexture(), glm::vec2(_preview.getWidth(), _preview.getHeight()));
     }
+}
+void ofxLiveSet::session::drawMidiMapperGui()
+{
+    if(ImGui::Button("clear"))
+    {
+        _midiMapper.clear();
+    }
+}
+void ofxLiveSet::session::drawKeyMapperGui()
+{
+}
+void ofxLiveSet::session::drawOscMapperGui()
+{
 }
 void ofxLiveSet::session::drawPreferencesGui()
 {
@@ -732,7 +901,7 @@ void ofxLiveSet::session::triggerScene(int index)
     }
     if (index < _sceneInformation.size())
     {
-        _infoPanel.setInfo(_sceneInformation[index]);
+        // _infoPanel.setInfo(_sceneInformation[index]);
     }
 }
 

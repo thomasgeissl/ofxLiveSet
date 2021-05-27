@@ -1,6 +1,5 @@
 #pragma once
 #include "ofMain.h"
-#include "ofxGui.h"
 #include "../clips/base.h"
 #include "../clips/null.h"
 
@@ -44,26 +43,6 @@ namespace ofxLiveSet
 
             virtual void setup() {}
 
-            void setupGui()
-            {
-                ofxPanel::setDefaultFillColor(ofColor::red);
-                _gui.setup(_parameters);
-                _gui.setHeaderBackgroundColor(ofColor::red);
-                _gui.setUseTTF(true);
-                _gui.setFillColor(ofColor::red);
-
-                ofxPanel::setDefaultFillColor(ofColor::red);
-                _ioGui.setup(_ioParameters);
-                _ioGui.setHeaderBackgroundColor(ofColor::red);
-                _ioGui.setUseTTF(true);
-                _ioGui.setFillColor(ofColor::red);
-
-                for (auto clip : _clips)
-                {
-                    clip->setupGui();
-                }
-            }
-
             virtual void update()
             {
                 if (_clip != nullptr)
@@ -78,20 +57,6 @@ namespace ofxLiveSet
                 {
                     _clip->draw();
                 }
-            }
-
-            void drawGui()
-            {
-                if (_focused)
-                {
-                    _gui.setHeaderBackgroundColor(ofColor::purple);
-                    _ioGui.draw();
-                }
-                else
-                {
-                    _gui.setHeaderBackgroundColor(ofColor::red);
-                }
-                _gui.draw();
             }
 
             void start()
@@ -159,6 +124,11 @@ namespace ofxLiveSet
                 _mute = value;
             }
 
+            void setSolo(bool value = true)
+            {
+                _solo = value;
+            }
+
             void onClipStarted(const void *sender, bool &value)
             {
                 for (auto clip : _clips)
@@ -209,6 +179,15 @@ namespace ofxLiveSet
                 return _name;
             }
 
+            bool isMuted()
+            {
+                return _mute;
+            }
+            bool isSoloed()
+            {
+                return _solo;
+            }
+
 
             std::vector<clip::base::pointer> _clips;
             clip::base::pointer _clip;
@@ -221,10 +200,7 @@ namespace ofxLiveSet
             ofParameter<float> _gain;
             ofParameterGroup _clipTriggers;
 
-            ofxPanel _gui;
             ofParameterGroup _ioParameters;
-            ofxPanel _ioGui;
-
             bool _focused;
         };
     }; // namespace track

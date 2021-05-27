@@ -1,5 +1,6 @@
 #pragma once
 #include "ofxLiveSet.h"
+#include "../../dmx.config.h"
 
 namespace clips {
     class within : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive{
@@ -12,26 +13,26 @@ namespace clips {
         within() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
             _name = "within";
             _channel.set("channel", 1, 1, 512);
-            _amount.set("amount", 1, 1, 16);
             _active.setName(_name);
 
             addParameter(_soundAnalyserId);
-            addParameter(_climaxSoundAnalyserId.set("climaxSoundAnalyser", 2, 0, 32));
+            addParameter(_climaxSoundAnalyserId.set("climaxSoundAnalyser", 2, 0, 16));
             addParameter(_start.set("start", 12, 1, 16));
-            addParameter(_amount);
             addParameter(_minValue.set("minValue", 0, 0, 255));
             addParameter(_maxValue.set("maxValue", 0, 0, 255));
             addParameter(_addPeakEnergy.set("addPeakEnergy", false));
             addParameter(_speed.set("speed", .1, 0, 1));
+            addParameter(_amount.set("amount", 1, 1, KSL_LIGHTBULBSCOUNT));
             addParameter(_add.set("add"));
             addParameter(_remove.set("remove"));
 
             _meters.setName("meters");
             _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
-            _parameters.add(_meters);
+            // _parameters.add(_meters);
             
 //            _add.newListener([this](){_amount = _amount+1;});
 //            _remove.newListener([this](){_amount = _amount-1;});
+
             
             _add.addListener(this, &within::onAdd);
             _remove.addListener(this, &within::onRemove);
@@ -58,13 +59,13 @@ namespace clips {
                     }else{
                         dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)), 0, 1, _minValue, _maxValue);
                     }
-                    std::pair<int, int> value((_start+i)%16+1, dmxValue);
+                    std::pair<int, int> value((_start+i)%KSL_LIGHTBULBSCOUNT+1, dmxValue);
                     _valueChangeEvent.notify(value);
                 }
             }
         }
         void stop(){
-            for(auto i = 1; i <= 16; i++){
+            for(auto i = 1; i <= KSL_LIGHTBULBSCOUNT; i++){
                 std::pair<int, int> value(i, 0);
                 _valueChangeEvent.notify(value);
             }
@@ -89,7 +90,7 @@ namespace clips {
             _amount.set(ofClamp(_amount + 1, _amount.getMin(), _amount.getMax()));
         }
         void onRemove(){
-            std::pair<int, int> value((_start+_amount-1) % 16 + 1, 0);
+            std::pair<int, int> value((_start+_amount-1) % KSL_LIGHTBULBSCOUNT + 1, 0);
             _valueChangeEvent.notify(value);
             _amount.set(ofClamp(_amount - 1, _amount.getMin(), _amount.getMax()));
         }

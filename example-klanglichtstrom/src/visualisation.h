@@ -8,66 +8,27 @@ public:
     void setup(ofxDmx *dmx)
     {
         _dmx = dmx;
-        _fbo.allocate(ofGetWidth()/2, ofGetHeight()/2);
+        // _fbo.allocate(ofGetWidth()/2, ofGetHeight()/2);
+        ofFbo::Settings fboSettings ;
+        fboSettings.width = ofGetWidth()/2;
+        fboSettings.height = ofGetHeight()/2;
+        fboSettings.internalformat = GL_RGBA ;
+        fboSettings.textureTarget = GL_TEXTURE_2D ;
+        _fbo.allocate( fboSettings ) ;
     }
     void update()
     {
-        for (auto i = 1; i < 24; i++)
+        for (auto i = 0; i < 24; i++)
         {
-            _values[i] = _dmx->getLevel(i);
+            _values[i] = _dmx->getLevel(i+1);
         }
-        auto x = 0;
-        auto y = 0;
-        auto width = _fbo.getWidth();
-        auto height = _fbo.getHeight();
-        auto offset = width / 4;
-        auto radius = 20;
-        auto xPos = x;
-        auto yPos = y;
+
         _fbo.begin();
-        ofClear(255, 0);
-         for (auto row = 0; row < 2; row++)
-        {
-            for (auto column = 0; column < 2; column++)
-            {
-                int channel = (row * 2 + column) * 4 + 1;
-                ofSetColor(255, 255, 255, _values[channel]);
-                ofDrawCircle(xPos, yPos, radius);
-                ofSetColor(255, 255, 255, 32);
-                ofDrawBitmapString(ofToString(channel), xPos - 3, yPos + 3);
-                ofNoFill();
-                ofDrawCircle(xPos, yPos, radius);
-                ofFill();
-
-                ofSetColor(255, 255, 255, _values[channel + 1]);
-                ofDrawCircle(xPos + offset, yPos, radius);
-                ofSetColor(255, 255, 255, 32);
-                ofDrawBitmapString(ofToString(channel + 1), xPos + offset - 3, yPos + 3);
-                ofNoFill();
-                ofDrawCircle(xPos + offset, yPos, radius);
-                ofFill();
-
-                ofSetColor(255, 255, 255, _values[channel + 2]);
-                ofDrawCircle(xPos, yPos + offset, radius);
-                ofSetColor(255, 255, 255, 32);
-                ofDrawBitmapString(ofToString(channel + 2), xPos - 3, yPos + offset + 3);
-                ofNoFill();
-                ofDrawCircle(xPos, yPos + offset, radius);
-                ofFill();
-
-                ofSetColor(255, 255, 255, _values[channel + 3]);
-                ofDrawCircle(xPos + offset, yPos + offset, radius);
-                ofSetColor(255, 255, 255, 32);
-                ofDrawBitmapString(ofToString(channel + 3), xPos + offset - 3, yPos + offset + 3);
-                ofNoFill();
-                ofDrawCircle(xPos + offset, yPos + offset, radius);
-                ofFill();
-
-                xPos += offset * 2;
-            }
-            yPos += height / 2;
-            xPos = x;
-        }
+        ofClear(255, 0, 0, 64);
+        drawDimmer(0, _fbo.getWidth()/4, _fbo.getHeight()/4);
+        drawDimmer(1, _fbo.getWidth()/4*3, _fbo.getHeight()/4);
+        drawDimmer(2, _fbo.getWidth()/4, _fbo.getHeight()/4*3);
+        drawDimmer(3, _fbo.getWidth()/4*3, _fbo.getHeight()/4*3);
         _fbo.end();
     }
     void draw(float x, float y, float width, float height) const
@@ -86,7 +47,22 @@ public:
     ofFbo getFbo() {
         return _fbo;
     }
+
+    void drawDimmer(int index, float cx, float cy)
+    {
+        auto increment = 2 * glm::pi<float>()/6;
+        auto angle = 0;
+        auto length = 50;
+        for(auto i = 0; i < 6; i++)
+        {
+            float x = length * std::cos(angle);
+            float y = length * std::sin (angle);
+            angle += increment;
+            ofSetColor(255, 255, 255, _values[index*6 + i]);
+            ofDrawCircle(cx + x, cy + y, 10);
+        }
+    }
     ofxDmx *_dmx;
-    int _values[24];
+    int _values[25];
     ofFbo _fbo;
 };

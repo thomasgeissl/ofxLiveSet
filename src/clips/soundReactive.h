@@ -9,7 +9,7 @@ namespace ofxLiveSet
         public:
             soundReactive()
             {
-                _soundAnalyserId.set("analyserId", 1, 0, 32);
+                _soundAnalyserId.set("analyserId", 1, 1, 8);
             }
             virtual void setPeakEnergy(int analyserId, float value) {}
             virtual void setPitch(int analyserId, float value) {}

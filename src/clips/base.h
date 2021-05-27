@@ -1,6 +1,5 @@
 #pragma once
 #include "ofMain.h"
-#include "ofxGui.h"
 #include "session.h"
 
 namespace ofxLiveSet{
@@ -23,14 +22,6 @@ public:
         _parameters.add(_active);
 	}
     virtual void setup(){}
-    void setupGui(){
-        //        ofxPanel::setDefaultWidth(200);
-        ofxPanel::setDefaultFillColor(ofColor::blue);
-        _gui.setup(_parameters);
-        _gui.setHeaderBackgroundColor(ofColor::blue);
-        _gui.setUseTTF(true);
-        _gui.setFillColor(ofColor::red);
-    }
 	virtual void update(){}
 	virtual void draw(){}
 	virtual void start(){
@@ -79,8 +70,6 @@ public:
     ofEvent<bool> _started;
     ofEvent<bool> _finished;
     ofEvent<bool> _stopped;
-    
-    ofxPanel _gui;
 };
 }; // namespace clip
 }; // namespace ofxLiveSet

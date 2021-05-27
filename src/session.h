@@ -2,13 +2,13 @@
 #include "./config.h"
 
 #include "ofMain.h"
-#include "ofxGui.h"
 #include "ofxOsc.h"
 #include "ofxPDSP.h"
 #include "ofxMidi.h"
 #include "ofxMidiMapper.h"
 #include "ofxKeyMapper.h"
 #include "ofxOscMapper.h"
+#include "ofxMovingAverage.h"
 #include "./tracks/base.h"
 #include "./tracks/audio.h"
 #include "./tracks/graphic.h"
@@ -38,7 +38,6 @@ namespace ofxLiveSet
         session();
 
         void setup();
-        void setupGui(float panelWidth = 200);
         void setupAudioEngine(int id, int inChannels = 2, int outChannels = 2);
         void openMidiInPort(int index);
         void openVirtualMidiInPort(std::string name);
@@ -53,6 +52,9 @@ namespace ofxLiveSet
         void drawInfoGui();
         void drawClipGui();
         void drawPreviewGui();
+        void drawMidiMapperGui();
+        void drawKeyMapperGui();
+        void drawOscMapperGui();
         void drawPreferencesGui();
         void exit();
 
@@ -147,19 +149,14 @@ namespace ofxLiveSet
 
 
         bool _showPreferences = false;
+        bool _showBrowser = true;
         bool _showInfo = true;
         bool _showPreview = true;
         bool _showDemo = false;
         bool _showStyleEditor = false;
-        // gui
-        ofxImGui::Gui _gui;
-        ofxPanel _scenesPanel;
-        ofxPanel _midiMapperPanel;
-        ofxPanel _keyMapperPanel;
-        ofxPanel _oscMapperPanel;
-        ofxPanel _settingsPanel;
-        gui::infoPanel _infoPanel;
 
-        ofxPanel _effectsPanel;
+        ofxImGui::Gui _gui;
+
+        ofxMovingAverage<float> _fps;
     };
 }; // namespace ofxLiveSet

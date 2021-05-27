@@ -1,4 +1,3 @@
-ofxGui
 ofxOsc
 ofxLiveSet
 local_addons/ofxBeat #https://github.com/darrenmothersele/ofxBeat.git@71600c8e2
@@ -14,4 +13,4 @@ local_addons/ofxMidi #https://github.com/danomatika/ofxMidi.git@f9d85fd88
 local_addons/ofxApp #http://github.com/thomasgeissl/ofxApp.git@2afbb845f
 local_addons/ofxEasing #https://github.com/arturoc/ofxEasing.git@3a15beffb
 local_addons/ofxMovingAverage #http://github.com/thomasgeissl/ofxMovingAverage.git@81a663116
-local_addons/ofxImGui #https://github.com/jvcleave/ofxImGui.git@330e1425a
+local_addons/ofxImGui #https://github.com/Daandelange/ofxImGui.git@17ba2d7dd

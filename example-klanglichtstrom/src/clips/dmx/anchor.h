@@ -1,5 +1,6 @@
 #pragma once
 #include "ofxLiveSet.h"
+#include "../../dmx.config.h"
 
 namespace clips {
     class anchor : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive {
@@ -13,7 +14,7 @@ namespace clips {
             _name = "anchor";
             _pitchChangeTriggerSoundAnalyserId.set("pitchChangeTrigger", 2, 0, 32);
             _channel.set("channel", 1, 1, 512);
-            _start.set("start", 12, 1, 16);
+            _start.set("start", 12, 1, KSL_LIGHTBULBSCOUNT);
             _amount.set("amount", 1, 1, 16);
             _minValue.set("minValue", 0, 0, 255);
             _maxValue.set("maxValue", 168, 0, 255); // beatMaxValue
@@ -63,7 +64,7 @@ namespace clips {
 
             // highs
             if(_highs){
-                auto channel = _highsQuadrant * 4 + (int)(ofRandom(0, 4));
+                auto channel = _highsQuadrant * 6 + (int)(ofRandom(0, 6));
                 _values[channel] = ofRandom(0, _highsMaxValue);
             }
  

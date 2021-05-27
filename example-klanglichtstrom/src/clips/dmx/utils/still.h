@@ -1,5 +1,6 @@
 #pragma once
 #include "clips/dmx.h"
+#include "../../dmx.config.h"
 
 namespace clips {
     class still : public ofxLiveSet::clip::dmx {
@@ -9,24 +10,22 @@ namespace clips {
         {
             return std::make_shared<still>();
         }
-        still(int channel = 1, int amount = 16) : ofxLiveSet::clip::dmx("still"), _amount(amount) {
+        still() : ofxLiveSet::clip::dmx("still")
+        {
             _name ="still";
-            _parameters.add(_channel.set("channel", channel, 1, 512));
             _active.setName(_name);
-            _values.resize(_amount);
-            for(auto i = 0; i < _amount; i++) {
+            _values.resize(KSL_LIGHTBULBSCOUNT);
+            for(auto i = 0; i < _values.size(); i++) {
                 _parameters.add(_values[i].set(ofToString(i), 0, 0, 255));
             }
         }
         
         void update() {
-            for(auto i = 0; i < _amount; i++) {
-                setValue(_channel+i, _values[i]);
+            for(auto i = 0; i < _values.size(); i++) {
+                setValue(i + 1, _values[i]);
             }
         }
         
-        ofParameter<int> _channel;
-        int _amount;
         std::vector<ofParameter<int>> _values;
     };
 };

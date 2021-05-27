@@ -4,6 +4,7 @@
 #include "ofxApp.h"
 #include "ofxDmx.h"
 #include "ofxLiveSet.h"
+#include "./tracks/mqtt.h"
 #include "./visualisation.h"
 
 // out comment if you dont have an enttec usb interface connected

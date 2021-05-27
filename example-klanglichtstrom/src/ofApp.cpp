@@ -7,6 +7,7 @@
 #include "./clips/dmx/wind.h"
 #include "./clips/dmx/newClip.h"
 #include "./clips/dmx/strobe.h"
+#include "./clips/dmx/spot.h"
 #include "./clips/dmx/utils/still.h"
 #include "./clips/dmx/utils/midi2dmx.h"
 
@@ -23,14 +24,14 @@ void ofApp::setup()
     ofSetBackgroundColor(16, 16, 16);
 
     _dmx.connect("/dev/cu.usbserial-EN160415");
-    _dmx.setChannels(18);
+    _dmx.setChannels(64);
     _visualisation.setup(&_dmx);
 
     auto lightBulbsTrack = ofxLiveSet::track::dmx::create("light bulbs");
+    auto spotTrack = ofxLiveSet::track::dmx::create("spot");
     auto strobeTrack = ofxLiveSet::track::dmx::create("strobe");
-    auto hazerTrack = ofxLiveSet::track::dmx::create("hazer");
+    auto mqttTrack = ofxLiveSet::track::mqtt::create("vgig");
     auto utilsTrack = ofxLiveSet::track::dmx::create("utils");
-    auto afterShowTrack = ofxLiveSet::track::dmx::create("after show");
 
     lightBulbsTrack->addClip(clips::within::create())->setup();
     lightBulbsTrack->addClip(clips::anchor::create())->setup();
@@ -40,18 +41,18 @@ void ofApp::setup()
     lightBulbsTrack->addClip(clips::newClip::create())->setup();
 
     strobeTrack->addClip(clips::strobe::create(21, 22), 3)->setup();
+    spotTrack->addClip(clips::spot::create(), 4)->setup();
 
     utilsTrack->addClip(clips::still::create(), 7)->setup();
     utilsTrack->addClip(clips::midi2dmx::create())->setup();
 
     utilsTrack->mute();
-    afterShowTrack->mute();
 
     _session->addTrack(lightBulbsTrack);
+    _session->addTrack(spotTrack);
     _session->addTrack(strobeTrack);
-    _session->addTrack(hazerTrack);
+    _session->addTrack(mqttTrack);
     _session->addTrack(utilsTrack);
-    _session->addTrack(afterShowTrack);
 
     for (auto track : _session->_tracks)
     {
@@ -62,7 +63,6 @@ void ofApp::setup()
     }
 
     _session->setup();
-    _session->setupGui();
     _session->openOscControlInPort(9000);
     _session->openMidiMapperInPort(1);
     _session->openMidiInPort(0);
