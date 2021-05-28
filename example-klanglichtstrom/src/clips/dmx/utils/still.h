@@ -14,7 +14,7 @@ namespace clips {
         {
             _name ="still";
             _active.setName(_name);
-            _values.resize(KSL_LIGHTBULBSCOUNT);
+            _values.resize(KLS_LIGHTBULBSCOUNT);
             for(auto i = 0; i < _values.size(); i++) {
                 _parameters.add(_values[i].set(ofToString(i), 0, 0, 255));
             }

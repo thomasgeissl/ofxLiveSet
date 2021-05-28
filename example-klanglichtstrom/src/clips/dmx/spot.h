@@ -27,7 +27,7 @@ namespace clips {
         void update(){}
         void onBlackoutTriggered(){
             _blackout = true;
-            setValue(KSL_SPOTLIGHT_CHANNEL, 0);
+            setValue(KLS_SPOTLIGHT_CHANNEL, 0);
         }
         void onActiveChange(bool & value){
             _blackout = false;
@@ -40,7 +40,7 @@ namespace clips {
         void onValueChange(int & value){
             _blackout = false;
             if(!_active || _blackout) return;
-            setValue(KSL_SPOTLIGHT_CHANNEL, _value);
+            setValue(KLS_SPOTLIGHT_CHANNEL, _value);
         }
 
         ofParameter<int> _value;

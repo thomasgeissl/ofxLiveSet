@@ -22,7 +22,7 @@ namespace clips {
             addParameter(_maxValue.set("maxValue", 0, 0, 255));
             addParameter(_addPeakEnergy.set("addPeakEnergy", false));
             addParameter(_speed.set("speed", .1, 0, 1));
-            addParameter(_amount.set("amount", 1, 1, KSL_LIGHTBULBSCOUNT));
+            addParameter(_amount.set("amount", 1, 1, KLS_LIGHTBULBSCOUNT));
             addParameter(_add.set("add"));
             addParameter(_remove.set("remove"));
 
@@ -59,13 +59,13 @@ namespace clips {
                     }else{
                         dmxValue = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)), 0, 1, _minValue, _maxValue);
                     }
-                    std::pair<int, int> value((_start+i)%KSL_LIGHTBULBSCOUNT+1, dmxValue);
+                    std::pair<int, int> value((_start+i)%KLS_LIGHTBULBSCOUNT+1, dmxValue);
                     _valueChangeEvent.notify(value);
                 }
             }
         }
         void stop(){
-            for(auto i = 1; i <= KSL_LIGHTBULBSCOUNT; i++){
+            for(auto i = 1; i <= KLS_LIGHTBULBSCOUNT; i++){
                 std::pair<int, int> value(i, 0);
                 _valueChangeEvent.notify(value);
             }
@@ -90,7 +90,7 @@ namespace clips {
             _amount.set(ofClamp(_amount + 1, _amount.getMin(), _amount.getMax()));
         }
         void onRemove(){
-            std::pair<int, int> value((_start+_amount-1) % KSL_LIGHTBULBSCOUNT + 1, 0);
+            std::pair<int, int> value((_start+_amount-1) % KLS_LIGHTBULBSCOUNT + 1, 0);
             _valueChangeEvent.notify(value);
             _amount.set(ofClamp(_amount - 1, _amount.getMin(), _amount.getMax()));
         }

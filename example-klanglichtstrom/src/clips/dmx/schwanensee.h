@@ -1,5 +1,6 @@
 #pragma once
 #include "ofxLiveSet.h"
+#include "../../dmx.config.h"
 
 namespace clips {
     class schwanensee : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive {
@@ -11,7 +12,6 @@ namespace clips {
         }
         schwanensee() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
             _name = "schwanensee";
-            _amount.set("amount", 16, 1, 16);
             _minValue.set("minValue", 0, 0, 255);
 
             _blackoutDimmer2.addListener(this, &schwanensee::onBlackoutDimmer2);
@@ -31,8 +31,8 @@ namespace clips {
             _meters.add(_pitch.set("pitch", 0, 0, 127));
             _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
             _parameters.add(_meters);
-            _values.resize(_amount);
-            _timestamps.resize(_amount);
+            _values.resize(KLS_LIGHTBULBSCOUNT);
+            _timestamps.resize(KLS_LIGHTBULBSCOUNT);
 
             _staticLight.addListener(this, &schwanensee::onStaticLightChange);
         }
@@ -45,8 +45,8 @@ namespace clips {
             }
             if(timestamp > _timestamp && _onsetDetected){
                 _onsetDetected = false;
-                auto index = (int)(ofMap(_pitch, 40, 72, 0, _amount -1));
-                if(index >= 0 && index <= _amount -1 && index != _lastIndex){
+                auto index = (int)(ofMap(_pitch, 40, 72, 0, KLS_LIGHTBULBSCOUNT -1));
+                if(index >= 0 && index <= KLS_LIGHTBULBSCOUNT -1 && index != _lastIndex){
                     if(timestamp - _timestamps[index] > 100){
                         _values[index] = _maxValue;
                         _timestamps[index] = timestamp;
@@ -56,7 +56,7 @@ namespace clips {
             }
             
             // fade out light bulbs
-            for(auto i = 0; i < _amount; i++) {
+            for(auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++) {
                 if(timestamp - _timestamps[i] < _fadeOutTime){
                     _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + _fadeOutTime, _maxValue, _minValue);
                     setValue(i+1, _values[i]);
@@ -81,7 +81,7 @@ namespace clips {
             _pitch = value;
         }
         void onBlackoutDimmer2(){
-            for(auto i = 2 * 4; i < _amount; i++) {
+            for(auto i = 2 * 4; i < KLS_LIGHTBULBSCOUNT; i++) {
                 setValue(i+1, 0);
             }
         }
@@ -91,7 +91,6 @@ namespace clips {
             }
         }
         
-        ofParameter<int> _amount;
         ofParameter<int> _minValue;
         ofParameter<int> _maxValue;
         ofParameter<int> _fadeOutTime;

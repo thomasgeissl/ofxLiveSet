@@ -29,6 +29,7 @@ public:
         drawDimmer(1, _fbo.getWidth()/4*3, _fbo.getHeight()/4);
         drawDimmer(2, _fbo.getWidth()/4, _fbo.getHeight()/4*3);
         drawDimmer(3, _fbo.getWidth()/4*3, _fbo.getHeight()/4*3);
+        drawSpotLight(_fbo.getWidth()/10, _fbo.getHeight()/10);
         _fbo.end();
     }
     void draw(float x, float y, float width, float height) const
@@ -61,6 +62,12 @@ public:
             ofSetColor(255, 255, 255, _values[index*6 + i]);
             ofDrawCircle(cx + x, cy + y, 10);
         }
+    }
+
+    void drawSpotLight(float x, float y)
+    {
+        ofSetColor(255, 255, 255, _dmx->getLevel(40));
+        ofDrawCircle(x, y, 10);
     }
     ofxDmx *_dmx;
     int _values[25];

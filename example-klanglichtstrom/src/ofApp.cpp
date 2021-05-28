@@ -30,6 +30,7 @@ void ofApp::setup()
     auto lightBulbsTrack = ofxLiveSet::track::dmx::create("light bulbs");
     auto spotTrack = ofxLiveSet::track::dmx::create("spot");
     auto strobeTrack = ofxLiveSet::track::dmx::create("strobe");
+    auto chimesTrack = ofxLiveSet::track::dmx::create("chimes");
     auto mqttTrack = ofxLiveSet::track::mqtt::create("vgig");
     auto utilsTrack = ofxLiveSet::track::dmx::create("utils");
 
@@ -41,7 +42,9 @@ void ofApp::setup()
     lightBulbsTrack->addClip(clips::newClip::create())->setup();
 
     strobeTrack->addClip(clips::strobe::create(21, 22), 3)->setup();
-    spotTrack->addClip(clips::spot::create(), 4)->setup();
+
+    spotTrack->addClip(clips::spot::create(), 2)->setup();
+    spotTrack->addClip(clips::spot::create(), 5)->setup();
 
     utilsTrack->addClip(clips::still::create(), 7)->setup();
     utilsTrack->addClip(clips::midi2dmx::create())->setup();
@@ -51,6 +54,7 @@ void ofApp::setup()
     _session->addTrack(lightBulbsTrack);
     _session->addTrack(spotTrack);
     _session->addTrack(strobeTrack);
+    _session->addTrack(chimesTrack);
     _session->addTrack(mqttTrack);
     _session->addTrack(utilsTrack);
 
@@ -101,7 +105,7 @@ void ofApp::draw()
 {
     _session->setPreview(_visualisation.getFbo());
     _session->drawGui();
-    _visualisation.draw(ofGetWidth()/2, ofGetHeight()/2, ofGetWidth()/2, ofGetHeight()/2);
+    // _visualisation.draw(ofGetWidth()/2, ofGetHeight()/2, ofGetWidth()/2, ofGetHeight()/2);
 }
 
 void ofApp::keyPressed(int key)

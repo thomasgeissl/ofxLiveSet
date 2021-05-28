@@ -15,9 +15,6 @@ public:
     {
         _name = "newClip";
         _pitchChangeTriggerSoundAnalyserId.set("pitchChangeTrigger", 2, 0, 32);
-        _channel.set("channel", 1, 1, 512);
-        _start.set("start", 12, 1, 16);
-        _amount.set("amount", 1, 1, 16);
         _minValue.set("minValue", 0, 0, 255);
         _maxValue.set("maxValue", 168, 0, 255); // beatMaxValue
         _addPeakEnergy.set("addPeakEnergy", false);
@@ -36,8 +33,6 @@ public:
 
         addParameter(_soundAnalyserId);
         addParameter(_pitchChangeTriggerSoundAnalyserId);
-        addParameter(_start);
-        addParameter(_amount);
         // addParameter(_minValue);
         addParameter(_maxValue);
         addParameter(_addPeakEnergy);
@@ -123,9 +118,6 @@ public:
     }
 
     ofParameter<int> _pitchChangeTriggerSoundAnalyserId;
-    ofParameter<int> _channel;
-    ofParameter<int> _start;
-    ofParameter<int> _amount;
     ofParameter<int> _minValue;
     ofParameter<int> _maxValue;
     ofParameter<bool> _addPeakEnergy;

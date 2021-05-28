@@ -1,5 +1,6 @@
 #pragma once
 #include "ofxLiveSet.h"
+#include "../../dmx.config.h"
 
 namespace clips {
     class firn : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive{
@@ -11,9 +12,6 @@ namespace clips {
         }
         firn() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive(), _lastIndex(0){
             _name = "firn";
-            _channel.set("channel", 1, 1, 512);
-            _amount.addListener(this, &firn::onAmountChange);
-            _amount.set("amount", 16, 1, 16);
             
             _active.setName(_name);
             
@@ -29,15 +27,18 @@ namespace clips {
             _parameters.add(_meters);
             
             _timestamp = ofGetElapsedTimeMillis();
+
+            _values.resize(KLS_LIGHTBULBSCOUNT);
+            _timestamps.resize(KLS_LIGHTBULBSCOUNT);
         }
         
         void update(){
             auto timestamp = ofGetElapsedTimeMillis();
             
-            for(auto i = 0; i < _amount; i++) {
+            for(auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++) {
                 if(timestamp - _timestamps[i] < 1000){
                     _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + 1000, _maxValue, _minValue);
-                    setValue(_channel + i, _values[i]);
+                    setValue(i+1, _values[i]);
                 }
             }
         }
@@ -57,22 +58,16 @@ namespace clips {
             }
             _timestamp = timestamp;
             
-            auto i = ofRandom(_amount);
+            auto i = ofRandom(KLS_LIGHTBULBSCOUNT);
             while(abs(_lastIndex - i) < _minDistance){
-                i = ofRandom(_amount);
+                i = ofRandom(KLS_LIGHTBULBSCOUNT);
             }
             _lastIndex = i;
             _timestamps[i] = ofGetElapsedTimeMillis();
             _values[i] = _maxValue*value;
         }
         
-        void onAmountChange(int & value){
-            _values.resize(value);
-            _timestamps.resize(value);
-        }
         
-        ofParameter<int> _channel;
-        ofParameter<int> _amount;
         ofParameter<int> _value;
         std::vector<int> _values;
         ofParameter<int> _minValue;

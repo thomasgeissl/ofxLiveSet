@@ -12,10 +12,8 @@ namespace clips {
         }
         anchor() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
             _name = "anchor";
-            _pitchChangeTriggerSoundAnalyserId.set("pitchChangeTrigger", 2, 0, 32);
+            _pitchChangeTriggerSoundAnalyserId.set("pitchChangeTrigger", 2, 0, 8);
             _channel.set("channel", 1, 1, 512);
-            _start.set("start", 12, 1, KSL_LIGHTBULBSCOUNT);
-            _amount.set("amount", 1, 1, 16);
             _minValue.set("minValue", 0, 0, 255);
             _maxValue.set("maxValue", 168, 0, 255); // beatMaxValue
             _addPeakEnergy.set("addPeakEnergy", false);
@@ -34,12 +32,9 @@ namespace clips {
 
             addParameter(_soundAnalyserId);
             addParameter(_pitchChangeTriggerSoundAnalyserId);
-            addParameter(_start);
-            addParameter(_amount);
             // addParameter(_minValue);
             addParameter(_maxValue);
             addParameter(_addPeakEnergy);
-            addParameter(_speed.set("speed", .7, 0, 1));
             
             addParameter(_breathe.set("breathe", false));
             addParameter(_beatsQuadrant);
@@ -79,28 +74,25 @@ namespace clips {
                     _values[_beatsQuadrant*4 + 3] = ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*0.1+0.4)), 0, 1, _minValue, _maxValue);
                 }
             }else{
-                for(auto i = _beatsQuadrant*4; i < _beatsQuadrant*4+4; i++){
+                for(auto i = _beatsQuadrant*6; i < _beatsQuadrant*6+6; i++){
                     if(timestamp - _timestamps[i] < 50){
                         _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + 50, _maxValue, _minValue);
                     }
                 }
             }
             
-            // ofLogNotice() << ofToString(_pitchChangeTriggerPeakEnergy, 2);
             if(_pitchChangeTriggerPeakEnergy > .1 && timestamp - _highsQuadrantChangeTimestamp > 100){
                 onRandomiseHighsQuadrant();
             }
 
-            
-            for(auto i = 0; i < 16; i++){
-                std::pair<int, int> value(i+1, _values[i]);
-                _valueChangeEvent.notify(value);
+            // finally update dmx channels
+            for(auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++){
+                setValue(i+1, _values[i]);
             }
-
         }
         void stop(){
-            for(auto i = 1; i <= 16; i++){
-                setValue(i, 0);
+            for(auto i = 1; i <= KLS_LIGHTBULBSCOUNT; i++){
+                setValue(i+1, 0);
             }
             base::stop();
         }
@@ -136,20 +128,17 @@ namespace clips {
                 _highsQuadrant = ofRandom(0, 4-.00001);
             }
             
-            auto channel = oldValue * 4;
-            for(auto i = 0; i < 4; i++){
+            auto channel = oldValue * 6;
+            for(auto i = 0; i < 6; i++){
                 _values[channel+i] = 0;
             }
         }
 
         ofParameter<int> _pitchChangeTriggerSoundAnalyserId;
         ofParameter<int> _channel;
-        ofParameter<int> _start;
-        ofParameter<int> _amount;
         ofParameter<int> _minValue;
         ofParameter<int> _maxValue;
         ofParameter<bool> _addPeakEnergy;
-        ofParameter<float> _speed;
         ofParameter<int> _beatsQuadrant;
         
         ofParameter<bool> _breathe;
