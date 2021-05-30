@@ -50,6 +50,7 @@ namespace ofxLiveSet
         void drawBrowserGui();
         void drawSessionGui();
         void drawInfoGui();
+        void drawTrackGui();
         void drawClipGui();
         void drawPreviewGui();
         void drawMidiMapperGui();
@@ -72,6 +73,8 @@ namespace ofxLiveSet
         track::base::pointer addTrack(track::base::pointer track);
         void triggerScene(int index);
         clip::base::pointer getClip(int track, int index);
+        std::vector<track::base::pointer> getTracks();
+        track::base::pointer getTrack(clip::base::pointer);
 
         void renameScene(int index, std::string name);
         void onSceneTrigger(const void *sender, bool &value);
@@ -97,6 +100,8 @@ namespace ofxLiveSet
 
         void newMidiMessage(ofxMidiMessage &message);
         void setPreview(ofFbo fbo);
+
+private:
 
         pdsp::Engine _engine;
         std::vector<track::base::pointer> _tracks;
@@ -137,9 +142,7 @@ namespace ofxLiveSet
         ofParameter<bool> _oscControlEnabled;
         ofParameter<bool> _autoResizeGraphicTracksEnabled;
 
-        ofParameter<int> _focusedTrack;
-        // ofParameter<int> _focusedClip;
-        // ofxLiveSet::track::base::pointer _focusedTrack;
+        ofxLiveSet::track::base::pointer _focusedTrack;
         ofxLiveSet::clip::base::pointer _focusedClip;
 
         u_int64_t _timestamp;

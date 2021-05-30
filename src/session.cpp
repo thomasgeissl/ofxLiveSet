@@ -6,6 +6,7 @@
 
 #include "./session.soundAnalyser.cpp"
 #include "./utils/IconsFontAwesome5.h"
+#include "./gui/ofxImGuiHelpers.h"
 
 
 ofxLiveSet::session::session() : _fps(ofxMovingAverage<float>(60))
@@ -92,9 +93,6 @@ void ofxLiveSet::session::setup()
             ofAddListener(clip->_started, this, &ofxLiveSet::session::onClipStarted);
         }
     }
-
-    _focusedTrack.set("focusedTrack", 0);
-    // _focusedClip.set("focusedClip", 0);
 
     for (auto &track : _tracks)
     {
@@ -188,12 +186,6 @@ void ofxLiveSet::session::update()
             track->update();
         }
     }
-    auto i = 0;
-    for (auto &track : _tracks)
-    {
-        track->_focused = _focusedTrack == i++;
-        track->update();
-    }
 
     //    TODO: add more commands, check oscparamsync with multiple parameter groups having the same name,
     while (_oscControlEnabled && _oscReceiver.hasWaitingMessages())
@@ -258,7 +250,7 @@ void ofxLiveSet::session::drawGui()
     drawMenuGui();
  
 
-        auto yOffset = 20;
+        auto yOffset = 19;
         auto height = ofGetHeight() - yOffset;
         ImGui::SetNextWindowPos(ImVec2(0, yOffset), ImGuiCond_FirstUseEver);
         ImGui::SetNextWindowSize(ImVec2(ofGetWidth(), height));
@@ -308,6 +300,8 @@ void ofxLiveSet::session::drawGui()
                 ImGui::SetCursorScreenPos(p0 + padding);
                 ImGui::SameLine();
             }
+            drawTrackGui();
+            ImGui::SameLine();
             drawClipGui();
         ImGui::EndChild();
 
@@ -319,7 +313,7 @@ void ofxLiveSet::session::drawGui()
         ImGui::SameLine();
 
 
-        ImGui::BeginChild("child4", ImVec2(0,-1), true);
+        ImGui::BeginChild("child4", ImVec2(0,-1));
             if(_showPreview){
                 drawPreviewGui();
             }
@@ -388,6 +382,14 @@ void ofxLiveSet::session::drawMenuGui()
             ImGui::EndMenu();
         }
 
+        if(_active)
+        {
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (float)24);
+            auto time = ofGetElapsedTimeMillis() - _startedTimestamp;
+            std::string text = ofToString(time/1000) + +":" +ofToString(time - time/1000, 2);
+            ImGui::Text(text.c_str());
+        }
         ImGui::SameLine(ImGui::GetWindowWidth()-150);
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 1, 1.0));
         ImGui::Button("Key");
@@ -445,6 +447,8 @@ void ofxLiveSet::session::drawSessionGui()
         {
             ImGui::TableSetColumnIndex(i);
             std::string label = "stop##track_"; label += ofToString(i);
+            ImU32 cell_bg_color = ImGui::GetColorU32(ImVec4(40.0f/255, 0.0/255, 40.0/255, 1.000f));
+            ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
             if(ImGui::Button(label.c_str())){
                 if(i == 0){
                     stop();
@@ -461,6 +465,8 @@ void ofxLiveSet::session::drawSessionGui()
             if(i == 0){
             }else{
                 bool value = _tracks[i-1]->isSoloed();
+            ImU32 cell_bg_color = ImGui::GetColorU32(ImVec4(40.0f/255, 0.0/255, 40.0/255, 1.000f));
+            ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
                 if(ImGui::Checkbox(label.c_str(), &value)){
                     _tracks[i-1]->setSolo(value);
                 }
@@ -475,6 +481,8 @@ void ofxLiveSet::session::drawSessionGui()
             if(i == 0){
             }else{
                 bool value = _tracks[i-1]->isMuted();
+            ImU32 cell_bg_color = ImGui::GetColorU32(ImVec4(40.0f/255, 0.0/255, 40.0/255, 1.000f));
+            ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
                 if(ImGui::Checkbox(label.c_str(), &value)){
                     _tracks[i-1]->mute(value);
                 }
@@ -515,6 +523,11 @@ void ofxLiveSet::session::drawSessionGui()
                         auto clip = track->getClip(row);
                         if(clip){
                             auto active = clip->isActive();
+                            if(active)
+                            {
+                                ImU32 cell_bg_color = ImGui::GetColorU32(ImVec4(1.000f, 0.391f, 0.000f, 1.000f));
+                                ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+                            }
                             std::string id = "##"; id+=clip->getName();
                             if(ImGui::Checkbox(id.c_str(), &active )){
                                 clip->setActive(true);
@@ -524,6 +537,7 @@ void ofxLiveSet::session::drawSessionGui()
                                 ImGui::SameLine();
                                 if(ImGui::Button((clip->getName()+"##focus").c_str())){
                                     _focusedClip = clip;
+                                    _focusedTrack = getTrack(clip);
                                 }
                             }
                         }
@@ -541,152 +555,21 @@ void ofxLiveSet::session::drawInfoGui()
         ImGui::Text("info");
     ImGui::EndChild();
 }
+void ofxLiveSet::session::drawTrackGui()
+{
+    ImGui::BeginChild("track", ImVec2(200, 0), true);
+    // ImU32 cell_bg_color = ImGui::GetColorU32(ImVec4(1.000f, 0.391f, 0.000f, 1.000f));
+    // ImGui::SetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+    // ImGui::Button("trackbutton");
+    ImGui::EndChild();
+}
 void ofxLiveSet::session::drawClipGui()
 {
     auto title = !_focusedClip ? "clip" : _focusedClip->getName();
     title += "##clipGui";
     ImGui::BeginChild(title.c_str(), ImVec2(0, 0), true);
         if(_focusedClip){
-            // ImGui::Text(_focusedClip->getName().c_str());
-            // ofxImGui::AddGroup(_focusedClip->_parameters, 0);
-
-            for(std::size_t i = 0; i < _focusedClip->_parameters.size(); i++){
-                auto type = _focusedClip->_parameters.getType(i);
-                // ofLogNotice() << type;
-                if(type == typeid(ofParameter <int32_t> ).name()){
-                    auto p = _focusedClip->_parameters.getInt(i);
-                    ofLogNotice() << "int32 " << p.getName();
-                    int value = p.get();
-                    if(p.getMax() - p.getMin() <= 10)
-                    {
-                        if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
-                            p = value;
-                        }
-                    }
-                    else{
-                        if(ImGui::SliderInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
-                            p = value;
-                        }
-                    }
-                }else if(type == typeid(ofParameter <uint32_t> ).name()){
-                    auto p = _focusedClip->_parameters.get<uint32_t>(i);
-                    int value = p.get();
-                    if(p.getMax() - p.getMin() <= 10)
-                    {
-                        if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
-                            p = value;
-                        }
-                    }
-                    else{
-                        if(ImGui::SliderInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
-                            p = value;
-                        }
-                    }
-                }else if(type == typeid(ofParameter <int64_t> ).name()){
-                    auto p = _focusedClip->_parameters.get<int64_t>(i);
-                    // ofLogNotice() << "int64 " << p.getName();
-                    int value = p.get();
-                    if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
-                        p = value;
-                    }
-                }else if(type == typeid(ofParameter <uint64_t> ).name()){
-                    auto p = _focusedClip->_parameters.get<uint64_t>(i);
-                    int value = p.get();
-                    if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
-                        p = value;
-                    }
-                }else if(type == typeid(ofParameter <int8_t> ).name()){
-                    auto p = _focusedClip->_parameters.get<int8_t>(i);
-                    int value = p.get();
-                    if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
-                        p = value;
-                    }
-                }else if(type == typeid(ofParameter <uint8_t> ).name()){
-                    auto p = _focusedClip->_parameters.get<uint8_t>(i);
-                    int value = p.get();
-                    if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
-                        p = value;
-                    }
-                }else if(type == typeid(ofParameter <int16_t> ).name()){
-                    auto p = _focusedClip->_parameters.get<int16_t>(i);
-                    int value = p.get();
-                    if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
-                        p = value;
-                    }
-                }else if(type == typeid(ofParameter <uint16_t> ).name()){
-                    auto p = _focusedClip->_parameters.get<uint16_t>(i);
-                    int value = p.get();
-                    if(ImGui::InputInt(p.getName().c_str(), &value, p.getMin(), p.getMax())){
-                        p = value;
-                    }
-                }else if(type == typeid(ofParameter <size_t> ).name()){
-                    auto p = _focusedClip->_parameters.get<size_t>(i);
-                    // add(p);
-                }else if(type == typeid(ofParameter <float> ).name()){
-                    auto p = _focusedClip->_parameters.getFloat(i);
-                    auto value = p.get();
-                    if(ImGui::SliderFloat(p.getName().c_str(), &value, p.getMin(), p.getMax())){
-                        p = value;
-                    }
-                }else if(type == typeid(ofParameter <double> ).name()){
-                    auto p = _focusedClip->_parameters.get<double>(i);
-                }else if(type == typeid(ofParameter <bool> ).name()){
-                    auto p = _focusedClip->_parameters.getBool(i);
-                    auto value = p.get();
-                    if(ImGui::Checkbox(p.getName().c_str(), &value )){
-                        p = !p;
-                    }
-                }else if(type == typeid(ofParameter <void> ).name()){
-                    auto p = _focusedClip->_parameters.getVoid(i);
-                    if(ImGui::Button((p.getName()+"##clip_"+_focusedClip->getName()).c_str())){
-                        p.trigger();
-                    }
-                }else if(type == typeid(ofParameter <ofVec2f> ).name()){
-                    auto p = _focusedClip->_parameters.get<ofVec2f>(i);
-                    // add(p);
-                }else if(type == typeid(ofParameter <ofVec3f> ).name()){
-                    auto p = _focusedClip->_parameters.get<ofVec3f>(i);
-                    // add(p);
-                }else if(type == typeid(ofParameter <ofVec4f> ).name()){
-                    auto p = _focusedClip->_parameters.get<ofVec4f>(i);
-                    // add(p);
-                }else if(type == typeid(ofParameter <glm::vec2> ).name()){
-                    auto p = _focusedClip->_parameters.get<glm::vec2>(i);
-                    // add(p);
-                }else if(type == typeid(ofParameter <glm::vec3> ).name()){
-                    auto p = _focusedClip->_parameters.get<glm::vec3>(i);
-                    // add(p);
-                }else if(type == typeid(ofParameter <glm::vec4> ).name()){
-                    auto p = _focusedClip->_parameters.get<glm::vec4>(i);
-                    // add(p);
-                }else if(type == typeid(ofParameter <ofColor> ).name()){
-                    auto p = _focusedClip->_parameters.getColor(i);
-                    // add(p);
-                }else if(type == typeid(ofParameter <ofShortColor> ).name()){
-                    auto p = _focusedClip->_parameters.getShortColor(i);
-                    // add(p);
-                }else if(type == typeid(ofParameter <ofFloatColor> ).name()){
-                    auto p = _focusedClip->_parameters.getFloatColor(i);
-                    // add(p);
-                }else if(type == typeid(ofParameter <ofRectangle> ).name()){
-                    auto p = _focusedClip->_parameters.getRectangle(i);
-                    // add(p);
-                }else if(_focusedClip->_parameters[i].valueType() == typeid(string).name()){
-                    if(_focusedClip->_parameters[i].isReadOnly()){
-                        auto p = _focusedClip->_parameters.get(i).castReadOnly<std::string, void>();
-                        // add(p);
-                    }else{
-                        auto p = _focusedClip->_parameters.getString(i);
-                        // add(p);
-                    }
-                }else if(type == typeid(ofParameterGroup).name()){
-                    auto p = _focusedClip->_parameters.getGroup(i);
-                    // add(createGuiGroup(p));
-                }else{
-                    ofLogWarning() << "ofxBaseGroup; no control for parameter of type " << type;
-                }
-                // ofLogNotice() << "adding type " << type;
-            }
+            ofxImGuiHelpers::ParameterGroup(_focusedClip->_parameters);
         }
     ImGui::EndChild();
 }
@@ -830,12 +713,12 @@ void ofxLiveSet::session::onKeyPressed(int key)
 
         case OF_KEY_LEFT:
         {
-            _focusedTrack = std::max(0, _focusedTrack - 1);
+            // _focusedTrack = std::max(0, _focusedTrack - 1);
             break;
         }
         case OF_KEY_RIGHT:
         {
-            _focusedTrack = std::min((int)(_tracks.size()) - 1, (int)((_focusedTrack + 1) % _tracks.size()));
+            // _focusedTrack = std::min((int)(_tracks.size()) - 1, (int)((_focusedTrack + 1) % _tracks.size()));
             break;
         }
         case OF_KEY_UP:
@@ -917,6 +800,21 @@ ofxLiveSet::clip::base::pointer ofxLiveSet::session::getClip(int track, int inde
     }
     return _tracks[track]->_clips[index];
 }
+std::vector<ofxLiveSet::track::base::pointer> ofxLiveSet::session::getTracks()
+{
+    return _tracks;
+}
+ofxLiveSet::track::base::pointer ofxLiveSet::session::getTrack(ofxLiveSet::clip::base::pointer clip)
+{
+    for(auto track : _tracks)
+    {
+        for(auto clipToCompareWith : track->getClips())
+        {
+            if(clipToCompareWith == clip) return track;
+        }
+    }
+    return nullptr;
+}
 
 void ofxLiveSet::session::renameScene(int index, std::string name)
 {
@@ -968,22 +866,17 @@ void ofxLiveSet::session::onClipStarted(const void *sender, bool &value)
     {
         _active = true;
     }
-    auto trackIndex = 0;
-    auto clipIndex = 0;
     for (auto &track : _tracks)
     {
         for (auto &clipToCompareWith : track->_clips)
         {
             if (clip == clipToCompareWith.get())
             {
-                _focusedTrack = trackIndex;
+                _focusedTrack = track;
                 // _focusedClip = clip;
                 // _focusedClip = clipIndex;
             }
-            clipIndex++;
         }
-        clipIndex = 0;
-        trackIndex++;
     }
 }
 

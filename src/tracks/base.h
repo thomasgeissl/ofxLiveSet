@@ -100,6 +100,10 @@ namespace ofxLiveSet
 
                 return clip;
             }
+            std::vector<clip::base::pointer> getClips()
+            {
+                return _clips;
+            }
 
             void setClip(clip::base::pointer clip)
             {

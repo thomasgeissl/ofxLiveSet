@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include "./dmx.config.h"
 
 #include "./clips/dmx/within.h"
 #include "./clips/dmx/anchor.h"
@@ -58,7 +59,7 @@ void ofApp::setup()
     _session->addTrack(mqttTrack);
     _session->addTrack(utilsTrack);
 
-    for (auto track : _session->_tracks)
+    for (auto track : _session->getTracks())
     {
         if (auto dmxTrack = std::dynamic_pointer_cast<ofxLiveSet::track::dmx>(track))
         {
@@ -86,10 +87,12 @@ void ofApp::setup()
 
 void ofApp::exit()
 {
-    for (auto i = 1; i <= 22; i++)
+    for (auto i = 1; i <= 24; i++)
     {
         _dmx.setLevel(i, 0);
     }
+    _dmx.setLevel(KLS_SPOTLIGHT_CHANNEL, 0);
+    _dmx.setLevel(KLS_STROBECHANNEL, 0);
     _dmx.update();
 }
 

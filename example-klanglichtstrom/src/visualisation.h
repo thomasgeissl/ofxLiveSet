@@ -24,12 +24,14 @@ public:
         }
 
         _fbo.begin();
-        ofClear(255, 0, 0, 64);
+        ofClear(0, 0, 0, 0);
         drawDimmer(0, _fbo.getWidth()/4, _fbo.getHeight()/4);
         drawDimmer(1, _fbo.getWidth()/4*3, _fbo.getHeight()/4);
         drawDimmer(2, _fbo.getWidth()/4, _fbo.getHeight()/4*3);
         drawDimmer(3, _fbo.getWidth()/4*3, _fbo.getHeight()/4*3);
+        // drawChimes();
         drawSpotLight(_fbo.getWidth()/10, _fbo.getHeight()/10);
+        // drawStrobe();
         _fbo.end();
     }
     void draw(float x, float y, float width, float height) const

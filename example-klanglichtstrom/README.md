@@ -3,11 +3,15 @@
 audio reactive dmx live set for klinglichtstrom performance. 
 
 ### controllable dmx devices
-* 1 - 16: light bulb
-<!-- * 17: light bulb for chime -->
-<!-- * 18,19,20: none -->
-* 17, 18: strobe light
-<!-- * 21, 22: strobe light -->
+- light bulbs
+    - dimmer 0: ch 1
+    - dimmer 1: ch 7
+    - dimmer 2: ch 13
+    - dimmer 3: ch 19
+- light bulb (chimes)
+    - dimmer 4: ch 25
+- strobe light: ch 30
+- spot light: ch 40
 
 ## installation
 * install dependencies: `./scripts/install_dependencies.sh`

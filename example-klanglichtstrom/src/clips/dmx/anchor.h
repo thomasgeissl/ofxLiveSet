@@ -42,12 +42,13 @@ namespace clips {
             addParameter(_highs);
             addParameter(_highsQuadrant);
             addParameter(_randomiseHighsQuadrant);
-            addParameter(_highsMaxValue);
+            // addParameter(_highsMaxValue);
 
             _meters.setName("meters");
             _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
             _meters.add(_pitchChangeTriggerPeakEnergy.set("pitchChangeTriggerPeakEnergy", 0, 0, 5));
             _parameters.add(_meters);
+            addParameter(_highsMaxValue);
 
             _values.resize(16);
             _timestamps.resize(16);
