@@ -39,6 +39,7 @@ namespace ofxLiveSet
 
                 auto ioName = name == "" ? "IO" : name + " IO";
                 _ioParameters.setName(ioName);
+                _parameters.add(_ioParameters);
             }
 
             virtual void setup() {}

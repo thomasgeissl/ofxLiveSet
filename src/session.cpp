@@ -611,9 +611,10 @@ void ofxLiveSet::session::drawInfoGui()
 void ofxLiveSet::session::drawTrackGui()
 {
     ImGui::BeginChild("track", ImVec2(200, 0), true);
-    // ImU32 cell_bg_color = ImGui::GetColorU32(ImVec4(1.000f, 0.391f, 0.000f, 1.000f));
-    // ImGui::SetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
-    // ImGui::Button("trackbutton");
+    if(_focusedTrack)
+    {
+        ofxImGuiHelpers::ParameterGroup(_focusedTrack->_parameters);
+    }
     ImGui::EndChild();
 }
 void ofxLiveSet::session::drawClipGui()
