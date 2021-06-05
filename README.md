@@ -13,6 +13,10 @@ This is a work in progress, it is sill buggy, incomplete and not yet clean. It i
 
 
 ## Features
+ofxLiveSet provides container classes, such as project, set, session and arrangement.
+Where a project contains sets and a set contains sessions and arrangements.
+
+
 ### Supports different types of tracks and clips
 * graphics (everything that can be drawn onto an ofFbo)
 * dmx
@@ -26,6 +30,8 @@ It comes with an ImGui.
 Almost all parameters are midi, key and osc mappable. 
 
 ## Changelog
+### 3.0.0 (WIP)
+    * replaced ofxGui with ImGui
 ### 2.0.0
     * using smart pointers instead of raw pointers
 ### 1.0.0 - first more or less stable version
@@ -35,6 +41,7 @@ Almost all parameters are midi, key and osc mappable.
 * fix constructor, setup order
 * load/save
 * dynamically adding tracks and clips
+* project/set/session
 * lot of performance improvements
 ### audio
 * add proper example
@@ -42,7 +49,7 @@ Almost all parameters are midi, key and osc mappable.
 * audio effect support
 * vst/au support
 ### graphics
-* scripting support via ofxLua
+* scripting support via ofxLua or js
 * effects e.g. via ofxPostProcessing
 ### mappers
 * refactor ofxMidiMapper
