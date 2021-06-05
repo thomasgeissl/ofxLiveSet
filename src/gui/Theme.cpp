@@ -56,8 +56,7 @@ void Theme::setup()
 	colors[ImGuiCol_NavWindowingHighlight]  = ImVec4(1.000f, 0.391f, 0.000f, 1.000f);
 	colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(0.000f, 0.000f, 0.000f, 0.586f);
 	colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.000f, 0.000f, 0.000f, 0.586f);
-	// colors[ImGuiCol_TableHeaderBg]          = ImVec4(90.0f/255, 0.0/255, 127.0/255, 1.000f);
-	colors[ImGuiCol_TableHeaderBg]          = ImVec4(155.0/255, 83.0/255, 0,1);
+	colors[ImGuiCol_TableHeaderBg]    = ImVec4(1.000f, 0.391f, 0.000f, 1.000f);
 	colors[ImGuiCol_TableBorderLight]          = ImVec4(0.469f, 0.469f, 0.469f, 1.000f);
 	colors[ImGuiCol_TableBorderStrong]          = ImVec4(0.469f, 0.469f, 0.469f, 1.000f);
 	colors[ImGuiCol_TableRowBg]              = ImVec4(0.098f, 0.098f, 0.098f, 1.000f);

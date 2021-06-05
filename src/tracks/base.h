@@ -92,6 +92,8 @@ namespace ofxLiveSet
                     auto nullClip = clip::nullClip::create();
                     _clipTriggers.add(nullClip->_active);
                     _clips.push_back(nullClip);
+                ofAddListener(nullClip->_started, this, &base::onClipStarted);
+                ofAddListener(nullClip->_stopped, this, &base::onClipStopped);
                 }
                 _clips.push_back(clip);
                 _clipTriggers.add(clip->_active);

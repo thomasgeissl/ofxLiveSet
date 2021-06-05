@@ -1,5 +1,6 @@
 #pragma once
 #include "clips/dmx.h"
+#include "../../dmx.config.h"
 
 // strobe clip for stairville ps1500dmx
 // https://images.thomann.de/pics/atg/atgdata/document/manual/168875_c_168875_de_online.pdf
@@ -24,6 +25,8 @@ namespace clips {
             _frequency.addListener(this, &strobe::onValueChange);
             _velocity.addListener(this, &strobe::onValueChange);
             _singleShot.addListener(this, &strobe::onSingleShot);
+            _frequencyChannel = KLS_STROBECHANNEL;
+            _velocityChannel = KLS_STROBECHANNEL + 1;
         }
         
         void update(){}

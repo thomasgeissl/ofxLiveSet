@@ -6,9 +6,10 @@
 #include "./clips/dmx/schwanensee.h"
 #include "./clips/dmx/firn.h"
 #include "./clips/dmx/wind.h"
-#include "./clips/dmx/newClip.h"
+#include "./clips/dmx/centerOfMass.h"
 #include "./clips/dmx/strobe.h"
 #include "./clips/dmx/spot.h"
+#include "./clips/dmx/chimes.h"
 #include "./clips/dmx/utils/still.h"
 #include "./clips/dmx/utils/midi2dmx.h"
 
@@ -39,13 +40,15 @@ void ofApp::setup()
     lightBulbsTrack->addClip(clips::anchor::create())->setup();
     lightBulbsTrack->addClip(clips::schwanensee::create())->setup();
     lightBulbsTrack->addClip(clips::firn::create())->setup();
-    lightBulbsTrack->addClip(clips::wind::create())->setup();
     lightBulbsTrack->addClip(clips::newClip::create())->setup();
+    lightBulbsTrack->addClip(clips::wind::create())->setup();
 
     strobeTrack->addClip(clips::strobe::create(21, 22), 3)->setup();
 
     spotTrack->addClip(clips::spot::create(), 2)->setup();
     spotTrack->addClip(clips::spot::create(), 5)->setup();
+
+    chimesTrack->addClip(clips::chimes::create(), 4)->setup();
 
     utilsTrack->addClip(clips::still::create(), 7)->setup();
     utilsTrack->addClip(clips::midi2dmx::create())->setup();
@@ -77,12 +80,13 @@ void ofApp::setup()
     _session->renameScene(1, "anchor");
     _session->renameScene(2, "schwanensee");
     _session->renameScene(3, "firn");
-    _session->renameScene(4, "wind");
-    _session->renameScene(5, "new");
+    _session->renameScene(4, "com");
+    _session->renameScene(5, "lichtung");
     for (auto i = 6; i <= 8; i++)
     {
         _session->renameScene(i, "");
     }
+    _session->fillWithNullClips();
 }
 
 void ofApp::exit()

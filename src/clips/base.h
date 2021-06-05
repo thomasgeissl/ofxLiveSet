@@ -38,6 +38,7 @@ public:
     void onActiveChange(bool & value) {
         bool valueToBeNotified = true;
         if(value){
+        ofLogNotice() << "clip on active change " << _name;
             ofNotifyEvent(_started, valueToBeNotified, this);
             onStart();
         } else {

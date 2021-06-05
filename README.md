@@ -1,12 +1,12 @@
 # ofxLiveSet
 
 ## Description
-ofxLiveSet is an openframeworks addon, developed for the *klanglichtstrom* performance. It allows you to structure your performance like an ableton live session. 
+ofxLiveSet is an openframeworks addon, developed for the *klanglichtstrom* performance. 
+It helps to set up session based live sets, it is very much inspired by ableton live's workflow.
 
 This is a work in progress, it is sill buggy, incomplete and not yet clean. It is very likely that the codebase will change.
 
-![screenshot](./docs/screenshots/screenshot_gui.png)
-![screenshot](./docs/screenshots/screenshot_output.png)
+![screenshot](./docs/screenshots/klanglichtstrom.png)
 
 ## Build status
 [![Build Status](https://travis-ci.org/thomasgeissl/ofxLiveSet.svg?branch=master)](https://travis-ci.org/thomasgeissl/ofxLiveSet)
@@ -20,7 +20,7 @@ This is a work in progress, it is sill buggy, incomplete and not yet clean. It i
 * can be easily extended
 
 ### Gui
-It comes with an ofxGui, a web based gui will probably be added in the future.
+It comes with an ImGui.
 
 ### Mappable parameters
 Almost all parameters are midi, key and osc mappable. 
@@ -44,6 +44,8 @@ Almost all parameters are midi, key and osc mappable.
 ### graphics
 * scripting support via ofxLua
 * effects e.g. via ofxPostProcessing
+### mappers
+* refactor ofxMidiMapper
 
 ## License
 This project is released under MIT license, please note that dependencies might be released differently.

@@ -14,7 +14,7 @@ namespace clips {
             _leftPeakEnergyMovingAverage(ofxMovingAverage<float>(100)),
             _rightPeakEnergyMovingAverage(ofxMovingAverage<float>(100))
             {
-            _name = "wind";
+            _name = "lichtung";
             _active.setName(_name);
             addParameter(_soundAnalyserId);
             addParameter(_rightSoundAnalyserId.set("right analyser", 2, 0, 32));

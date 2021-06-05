@@ -13,7 +13,7 @@ public:
     }
     newClip() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive()
     {
-        _name = "newClip";
+        _name = "COM";
         _pitchChangeTriggerSoundAnalyserId.set("pitchChangeTrigger", 2, 0, 32);
         _minValue.set("minValue", 0, 0, 255);
         _maxValue.set("maxValue", 168, 0, 255); // beatMaxValue

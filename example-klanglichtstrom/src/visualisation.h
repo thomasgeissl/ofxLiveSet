@@ -1,6 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxDmx.h"
+#include "dmx.config.h"
 
 class visualisation : public ofBaseDraws
 {
@@ -29,7 +30,7 @@ public:
         drawDimmer(1, _fbo.getWidth()/4*3, _fbo.getHeight()/4);
         drawDimmer(2, _fbo.getWidth()/4, _fbo.getHeight()/4*3);
         drawDimmer(3, _fbo.getWidth()/4*3, _fbo.getHeight()/4*3);
-        // drawChimes();
+        drawChimes(_fbo.getWidth()/30, _fbo.getHeight()/10);
         drawSpotLight(_fbo.getWidth()/10, _fbo.getHeight()/10);
         // drawStrobe();
         _fbo.end();
@@ -69,6 +70,11 @@ public:
     void drawSpotLight(float x, float y)
     {
         ofSetColor(255, 255, 255, _dmx->getLevel(40));
+        ofDrawCircle(x, y, 10);
+    }
+    void drawChimes(float x, float y)
+    {
+        ofSetColor(255, 255, 255, _dmx->getLevel(KLS_CHIMESLIGHTBULBCHANNEL));
         ofDrawCircle(x, y, 10);
     }
     ofxDmx *_dmx;
