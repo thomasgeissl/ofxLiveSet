@@ -14,7 +14,7 @@ public:
     }
     void draw(){
         if(_session != nullptr){
-            _session->_fbo.draw(0,0);
+            _session->getFbo().draw(0,0);
         }
     }
     void exit(){}

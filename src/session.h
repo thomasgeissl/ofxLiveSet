@@ -17,7 +17,6 @@
 #include "./clips/midiReactive.h"
 #include "./gui/infoPanel.h"
 
-
 #if OFXLIVESET_USE_SOUNDANALYSER
 #include "ofxSoundAnalyser.h"
 #endif
@@ -78,7 +77,7 @@ namespace ofxLiveSet
                 std::vector<track::base::pointer> getTracks();
                 track::base::pointer getTrack(clip::base::pointer);
 
-                session * renameScene(int index, std::string name);
+                session *renameScene(int index, std::string name);
 
                 void onSceneTrigger(const void *sender, bool &value);
                 void onActiveChange(bool &value);
@@ -108,6 +107,10 @@ namespace ofxLiveSet
 
                 void newMidiMessage(ofxMidiMessage &message);
                 void setPreview(ofFbo fbo);
+                ofFbo getFbo()
+                {
+                        return _fbo;
+                }
 
         private:
                 pdsp::Engine _engine;

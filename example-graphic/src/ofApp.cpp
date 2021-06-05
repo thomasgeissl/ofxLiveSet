@@ -2,7 +2,7 @@
 
 ofApp::ofApp() : _project(ofxLiveSet::project::create())
 {
-    _session = _project->_sessions.back();
+    _session = _project->_sets.front()->_sessions.front();
 }
 
 void ofApp::setup()
@@ -52,13 +52,12 @@ void ofApp::setup()
     visualBTrack->addClip(clips::randomPolygon::create())->setup();
 
     _session->setup();
-    _session->setupGui(150);
     _session->setupAudioEngine(2);
 
     _session->openMidiMapperInPort(0);
     _session->openOscControlInPort(9000);
     _session->stop();
-    _session->_oscControlEnabled = false;
+    // _session->_oscControlEnabled = false;
 
     _drawGui.set("drawGui", true);
     ofSoundStreamSetup(0, 1, this, 44100, _beat.getBufferSize(), 4);
@@ -78,7 +77,7 @@ void ofApp::update()
     auto kick = _beat.kick();
     auto snare = _beat.snare();
     auto hihat = _beat.hihat();
-    for (auto track : _session->_tracks)
+    for (auto track : _session->getTracks())
     {
         // auto beatReactiveClip = dynamic_pointer_cast<clips::beatReactive>(track->_clip);
         // if(beatReactiveClip != nullptr){

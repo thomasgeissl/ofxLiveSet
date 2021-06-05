@@ -1,21 +1,23 @@
 #include "./project.h"
 
-ofxLiveSet::project::project() : _session(nullptr)
+ofxLiveSet::project::project() : _set(nullptr)
 {
-    addSession(session::create());
+    addSet(set::create());
 }
-void ofxLiveSet::project::addSession(session::pointer session)
+
+void ofxLiveSet::project::addSet(set::pointer set)
 {
-    _sessions.push_back(session);
-    if (_session)
+    _sets.push_back(set);
+    if (_set)
     {
-        _session->stop();
+        // _set->stop();
     }
-    _session = session;
+    _set = set;
 }
-std::vector<ofxLiveSet::session::pointer> ofxLiveSet::project::getSessions()
+
+std::vector<ofxLiveSet::set::pointer> ofxLiveSet::project::getSets()
 {
-    return _sessions;
+    return _sets;
 }
 
 void ofxLiveSet::project::save(std::string path)

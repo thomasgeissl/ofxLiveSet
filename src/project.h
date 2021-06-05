@@ -1,5 +1,6 @@
 #pragma once
 #include "ofMain.h"
+#include "set.h"
 #include "session.h"
 
 namespace ofxLiveSet
@@ -13,13 +14,14 @@ public:
 		return std::make_shared<project>();
 	}
 	project();
-	void addSession(session::pointer session);
-	std::vector<session::pointer> getSessions();
+    void addSet(set::pointer set);
+    std::vector<ofxLiveSet::set::pointer> getSets();
 	void save(std::string path);
 	void load(std::string path);
 
-	std::vector<session::pointer> _sessions;
-	session::pointer _session;
+	std::vector<set::pointer> _sets;
+	set::pointer _set;
+
 	ofParameterGroup _parameters;
 	ofParameter<std::string> _name;
 };

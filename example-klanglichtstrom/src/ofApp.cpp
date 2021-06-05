@@ -18,7 +18,7 @@ ofApp::ofApp() : _project(ofxLiveSet::project::create())
     setApplicationName("klangLichtStrom");
     setApplicationVersion("1.2.0");
 
-    _session = _project->_sessions.back();
+    _session = _project->_sets.front()->_sessions.front();
 }
 
 void ofApp::setup()
