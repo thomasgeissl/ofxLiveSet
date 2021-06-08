@@ -50,8 +50,8 @@ namespace clips {
             _parameters.add(_meters);
             addParameter(_highsMaxValue);
 
-            _values.resize(16);
-            _timestamps.resize(16);
+            _values.resize(KLS_LIGHTBULBSCOUNT);
+            _timestamps.resize(KLS_LIGHTBULBSCOUNT);
         }
         
         void update(){

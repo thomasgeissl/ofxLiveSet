@@ -31,15 +31,16 @@ namespace ofxLiveSet
                 _controls.add(_mute);
                 _controls.add(_gain);
                 _parameters.add(_controls);
+                
+                auto ioName = name == "" ? "IO" : name + " IO";
+                _ioParameters.setName(ioName);
+                _parameters.add(_ioParameters);
 
                 _clipTriggers.setName("clips");
                 _parameters.add(_clipTriggers);
 
                 _stop.addListener(this, &base::onStop);
 
-                auto ioName = name == "" ? "IO" : name + " IO";
-                _ioParameters.setName(ioName);
-                _parameters.add(_ioParameters);
             }
 
             virtual void setup() {}
@@ -83,6 +84,15 @@ namespace ofxLiveSet
                 ofAddListener(clip->_started, this, &base::onClipStarted);
                 ofAddListener(clip->_stopped, this, &base::onClipStopped);
 
+                return clip;
+            }
+            clip::base::pointer insertClip(clip::base::pointer clip, int index)
+            {
+                auto it = _clips.begin();
+                for(auto i = 0; i < index; i++){
+                    it++;
+                }
+                _clips.insert(it, clip);
                 return clip;
             }
 

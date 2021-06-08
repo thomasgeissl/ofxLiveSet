@@ -8,7 +8,7 @@
 #include "./utils/IconsFontAwesome5.h"
 #include "./gui/ofxImGuiHelpers.h"
 
-ofxLiveSet::session::session() : _fps(ofxMovingAverage<float>(60))
+ofxLiveSet::session::session() : _fps(ofxMovingAverage<float>(60)), _fullscreen(ofGetWindowMode() == OF_FULLSCREEN)
 #if OFXLIVESET_USE_SOUNDANALYSER
                                  ,
                                  _soundAnalyser(ofxSoundAnalyser::Analyser(8000))
@@ -324,7 +324,9 @@ void ofxLiveSet::session::drawGui()
     ImGui::PopStyleVar();
     ImGui::End();
 
-    drawPreferencesGui();
+    if(_showPreferences){
+        drawPreferencesGui();
+    }
     if (_showDemo)
     {
         ImGui::ShowDemoWindow();
@@ -366,6 +368,11 @@ void ofxLiveSet::session::drawMenuGui()
         }
         if (ImGui::BeginMenu("View"))
         {
+            if (ImGui::MenuItem("Fullscreen", NULL, _fullscreen))
+            {
+                _fullscreen = !_fullscreen;
+                ofSetFullscreen(_fullscreen);
+            }
             if (ImGui::MenuItem("Browser", NULL, _showBrowser))
             {
                 _showBrowser = !_showBrowser;
@@ -397,8 +404,10 @@ void ofxLiveSet::session::drawMenuGui()
             std::string text = ofToString(time / 1000) + +":" + ofToString((int)(time - time / 100));
             ImGui::Text(text.c_str());
         }
-        ImGui::SameLine(ImGui::GetWindowWidth() - 150);
+        ImGui::SameLine(ImGui::GetWindowWidth() - 200);
         ImGui::Button("Key");
+        ImGui::SameLine();
+        ImGui::Button("OSC");
         ImGui::SameLine();
         if (_midiMapper.getActiveMappingParameter())
         {
@@ -555,6 +564,24 @@ void ofxLiveSet::session::drawSessionGui()
                         {
                             triggerScene(row);
                         }
+                        // if (ImGui::BeginPopupContextItem()) // <-- use last item id as popup id
+                        // {
+                        //     if (ImGui::Button("rename"))
+                        //     {
+
+                        //     }
+                        //     if (ImGui::Button("insert scene above"))
+                        //     {
+                        //         insertSceneAbove(row);
+                        //     }
+                        //     if (ImGui::Button("insert scene below"))
+                        //     {
+
+                        //     }
+                        //     if (ImGui::Button("Close"))
+                        //         ImGui::CloseCurrentPopup();
+                        //     ImGui::EndPopup();
+                        // }
                     }
                 }
                 else
@@ -607,11 +634,14 @@ void ofxLiveSet::session::drawInfoGui()
     ImGui::BeginChild("info", ImVec2(200, 0), true);
     ImGui::Text("info");
     ImGui::EndChild();
+    if (ImGui::IsItemHovered())
+    {
+    }
 }
 void ofxLiveSet::session::drawTrackGui()
 {
     ImGui::BeginChild("track", ImVec2(200, 0), true);
-    if(_focusedTrack)
+    if (_focusedTrack)
     {
         ofxImGuiHelpers::ParameterGroup(_focusedTrack->_parameters);
     }
@@ -619,6 +649,9 @@ void ofxLiveSet::session::drawTrackGui()
 }
 void ofxLiveSet::session::drawClipGui()
 {
+    auto padding = 16;
+    ImVec2 p0 = ImGui::GetCursorScreenPos();
+    ImGui::SetCursorScreenPos(p0 + ImVec2(padding, 0));
     auto title = !_focusedClip ? "clip" : _focusedClip->getName();
     title += "##clipGui";
     ImGui::BeginChild(title.c_str(), ImVec2(0, 0), true);
@@ -641,7 +674,8 @@ void ofxLiveSet::session::drawPreviewGui()
 void ofxLiveSet::session::drawMidiMapperGui()
 {
     bool active = _midiMapper.isActive();
-    if(ImGui::Checkbox("midi mapping", &active)){
+    if (ImGui::Checkbox("midi mapping", &active))
+    {
         _midiMapper.getActiveParameter() = active;
     }
     if (ImGui::CollapsingHeader("ports"))
@@ -674,12 +708,13 @@ void ofxLiveSet::session::drawMidiMapperGui()
                 ImGui::TableNextRow();
                 auto column = 0;
                 ImGui::TableSetColumnIndex(column);
-                if(ImGui::Button("del")){
+
+                if (ImGui::Button((std::string("del##") + ofToString(mapping.second)).c_str()))
+                {
                     _midiMapper.removeMapping(
                         std::get<0>(mapping.first),
                         std::get<1>(mapping.first),
-                        std::get<2>(mapping.first)
-                    );
+                        std::get<2>(mapping.first));
                 }
                 ImGui::TableSetColumnIndex(++column);
                 auto mappable = _midiMapper.getMappable(mapping.second);
@@ -978,6 +1013,35 @@ ofxLiveSet::session *ofxLiveSet::session::renameScene(int index, std::string nam
     _sceneTriggers[index].setName(name);
     return this;
 }
+ofxLiveSet::session *ofxLiveSet::session::insertSceneAbove(int index)
+{
+    ofLogNotice() << "insert scene " << index;
+    auto it = _sceneTriggers.begin();
+    for (auto i = 0; i < index; i++)
+    {
+        it++;
+    }
+    if (index >= _sceneTriggers.size())
+    {
+        ofLogError("ofxLiveSet::session") << "cannot insert scene. index (" << index << ") out of bounds. (" << _sceneTriggers.size() << ")";
+        return this;
+    }
+    ofParameter<bool> param;
+    ofLogNotice() << _sceneTriggers.size();
+    auto inserted = _sceneTriggers.insert(it, param.set(std::string("scene ") + ofToString(index), false));
+    ofLogNotice() << _sceneTriggers.size();
+    while (inserted != _sceneTriggers.end())
+    {
+        ofLogNotice() << (*inserted).getName();
+        inserted++;
+    }
+    // for(auto scene : _sceneTriggers){
+
+    // for(auto & track : _tracks){
+    //     track->insertClip(clip::nullClip::create(), index);
+    // }
+    return this;
+}
 void ofxLiveSet::session::onSceneTrigger(const void *sender, bool &value)
 {
     if (!value)
@@ -1171,6 +1235,9 @@ void ofxLiveSet::session::newMidiMessage(ofxMidiMessage &message)
             }
         }
     }
+}
+void ofxLiveSet::session::scanMidiInPorts()
+{
 }
 
 void ofxLiveSet::session::setPreview(ofFbo fbo)

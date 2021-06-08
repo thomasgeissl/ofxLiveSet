@@ -8,7 +8,7 @@
 #include "./visualisation.h"
 
 // out comment if you dont have an enttec usb interface connected
-// #define SENDDMX
+#define SENDDMX
 
 class ofApp : public ofxApp
 {

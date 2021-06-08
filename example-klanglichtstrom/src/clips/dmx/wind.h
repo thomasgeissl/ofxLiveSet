@@ -1,6 +1,7 @@
 #pragma once
 #include "ofxLiveSet.h"
 #include "ofxMovingAverage.h"
+#include "../../dmx.config.h"
 
 namespace clips {
     class wind : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive{
@@ -44,12 +45,12 @@ namespace clips {
         void update(){
             if(_static){
                 auto timestamp = ofGetElapsedTimeMillis();
-                for(auto i = 0; i < 16; i++){
+                for(auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++){
                     auto value = ofMap(timestamp - _timestamps[i], 0, 500, _maxValue, _minValue, true);
                     _values[i] = value;
                     setValue(i + 1, value);
                 }
-                setValue(_chimesChannel, 255);
+                setValue(KLS_CHIMESLIGHTBULBCHANNEL, _maxValueChimes);
                 setValue(1, ofMap(_leftPeakEnergyMovingAverage.avg() * 4, 0, 2, _minValue, _maxValue));
                 setValue(16, ofMap(_rightPeakEnergyMovingAverage.avg() * 4, 0, 2, _minValue, _maxValue));
                 if(_leftPeakEnergy > _leftPeakEnergyMovingAverage.avg() * 1.5){
@@ -72,11 +73,11 @@ namespace clips {
                     }
                 }
             }else{
-                setValue(_chimesChannel, ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speedChimes)), 0, 1, _minValueChimes, _maxValueChimes));
+                setValue(KLS_CHIMESLIGHTBULBCHANNEL, ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speedChimes)), 0, 1, _minValueChimes, _maxValueChimes));
             }
         }
         void stop(){
-            for(auto i = 1; i <= 16; i++){
+            for(auto i = 1; i <= KLS_LIGHTBULBSCOUNT; i++){
                 std::pair<int, int> value(i, 0);
                 _valueChangeEvent.notify(value);
             }
@@ -137,15 +138,13 @@ namespace clips {
         ofxMovingAverage<float> _leftPeakEnergyMovingAverage;
         ofxMovingAverage<float> _rightPeakEnergyMovingAverage;
 
-        int _chimesChannel = 17; //TODO: change
-
         // float _leftPeakEnergy;
         // float _rightPeakEnergy;
         u_int64_t _leftTimestamp;
         u_int64_t _rightTimestamp;
         u_int64_t _pingPongTimestamp;
         bool _pingPongLeft;
-        int _values[16];
-        u_int64_t _timestamps[16];
+        int _values[KLS_LIGHTBULBSCOUNT];
+        u_int64_t _timestamps[KLS_LIGHTBULBSCOUNT];
     };
 };

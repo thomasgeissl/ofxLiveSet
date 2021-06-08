@@ -45,10 +45,9 @@ void ofApp::setup()
 
     strobeTrack->addClip(clips::strobe::create(21, 22), 3)->setup();
 
-    spotTrack->addClip(clips::spot::create(), 2)->setup();
-    spotTrack->addClip(clips::spot::create(), 5)->setup();
+    spotTrack->addClip(clips::spot::create())->setup();
 
-    chimesTrack->addClip(clips::chimes::create(), 4)->setup();
+    chimesTrack->addClip(clips::chimes::create(), 5)->setup();
 
     utilsTrack->addClip(clips::still::create(), 7)->setup();
     utilsTrack->addClip(clips::midi2dmx::create())->setup();
@@ -87,6 +86,10 @@ void ofApp::setup()
         _session->renameScene(i, "");
     }
     _session->fillWithNullClips();
+
+    ofLogNotice() << ofGetWindowMode();
+    ofLogNotice() << OF_WINDOW;
+    ofLogNotice() << OF_FULLSCREEN;
 }
 
 void ofApp::exit()
@@ -103,6 +106,7 @@ void ofApp::exit()
 void ofApp::update()
 {
     _visualisation.update();
+    _session->setPreview(_visualisation.getFbo());
 #ifdef SENDDMX
     _dmx.update();
 #endif
@@ -110,18 +114,12 @@ void ofApp::update()
 
 void ofApp::draw()
 {
-    _session->setPreview(_visualisation.getFbo());
     _session->drawGui();
-    // _visualisation.draw(ofGetWidth()/2, ofGetHeight()/2, ofGetWidth()/2, ofGetHeight()/2);
 }
 
 void ofApp::keyPressed(int key)
 {
     _session->onKeyPressed(key);
-    if (key == 'f')
-    {
-        ofToggleFullscreen();
-    }
 }
 void ofApp::keyReleased(int key) {}
 void ofApp::mouseMoved(int x, int y) {}

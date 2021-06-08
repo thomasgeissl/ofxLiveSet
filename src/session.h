@@ -78,6 +78,7 @@ namespace ofxLiveSet
                 track::base::pointer getTrack(clip::base::pointer);
 
                 session *renameScene(int index, std::string name);
+                session *insertSceneAbove(int index);
 
                 void onSceneTrigger(const void *sender, bool &value);
                 void onActiveChange(bool &value);
@@ -106,6 +107,7 @@ namespace ofxLiveSet
 #endif
 
                 void newMidiMessage(ofxMidiMessage &message);
+                void scanMidiInPorts();
                 void setPreview(ofFbo fbo);
                 ofFbo getFbo()
                 {
@@ -165,9 +167,10 @@ namespace ofxLiveSet
 
                 ofFbo _preview;
 
+                bool _fullscreen = true;
                 bool _showPreferences = false;
                 bool _showBrowser = true;
-                bool _showInfo = true;
+                bool _showInfo = false;
                 bool _showPreview = true;
                 bool _showDemo = false;
                 bool _showStyleEditor = false;

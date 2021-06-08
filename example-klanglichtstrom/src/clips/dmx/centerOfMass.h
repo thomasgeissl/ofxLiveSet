@@ -1,5 +1,6 @@
 #pragma once
 #include "ofxLiveSet.h"
+#include "../../dmx.config.h"
 
 namespace clips
 {
@@ -13,7 +14,7 @@ public:
     }
     newClip() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive()
     {
-        _name = "COM";
+        _name = "com";
         _pitchChangeTriggerSoundAnalyserId.set("pitchChangeTrigger", 2, 0, 32);
         _minValue.set("minValue", 0, 0, 255);
         _maxValue.set("maxValue", 168, 0, 255); // beatMaxValue
@@ -48,11 +49,10 @@ public:
 
         _meters.setName("meters");
         _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
-        _meters.add(_pitchChangeTriggerPeakEnergy.set("pitchChangeTriggerPeakEnergy", 0, 0, 5));
         _parameters.add(_meters);
 
-        _values.resize(16);
-        _timestamps.resize(16);
+        _values.resize(KLS_LIGHTBULBSCOUNT);
+        _timestamps.resize(KLS_LIGHTBULBSCOUNT);
     }
 
     void update()
@@ -61,7 +61,7 @@ public:
     }
     void stop()
     {
-        for (auto i = 1; i <= 16; i++)
+        for (auto i = 1; i <= KLS_LIGHTBULBSCOUNT; i++)
         {
             setValue(i, 0);
         }
