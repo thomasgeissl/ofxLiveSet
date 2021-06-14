@@ -8,7 +8,7 @@
 #include "./utils/IconsFontAwesome5.h"
 #include "./gui/ofxImGuiHelpers.h"
 
-ofxLiveSet::session::session() : _fps(ofxMovingAverage<float>(60)), _fullscreen(ofGetWindowMode() == OF_FULLSCREEN)
+ofxLiveSet::session::session() : _fps(ofxMovingAverage<float>(60))
 #if OFXLIVESET_USE_SOUNDANALYSER
                                  ,
                                  _soundAnalyser(ofxSoundAnalyser::Analyser(8000))
@@ -136,6 +136,7 @@ void ofxLiveSet::session::setup()
     config.GlyphMinAdvanceX = 13.0f; // Use if you want to make the icon monospaced
     static const ImWchar icon_ranges[] = {ICON_MIN_FA, ICON_MAX_FA, 0};
     _gui.addFont("fa-regular-400.ttf", 12.f, &config, icon_ranges);
+    _fullscreen = ofGetWidth() == ofGetScreenWidth() && ofGetHeight() == ofGetScreenHeight();
 }
 
 void ofxLiveSet::session::setupAudioEngine(int id, int inChannels, int outChannels)
@@ -324,9 +325,7 @@ void ofxLiveSet::session::drawGui()
     ImGui::PopStyleVar();
     ImGui::End();
 
-    if(_showPreferences){
-        drawPreferencesGui();
-    }
+    drawPreferencesGui();
     if (_showDemo)
     {
         ImGui::ShowDemoWindow();
@@ -350,7 +349,8 @@ void ofxLiveSet::session::drawMenuGui()
             }
             if (ImGui::MenuItem("Preferences"))
             {
-                ImGui::OpenPopup("Preferences");
+                ofLogNotice() << "show popup";
+                ImGui::OpenPopup("Preferences##modal");
             }
             if (ImGui::MenuItem("Quit"))
             {
@@ -763,7 +763,7 @@ void ofxLiveSet::session::drawPreferencesGui()
 {
     ImVec2 center = ImGui::GetMainViewport()->GetCenter();
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-    if (ImGui::BeginPopupModal("Preferences", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+    if (ImGui::BeginPopupModal("Preferences##modal", NULL, ImGuiWindowFlags_AlwaysAutoResize))
     {
         ofLogNotice() << "pref popup modal";
         ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");
