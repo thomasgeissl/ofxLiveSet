@@ -10,8 +10,10 @@
 #include "./clips/dmx/strobe.h"
 #include "./clips/dmx/spot.h"
 #include "./clips/dmx/chimes.h"
+#include "./clips/dmx/outro.h"
 #include "./clips/dmx/utils/still.h"
 #include "./clips/dmx/utils/midi2dmx.h"
+#include "./clips/dmx/utils/spares.h"
 
 ofApp::ofApp() : _project(ofxLiveSet::project::create())
 {
@@ -42,6 +44,7 @@ void ofApp::setup()
     lightBulbsTrack->addClip(clips::firn::create())->setup();
     lightBulbsTrack->addClip(clips::newClip::create())->setup();
     lightBulbsTrack->addClip(clips::wind::create())->setup();
+    lightBulbsTrack->addClip(clips::outro::create())->setup();
 
     strobeTrack->addClip(clips::strobe::create(21, 22), 3)->setup();
 
@@ -49,6 +52,7 @@ void ofApp::setup()
 
     chimesTrack->addClip(clips::chimes::create(), 5)->setup();
 
+    utilsTrack->addClip(clips::spares::create(), 3)->setup();
     utilsTrack->addClip(clips::still::create(), 7)->setup();
     utilsTrack->addClip(clips::midi2dmx::create())->setup();
 
@@ -81,7 +85,8 @@ void ofApp::setup()
     _session->renameScene(3, "firn");
     _session->renameScene(4, "com");
     _session->renameScene(5, "lichtung");
-    for (auto i = 6; i <= 8; i++)
+    _session->renameScene(6, "outro");
+    for (auto i = 7; i <= 8; i++)
     {
         _session->renameScene(i, "");
     }

@@ -4,17 +4,17 @@
 
 namespace clips
 {
-class newClip : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive
+class outro : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive
 {
 public:
-    typedef std::shared_ptr<newClip> pointer;
+    typedef std::shared_ptr<outro> pointer;
     static pointer create()
     {
-        return std::make_shared<newClip>();
+        return std::make_shared<outro>();
     }
-    newClip() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive(), _beatAudioAnalyserId(2)
+    outro() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive(), _beatAudioAnalyserId(2)
     {
-        _name = "com";
+        _name = "outro";
         _active.setName(_name);
 
         _pitchChangeTriggerSoundAnalyserId.set("pitchChangeTrigger", 2, 0, 32);

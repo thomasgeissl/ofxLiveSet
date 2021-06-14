@@ -20,7 +20,7 @@ namespace clips {
             addParameter(_maxValue.set("maxValue", 100, 0, 255));
             addParameter(_threshold.set("threshold", .1, 0, 1));
             addParameter(_peakEnergyDebounceTime.set("debounce", 300, 30, 500));
-            addParameter(_minDistance.set("minDistance", 7, 1, 12));
+            addParameter(_minDistance.set("minDistance", 12, 1, KLS_LIGHTBULBSCOUNT));
             
             _meters.setName("meters");
             _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
@@ -43,8 +43,8 @@ namespace clips {
             }
         }
         void stop(){
-            for(auto i = 1; i <= 16; i++){
-                setValue(i, 0);
+            for(auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++){
+                setValue(i+1, 0);
             }
             base::stop();
         }

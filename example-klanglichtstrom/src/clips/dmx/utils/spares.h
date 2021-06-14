@@ -4,49 +4,42 @@
 
 namespace clips
 {
-    class still : public ofxLiveSet::clip::dmx
+    class spares : public ofxLiveSet::clip::dmx
     {
     public:
-        typedef std::shared_ptr<still> pointer;
+        typedef std::shared_ptr<spares> pointer;
         static pointer create()
         {
-            return std::make_shared<still>();
+            return std::make_shared<spares>();
         }
-        still() : ofxLiveSet::clip::dmx("debug")
+        spares() : ofxLiveSet::clip::dmx("spare sockets")
         {
-            _name = "debug";
+            _name = "spare sockets";
             _active.setName(_name);
-            _values.resize(KLS_LIGHTBULBSCOUNT);
-            addParameter(_spotValue.set("spot", 0, 0, 255));
+            _values.resize(3);
             for (auto i = 0; i < _values.size(); i++)
             {
                 _parameters.add(_values[i].set(ofToString(i), 0, 0, 255));
             }
             _parameters.add(_masterValue.set("master value", 0, 0, 255));
-            _masterValue.addListener(this, &still::onMasterValueChange);
+            _masterValue.addListener(this, &spares::onMasterValueChange);
         }
 
         void update()
         {
             for (auto i = 0; i < _values.size(); i++)
             {
-                setValue(i + 1, _values[i]);
+                setValue(KLS_CHIMESLIGHTBULBCHANNEL + i + 1, _values[i]);
             }
-            setValue(KLS_SPOTLIGHT_CHANNEL, _spotValue);
         }
         void stop()
         {
-            for (auto i = 1; i <= KLS_LIGHTBULBSCOUNT; i++)
-            {
-                setValue(i, 0);
-            }
-            setValue(KLS_SPOTLIGHT_CHANNEL, 0);
             base::stop();
         }
 
         void onMasterValueChange(int &value)
         {
-            for (auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++)
+            for (auto i = 0; i < _values.size(); i++)
             {
                 _values[i] = value;
             }
@@ -54,6 +47,5 @@ namespace clips
 
         std::vector<ofParameter<int>> _values;
         ofParameter<int> _masterValue;
-        ofParameter<int> _spotValue;
     };
 };

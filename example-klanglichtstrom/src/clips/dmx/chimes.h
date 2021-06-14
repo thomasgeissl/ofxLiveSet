@@ -17,9 +17,10 @@ namespace clips
             _name = "chimes";
             _active.setName("chimes");
 
+            addParameter(_speed.set("speedChimes", .1, 0, 1));
             addParameter(_minValue.set("minValue", 0, 0, 255));
             addParameter(_maxValue.set("maxValue", 255, 0, 255));
-            addParameter(_speed.set("speedChimes", .1, 0, 1));
+            addParameter(_static.set("static", false));
             addParameter(_blackoutTrigger.set("blackout"));
 
             _active.addListener(this, &chimes::onActiveChange);
@@ -37,7 +38,11 @@ namespace clips
             }
             else
             {
-                setValue(KLS_CHIMESLIGHTBULBCHANNEL, ofMap(std::abs(std::sin(ofGetElapsedTimef() * 10 * _speed)), 0, 1, _minValue, _maxValue));
+                if(_static){
+                    setValue(KLS_CHIMESLIGHTBULBCHANNEL, _maxValue);
+                }else{
+                    setValue(KLS_CHIMESLIGHTBULBCHANNEL, ofMap(std::abs(std::sin(ofGetElapsedTimef() * 10 * _speed)), 0, 1, _minValue, _maxValue));
+                }
             }
         }
         void onBlackoutTriggered()
@@ -62,10 +67,11 @@ namespace clips
         void unblackout(){
             _blackout = false;
         }
-        ofParameter<void> _blackoutTrigger;
+        ofParameter<float> _speed;
         ofParameter<int> _minValue;
         ofParameter<int> _maxValue;
-        ofParameter<float> _speed;
+        ofParameter<bool> _static;
+        ofParameter<void> _blackoutTrigger;
         bool _blackout;
     };
 };

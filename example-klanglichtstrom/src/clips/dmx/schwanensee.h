@@ -1,5 +1,6 @@
 #pragma once
 #include "ofxLiveSet.h"
+#include "ofxMidi.h"
 #include "../../dmx.config.h"
 
 namespace clips {
@@ -14,7 +15,6 @@ namespace clips {
             _name = "schwanensee";
             _minValue.set("minValue", 0, 0, 255);
 
-            _blackoutDimmer2.addListener(this, &schwanensee::onBlackoutDimmer2);
             _active.setName(_name);
             
             addParameter(_soundAnalyserId);
@@ -24,12 +24,12 @@ namespace clips {
             addParameter(_debounceTime.set("debounceTime", 190, 0, 1000));
             addParameter(_addPeakEnergy.set("addPeakEnergy", false));
             addParameter(_pitchThreshold.set("pitchThreshold", .01, 0, 1));
-            addParameter(_blackoutDimmer2.set("blackoutDimmer2"));
             addParameter(_staticLight.set("staticLight", false));
             addParameter(_staticLightValue.set("staticLightValue", 100, 0, 255));
             _meters.setName("meters");
             _meters.add(_pitch.set("pitch", 0, 0, 127));
             _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
+            _meters.add(_onsetDetected.set("onset", false));
             _parameters.add(_meters);
             _values.resize(KLS_LIGHTBULBSCOUNT);
             _timestamps.resize(KLS_LIGHTBULBSCOUNT);
@@ -67,7 +67,7 @@ namespace clips {
             }
         }
         void stop(){
-            for(auto i = 1; i <= 16; i++){
+            for(auto i = 1; i <= KLS_LIGHTBULBSCOUNT; i++){
                 setValue(i, 0);
             }
             base::stop();
@@ -78,12 +78,7 @@ namespace clips {
         }
         void setPitch(int analyserId, float value){
             if(analyserId != _soundAnalyserId){return;}
-            _pitch = value;
-        }
-        void onBlackoutDimmer2(){
-            for(auto i = 2 * 4; i < KLS_LIGHTBULBSCOUNT; i++) {
-                setValue(i+1, 0);
-            }
+            _pitch = ofxMidi::ftom(value);
         }
         void onStaticLightChange(bool & value){
             if(!value){
@@ -97,15 +92,14 @@ namespace clips {
         ofParameter<int> _debounceTime;
         ofParameter<bool> _addPeakEnergy;
         ofParameter<float> _pitchThreshold;
-        ofParameter<void> _blackoutDimmer2;
         ofParameter<bool> _staticLight;
         ofParameter<int> _staticLightValue;
         ofParameterGroup _meters;
         ofParameter<float> _pitch;
         ofParameter<float> _peakEnergy;
+        ofParameter<bool> _onsetDetected;
 
         u_int64_t _timestamp;
-        bool _onsetDetected = false;
         std::vector<u_int64_t> _timestamps;
 
         std::vector<int> _values;

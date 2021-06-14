@@ -29,7 +29,13 @@ namespace clips {
             _velocityChannel = KLS_STROBECHANNEL + 1;
         }
         
-        void update(){}
+        void update(){
+            if(!_active) return;
+            auto duration = ofGetElapsedTimeMillis() - _singleShotTimestamp;
+            if(duration > 1000 && duration < 2000){
+                _frequency = _frequency.getMin();
+            }
+        }
         void onActiveChange(bool & value){
             if(value){
                 setValue(_frequencyChannel, _frequency);
@@ -45,8 +51,11 @@ namespace clips {
             setValue(_velocityChannel, _velocity);
         }
         void onSingleShot(){
-            // setValue(_frequencyChannel, 16);
-            // setValue(_velocityChannel, 255);
+            _singleShotTimestamp = ofGetElapsedTimeMillis();
+            _frequency = 16;
+            if(_velocity == _velocity.getMin()){
+                _velocity++;
+            }
         }
 
         int _frequencyChannel;
