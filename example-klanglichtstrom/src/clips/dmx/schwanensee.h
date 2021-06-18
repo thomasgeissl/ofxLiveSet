@@ -21,10 +21,11 @@ namespace clips {
 //            addParameter.add(_minValue);
             addParameter(_pitchThreshold.set("pitchThreshold", .01, 0, 1));
             addParameter(_debounceTime.set("debounceTime", 190, 0, 1000));
-            addParameter(_maxValue.set("maxValue", 0, 0, 255));
             addParameter(_fadeOutTime.set("fadeOutTime", 300, 0, 3000));
+            addParameter(_maxValue.set("maxValue", 0, 0, 255));
             addParameter(_addPeakEnergy.set("addPeakEnergy", false));
             addParameter(_staticLight.set("staticLight", false));
+            _staticLightIndex.set("staticLightIndex", 20, 1, KLS_LIGHTBULBSCOUNT);
             addParameter(_staticLightValue.set("staticLightValue", 100, 0, 255));
             _meters.setName("meters");
             _meters.add(_pitch.set("pitch", 0, 0, 127));
@@ -64,7 +65,7 @@ namespace clips {
                 }
             }
             if(_staticLight){
-                setValue(5, _staticLightValue);
+                setValue(_staticLightIndex, _staticLightValue);
             }
         }
         void stop(){
@@ -93,6 +94,7 @@ namespace clips {
         ofParameter<int> _debounceTime;
         ofParameter<bool> _addPeakEnergy;
         ofParameter<float> _pitchThreshold;
+        ofParameter<int> _staticLightIndex;
         ofParameter<bool> _staticLight;
         ofParameter<int> _staticLightValue;
         ofParameterGroup _meters;

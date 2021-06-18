@@ -18,18 +18,20 @@ public:
         _active.setName(_name);
 
         _pitchChangeTriggerSoundAnalyserId.set("pitchChangeTrigger", 2, 0, 32);
-        _minValue.set("minValue", 0, 0, 255);
-        _maxValue.set("maxValue", 168, 0, 255);
 
 
         // addParameter(_soundAnalyserId);
         addParameter(_maxPeakEnergy.set("maxPeakEnergy", 0.6, 0, 1));
         addParameter(_speed.set("speed", .2, 0, 1));
-        addParameter(_minValue);
-        addParameter(_maxValue);
+        addParameter(_minValue.set("minValue", 0, 0, 255));
+        addParameter(_maxValue.set("maxValue", 168, 0, 255));
+        addParameter(_compressor.set("compressor", false));
+        addParameter(_motion.set("motion", false));
+        addParameter(_motionSpeed.set("motionSpeed", 0.1, 0, 1));
 
         _meters.setName("meters");
         _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
+        _meters.add(_centerIndex.set("center", 0, 0, KLS_LIGHTBULBSCOUNT));
         _parameters.add(_meters);
 
         _values.resize(KLS_LIGHTBULBSCOUNT);
@@ -39,22 +41,26 @@ public:
     void update()
     {
         auto timestamp = ofGetElapsedTimeMillis();
-        int index = ofNoise(timestamp)*_values.size();
+        _centerIndex = ofNoise((float)(timestamp)/1000 * _motionSpeed)*_values.size();
+        auto distanceThreshold = 6;
+        auto compression = 0;
+        if(_compressor){
+            compression = ofMap(_peakEnergy, 0, _maxPeakEnergy, 0, 255);
+        }
         for(auto i = 0; i < _values.size(); i++)
         {
-            ofLogNotice() << ofNoise(i)*_values.size();
-            auto distance = std::abs(i - index);
-            // auto max = 255;
-            // if(_peakEnergy < 0.2){
-            //     max = ofMap(std::sin(timestamp * i * _speed/100), -1, 1, _minValue, _maxValue);
-            // }else{
+            auto distance = std::abs(i - _centerIndex);
 
-            // }
-
-            // _values[i] = max - ofMap(_peakEnergy, 0, _maxPeakEnergy, 0, 255);
-            _values[i] = ofMap(distance, 0, _values.size(), 0, 255);
-            // std::abs( - ofMap(_peakEnergy, 0, 1, 0, 255));
+            int max = _maxValue;
+            if(_motion && distance > distanceThreshold){
+            }
+            if(_motion && distance >= distanceThreshold){
+                max = _maxValue/2;
+            }
+            _values[i] = ofClamp(ofMap(std::abs(std::sin(ofGetElapsedTimef()*10*_speed+0.4*i)), 0, 1, _minValue, max) - compression, 0, 255);
         }
+
+        // finally send all values
         for (auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++)
         {
             setValue(i+1, _values[i]);
@@ -84,7 +90,9 @@ public:
     ofParameter<int> _minValue;
     ofParameter<int> _maxValue;
     ofParameter<float> _speed;
-    ofParameter<bool> _breathe;
+    ofParameter<bool> _compressor;
+    ofParameter<bool> _motion;
+    ofParameter<float> _motionSpeed;
 
     ofParameter<float> _peakEnergyThreshold;
     ofParameter<float> _beatsEnergyThreshold;
@@ -93,6 +101,7 @@ public:
     ofParameter<float> _peakEnergy;
     ofParameter<float> _pitchChangeTriggerPeakEnergy; 
     ofParameter<float> _maxPeakEnergy;
+    ofParameter<int> _centerIndex;
 
     int _beatAudioAnalyserId;
 

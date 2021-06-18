@@ -14,8 +14,6 @@ namespace clips {
             _name = "anchor";
             _pitchChangeTriggerSoundAnalyserId.set("pitchChangeTrigger", 2, 0, 8);
             _channel.set("channel", 1, 1, 512);
-            _minValue.set("minValue", 0, 0, 255);
-            _maxValue.set("maxValue", 168, 0, 255); // beatMaxValue
             _addPeakEnergy.set("addPeakEnergy", false);
        
             _active.setName(_name);
@@ -25,7 +23,6 @@ namespace clips {
 
             _highs.set("highs", true);
             _highsQuadrant.set("highsQuadrant", 1, 0, 3);
-            _highsMaxValue.set("highsMaxValue", 0, 0, 255);
 
             _randomiseHighsQuadrant.set("randomiseHighsQuadrant");
             _randomiseHighsQuadrant.addListener(this, &anchor::onRandomiseHighsQuadrant);
@@ -33,13 +30,14 @@ namespace clips {
             // addParameter(_soundAnalyserId);
             // addParameter(_pitchChangeTriggerSoundAnalyserId);
             // addParameter(_minValue);
-            addParameter(_maxValue);
-            addParameter(_highsMaxValue);
+            addParameter(_beatsEnergyThreshold);
+            _minValue.set("minValue", 0, 0, 255);
+            addParameter(_maxValue.set("beatMaxValue", 168, 0, 255)); // beatMaxValue
+            addParameter(_highsMaxValue.set("maxValue", 0, 0, 255));
             addParameter(_addPeakEnergy);
             
             addParameter(_breathe.set("breathe", false));
             addParameter(_beatsQuadrant);
-            addParameter(_beatsEnergyThreshold);
             addParameter(_highs);
             addParameter(_highsQuadrant);
             addParameter(_randomiseHighsQuadrant);
