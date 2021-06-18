@@ -1,0 +1,226 @@
+{
+    "mappings": [
+        {
+            "channel": 9,
+            "id": 61,
+            "isCC": true,
+            "pitchOrCC": 13
+        },
+        {
+            "channel": 9,
+            "id": 14,
+            "isCC": true,
+            "pitchOrCC": 14
+        },
+        {
+            "channel": 9,
+            "id": 24,
+            "isCC": true,
+            "pitchOrCC": 15
+        },
+        {
+            "channel": 9,
+            "id": 32,
+            "isCC": true,
+            "pitchOrCC": 16
+        },
+        {
+            "channel": 9,
+            "id": 37,
+            "isCC": true,
+            "pitchOrCC": 18
+        },
+        {
+            "channel": 9,
+            "id": 45,
+            "isCC": true,
+            "pitchOrCC": 20
+        },
+        {
+            "channel": 9,
+            "id": 6,
+            "isCC": true,
+            "pitchOrCC": 29
+        },
+        {
+            "channel": 9,
+            "id": 15,
+            "isCC": true,
+            "pitchOrCC": 30
+        },
+        {
+            "channel": 9,
+            "id": 25,
+            "isCC": true,
+            "pitchOrCC": 31
+        },
+        {
+            "channel": 9,
+            "id": 33,
+            "isCC": true,
+            "pitchOrCC": 32
+        },
+        {
+            "channel": 9,
+            "id": 71,
+            "isCC": true,
+            "pitchOrCC": 33
+        },
+        {
+            "channel": 9,
+            "id": 38,
+            "isCC": true,
+            "pitchOrCC": 34
+        },
+        {
+            "channel": 9,
+            "id": 84,
+            "isCC": true,
+            "pitchOrCC": 35
+        },
+        {
+            "channel": 9,
+            "id": 46,
+            "isCC": true,
+            "pitchOrCC": 36
+        },
+        {
+            "channel": 9,
+            "id": 9,
+            "isCC": false,
+            "pitchOrCC": 41
+        },
+        {
+            "channel": 9,
+            "id": 28,
+            "isCC": false,
+            "pitchOrCC": 43
+        },
+        {
+            "channel": 9,
+            "id": 7,
+            "isCC": true,
+            "pitchOrCC": 49
+        },
+        {
+            "channel": 9,
+            "id": 26,
+            "isCC": true,
+            "pitchOrCC": 51
+        },
+        {
+            "channel": 9,
+            "id": 34,
+            "isCC": true,
+            "pitchOrCC": 52
+        },
+        {
+            "channel": 9,
+            "id": 39,
+            "isCC": true,
+            "pitchOrCC": 54
+        },
+        {
+            "channel": 9,
+            "id": 47,
+            "isCC": true,
+            "pitchOrCC": 55
+        },
+        {
+            "channel": 9,
+            "id": 47,
+            "isCC": true,
+            "pitchOrCC": 56
+        },
+        {
+            "channel": 9,
+            "id": 73,
+            "isCC": false,
+            "pitchOrCC": 57
+        },
+        {
+            "channel": 9,
+            "id": 41,
+            "isCC": false,
+            "pitchOrCC": 58
+        },
+        {
+            "channel": 9,
+            "id": 87,
+            "isCC": false,
+            "pitchOrCC": 59
+        },
+        {
+            "channel": 9,
+            "id": 49,
+            "isCC": false,
+            "pitchOrCC": 60
+        },
+        {
+            "channel": 9,
+            "id": 10,
+            "isCC": false,
+            "pitchOrCC": 73
+        },
+        {
+            "channel": 9,
+            "id": 29,
+            "isCC": false,
+            "pitchOrCC": 75
+        },
+        {
+            "channel": 9,
+            "id": 8,
+            "isCC": true,
+            "pitchOrCC": 77
+        },
+        {
+            "channel": 9,
+            "id": 16,
+            "isCC": true,
+            "pitchOrCC": 78
+        },
+        {
+            "channel": 9,
+            "id": 27,
+            "isCC": true,
+            "pitchOrCC": 79
+        },
+        {
+            "channel": 9,
+            "id": 35,
+            "isCC": true,
+            "pitchOrCC": 80
+        },
+        {
+            "channel": 9,
+            "id": 72,
+            "isCC": true,
+            "pitchOrCC": 81
+        },
+        {
+            "channel": 9,
+            "id": 40,
+            "isCC": true,
+            "pitchOrCC": 82
+        },
+        {
+            "channel": 9,
+            "id": 86,
+            "isCC": true,
+            "pitchOrCC": 83
+        },
+        {
+            "channel": 9,
+            "id": 48,
+            "isCC": true,
+            "pitchOrCC": 84
+        },
+        {
+            "channel": 9,
+            "id": 42,
+            "isCC": false,
+            "pitchOrCC": 90
+        }
+    ]
+}
