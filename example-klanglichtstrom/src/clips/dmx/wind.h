@@ -24,19 +24,24 @@ namespace clips
             // addParameter(_static.set("static", false));
             // addParameter(_minValueChimes.set("minValueChimes", 0, 0, 255));
             // addParameter(_maxValueChimes.set("maxValueChimes", 0, 0, 255));
-            addParameter(_threshold.set("threshold", 0.8, 0, 1));
+            // addParameter(_threshold.set("threshold", 0.8, 0, 1));
+            addParameter(_peakFactor.set("peakFactor", 1.5, 0, 3));
             addParameter(_debounceTime.set("debounceTime", 150, 0, 1000));
             addParameter(_minValue.set("minValue", 0, 0, 255));
             addParameter(_maxValue.set("maxValue", 255, 0, 255));
 
             _positions.setName("config");
-            _positions.add(_innerLeftLight.set("innerLeftLight", 10, 0, 16));
-            _positions.add(_middleLeftLight.set("middleLeftLight", 0, 0, 16));
-            _positions.add(_outerLeftLight.set("outerLeftLight", 11, 0, 16));
-            _positions.add(_innerRightLight.set("innerRightLight", 7, 0, 16));
-            _positions.add(_middleRightLight.set("middleRightLight", 0, 0, 16));
-            _positions.add(_outerRightLight.set("outerRightLight", 6, 0, 16));
-            addParameter(_peakFactor.set("peakFactor", 1.3, 1, 2));
+            _positions.add(_innerLeftLight.set("innerLeftLight", 11, 1, KLS_LIGHTBULBSCOUNT));
+            _positions.add(_innerRightLight.set("innerRightLight", 13, 1, KLS_LIGHTBULBSCOUNT));
+
+            _positions.add(_middleLeftLight.set("middleLeftLight", 2, 1, KLS_LIGHTBULBSCOUNT));
+            _positions.add(_middleRightLight.set("middleRightLight", 20, 1, KLS_LIGHTBULBSCOUNT));
+
+            _positions.add(_pingLeftIndex.set("pingLeftIndex", 4, 1, KLS_LIGHTBULBSCOUNT));
+            _positions.add(_pongLeftIndex.set("pongLeftIndex", 8, 1, KLS_LIGHTBULBSCOUNT));
+            _positions.add(_pingRightIndex.set("pingRightIndex", 17, 1, KLS_LIGHTBULBSCOUNT));
+            _positions.add(_pongRightIndex.set("pongRightIndex", 22, 1, KLS_LIGHTBULBSCOUNT));
+
             addParameter(_pingPong.set("pingPong", false));
             addParameter(_pingPongTime.set("pingPongTime", 500, 0, 1000));
             _parameters.add(_positions);
@@ -55,13 +60,13 @@ namespace clips
                 _values[i] = value;
                 setValue(i + 1, value);
             }
-            setValue(1, ofMap(_leftPeakEnergyMovingAverage.avg() * 4, 0, 2, _minValue, _maxValue));
-            setValue(16, ofMap(_rightPeakEnergyMovingAverage.avg() * 4, 0, 2, _minValue, _maxValue));
-            if (_leftPeakEnergy > _leftPeakEnergyMovingAverage.avg() * 1.5)
+            setValue(_middleLeftLight, ofMap(_leftPeakEnergyMovingAverage.avg() * 4, 0, 2, _minValue, _maxValue));
+            setValue(_middleRightLight, ofMap(_rightPeakEnergyMovingAverage.avg() * 4, 0, 2, _minValue, _maxValue));
+            if (_leftPeakEnergy > _leftPeakEnergyMovingAverage.avg() * _peakFactor)
             {
                 peak(true);
             }
-            if (_rightPeakEnergy > _rightPeakEnergyMovingAverage.avg() * 1.5)
+            if (_rightPeakEnergy > _rightPeakEnergyMovingAverage.avg() * _peakFactor)
             {
                 peak(false);
             }
@@ -71,13 +76,17 @@ namespace clips
                 {
                     if (_pingPongLeft)
                     {
-                        _values[_outerLeftLight - 1] = _maxValue;
-                        _timestamps[_outerLeftLight - 1] = timestamp;
+                        _values[_pingLeftIndex - 1] = _maxValue;
+                        _timestamps[_pingLeftIndex - 1] = timestamp;
+                        _values[_pongLeftIndex - 1] = _maxValue;
+                        _timestamps[_pongLeftIndex - 1] = timestamp;
                     }
                     else
                     {
-                        _values[_outerRightLight - 1] = _maxValue;
-                        _timestamps[_outerRightLight - 1] = timestamp;
+                        _values[_pingRightIndex - 1] = _maxValue;
+                        _timestamps[_pingRightIndex - 1] = timestamp;
+                        _values[_pongRightIndex - 1] = _maxValue;
+                        _timestamps[_pongRightIndex - 1] = timestamp;
                     }
                     _pingPongTimestamp = timestamp;
                     _pingPongLeft = !_pingPongLeft;
@@ -136,10 +145,12 @@ namespace clips
         ofParameterGroup _positions;
         ofParameter<int> _innerLeftLight;
         ofParameter<int> _middleLeftLight;
-        ofParameter<int> _outerLeftLight;
+        ofParameter<int> _pingLeftIndex;
+        ofParameter<int> _pongLeftIndex;
         ofParameter<int> _innerRightLight;
         ofParameter<int> _middleRightLight;
-        ofParameter<int> _outerRightLight;
+        ofParameter<int> _pingRightIndex;
+        ofParameter<int> _pongRightIndex;
         ofParameter<float> _threshold;
         ofParameter<int> _debounceTime;
         ofParameter<float> _peakFactor;
