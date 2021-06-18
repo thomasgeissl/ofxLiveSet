@@ -4,94 +4,84 @@
 
 namespace clips
 {
-class outro : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive
-{
-public:
-    typedef std::shared_ptr<outro> pointer;
-    static pointer create()
+    class outro : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive
     {
-        return std::make_shared<outro>();
-    }
-    outro() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive(), _beatAudioAnalyserId(2)
-    {
-        _name = "outro";
-        _active.setName(_name);
-
-        _pitchChangeTriggerSoundAnalyserId.set("pitchChangeTrigger", 2, 0, 32);
-        _minValue.set("minValue", 0, 0, 255);
-        _maxValue.set("maxValue", 168, 0, 255);
-
-
-        addParameter(_soundAnalyserId);
-        addParameter(_pitchChangeTriggerSoundAnalyserId);
-        addParameter(_minValue);
-        addParameter(_maxValue);
-        addParameter(_maxPeakEnergy.set("maxPeakEnergy", 0.6, 0, 1));
-        addParameter(_speed.set("speed", .2, 0, 1));
-
-        _meters.setName("meters");
-        _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
-        _parameters.add(_meters);
-
-        _values.resize(KLS_LIGHTBULBSCOUNT);
-        _timestamps.resize(KLS_LIGHTBULBSCOUNT);
-    }
-
-    void update()
-    {
-        auto timestamp = ofGetElapsedTimeMillis();
-        for(auto i = 0; i < _values.size(); i++)
+    public:
+        typedef std::shared_ptr<outro> pointer;
+        static pointer create()
         {
-
-            _values[i] = (_peakEnergy < 0.2 ? ofMap(std::sin(timestamp * i * _speed/100), -1, 1, _minValue, _maxValue) : 255) - ofMap(_peakEnergy, 0, _maxPeakEnergy, 0, 255);
-            // std::abs( - ofMap(_peakEnergy, 0, 1, 0, 255));
+            return std::make_shared<outro>();
         }
-        for (auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++)
+        outro() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive()
         {
-            setValue(i+1, _values[i]);
+            _name = "rain";
+            _active.setName(_name);
+            _minValue.set("minValue", 0, 0, 255);
+            _maxValue.set("maxValue", 168, 0, 255);
+
+            // addParameter(_soundAnalyserId);
+            addParameter(_minValue);
+            addParameter(_maxValue);
+            addParameter(_speed.set("speed", .2, 0, 1));
+            addParameter(_intensity.set("intensity", .2, 0, 1));
+
+            _meters.setName("meters");
+            _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
+            _parameters.add(_meters);
+
+            _values.resize(KLS_LIGHTBULBSCOUNT);
+            _timestamps.resize(KLS_LIGHTBULBSCOUNT);
         }
-    }
-    void stop()
-    {
-        for (auto i = 1; i <= KLS_LIGHTBULBSCOUNT; i++)
+
+        void update()
         {
-            setValue(i, 0);
+            auto timestamp = ofGetElapsedTimeMillis();
+            if (timestamp - _timestamp > ofRandom(ofMap(_intensity, 0, 1, 1000,100)))
+            {
+                auto index = ofRandom(KLS_LIGHTBULBSCOUNT);
+                _values[index] = ofRandom(_minValue, _maxValue);
+                _timestamps[index] = timestamp;
+                _timestamp = timestamp;
+            }
+            for (auto i = 0; i < _values.size(); i++)
+            {
+                if (_values[i] > 0 && (timestamp - _timestamp > ofMap(_speed, 0, 1, ofRandom(200), 0)))
+                {
+                    _values[i]--;
+                }
+            }
+            for (auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++)
+            {
+                setValue(i + 1, _values[i]);
+            }
         }
-        base::stop();
-    }
-    void setPeakEnergy(int analyserId, float value)
-    {
-        if (analyserId == _beatAudioAnalyserId)
+        void stop()
         {
-            // TODO
-            // if(_smoothing){
-            //     if(energy > threshold)
-            // }
-            _peakEnergy = value;// ? 0.5 > value*2 : value;
+            for (auto i = 1; i <= KLS_LIGHTBULBSCOUNT; i++)
+            {
+                setValue(i, 0);
+            }
+            base::stop();
         }
-    }
+        void setPeakEnergy(int analyserId, float value)
+        {
+            if (analyserId == _soundAnalyserId)
+            {
+                _peakEnergy = value; // ? 0.5 > value*2 : value;
+            }
+        }
 
-    ofParameter<int> _pitchChangeTriggerSoundAnalyserId;
-    ofParameter<int> _minValue;
-    ofParameter<int> _maxValue;
-    ofParameter<float> _speed;
-    ofParameter<bool> _breathe;
+        ofParameter<int> _pitchChangeTriggerSoundAnalyserId;
+        ofParameter<int> _minValue;
+        ofParameter<int> _maxValue;
+        ofParameter<float> _intensity;
+        ofParameter<float> _speed;
 
-    ofParameter<float> _peakEnergyThreshold;
-    ofParameter<float> _beatsEnergyThreshold;
+        ofParameterGroup _meters;
+        ofParameter<float> _peakEnergy;
 
-    ofParameter<bool> _highs;
-    ofParameter<int> _highsQuadrant;
-
-    ofParameterGroup _meters;
-    ofParameter<float> _peakEnergy;
-    ofParameter<float> _pitchChangeTriggerPeakEnergy; 
-    ofParameter<float> _maxPeakEnergy;
-
-    int _beatAudioAnalyserId;
-
-    std::vector<int> _values;
-    std::vector<u_int64_t> _timestamps;
-    u_int64_t _highsQuadrantChangeTimestamp;
-};
+        std::vector<int> _values;
+        std::vector<u_int64_t> _timestamps;
+        u_int64_t _timestamp;
+    };
 }; // namespace clips
