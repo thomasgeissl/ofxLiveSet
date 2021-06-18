@@ -30,10 +30,11 @@ namespace clips {
             _randomiseHighsQuadrant.set("randomiseHighsQuadrant");
             _randomiseHighsQuadrant.addListener(this, &anchor::onRandomiseHighsQuadrant);
 
-            addParameter(_soundAnalyserId);
-            addParameter(_pitchChangeTriggerSoundAnalyserId);
+            // addParameter(_soundAnalyserId);
+            // addParameter(_pitchChangeTriggerSoundAnalyserId);
             // addParameter(_minValue);
             addParameter(_maxValue);
+            addParameter(_highsMaxValue);
             addParameter(_addPeakEnergy);
             
             addParameter(_breathe.set("breathe", false));
@@ -48,7 +49,6 @@ namespace clips {
             _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
             _meters.add(_pitchChangeTriggerPeakEnergy.set("pitchChangeTriggerPeakEnergy", 0, 0, 5));
             _parameters.add(_meters);
-            addParameter(_highsMaxValue);
 
             _values.resize(KLS_LIGHTBULBSCOUNT);
             _timestamps.resize(KLS_LIGHTBULBSCOUNT);

@@ -20,10 +20,10 @@ namespace clips
             _maxValue.set("maxValue", 168, 0, 255);
 
             // addParameter(_soundAnalyserId);
+            addParameter(_intensity.set("intensity", .2, 0, 1));
+            addParameter(_speed.set("speed", .2, 0, 1));
             addParameter(_minValue);
             addParameter(_maxValue);
-            addParameter(_speed.set("speed", .2, 0, 1));
-            addParameter(_intensity.set("intensity", .2, 0, 1));
 
             _meters.setName("meters");
             _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));

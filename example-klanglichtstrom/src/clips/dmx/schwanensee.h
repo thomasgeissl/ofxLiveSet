@@ -17,13 +17,13 @@ namespace clips {
 
             _active.setName(_name);
             
-            addParameter(_soundAnalyserId);
+            // addParameter(_soundAnalyserId);
 //            addParameter.add(_minValue);
+            addParameter(_pitchThreshold.set("pitchThreshold", .01, 0, 1));
+            addParameter(_debounceTime.set("debounceTime", 190, 0, 1000));
             addParameter(_maxValue.set("maxValue", 0, 0, 255));
             addParameter(_fadeOutTime.set("fadeOutTime", 300, 0, 3000));
-            addParameter(_debounceTime.set("debounceTime", 190, 0, 1000));
             addParameter(_addPeakEnergy.set("addPeakEnergy", false));
-            addParameter(_pitchThreshold.set("pitchThreshold", .01, 0, 1));
             addParameter(_staticLight.set("staticLight", false));
             addParameter(_staticLightValue.set("staticLightValue", 100, 0, 255));
             _meters.setName("meters");
@@ -31,6 +31,7 @@ namespace clips {
             _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
             _meters.add(_onsetDetected.set("onset", false));
             _parameters.add(_meters);
+
             _values.resize(KLS_LIGHTBULBSCOUNT);
             _timestamps.resize(KLS_LIGHTBULBSCOUNT);
 

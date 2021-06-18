@@ -15,16 +15,19 @@ namespace clips {
             _channel.set("channel", 1, 1, 512);
             _active.setName(_name);
 
-            addParameter(_soundAnalyserId);
-            addParameter(_climaxSoundAnalyserId.set("climaxSoundAnalyser", 2, 0, 16));
-            addParameter(_start.set("start", 12, 1, 16));
+            // addParameter(_soundAnalyserId);
+            // addParameter(_climaxSoundAnalyserId.set("climaxSoundAnalyser", 2, 0, 16));
+            addParameter(_speed.set("speed", .1, 0, 1));
             addParameter(_minValue.set("minValue", 0, 0, 255));
             addParameter(_maxValue.set("maxValue", 0, 0, 255));
-            addParameter(_addPeakEnergy.set("addPeakEnergy", false));
-            addParameter(_speed.set("speed", .1, 0, 1));
-            addParameter(_amount.set("amount", 1, 1, KLS_LIGHTBULBSCOUNT));
             addParameter(_add.set("add"));
             addParameter(_remove.set("remove"));
+            addParameter(_amount.set("amount", 1, 1, KLS_LIGHTBULBSCOUNT));
+            addParameter(_addPeakEnergy.set("addPeakEnergy", false));
+
+            _config.setName("config");
+            _config.add(_start.set("start", 12, 1, KLS_LIGHTBULBSCOUNT));
+            _parameters.add(_config);
 
             _meters.setName("meters");
             _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
@@ -95,7 +98,6 @@ namespace clips {
             _amount.set(ofClamp(_amount - 1, _amount.getMin(), _amount.getMax()));
         }
         ofParameter<int> _channel;
-        ofParameter<int> _start;
         ofParameter<int> _amount;
         ofParameter<int> _minValue;
         ofParameter<int> _maxValue;
@@ -106,6 +108,8 @@ namespace clips {
         ofParameter<int> _climaxSoundAnalyserId;
         ofParameterGroup _meters;
         ofParameter<float> _peakEnergy;
+        ofParameterGroup _config;
+        ofParameter<int> _start;
 
         bool _climax;
         u_int64_t _climaxTimestamp;

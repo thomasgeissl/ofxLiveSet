@@ -15,13 +15,16 @@ namespace clips {
             
             _active.setName(_name);
             
-            addParameter(_soundAnalyserId);
-            addParameter(_minValue.set("minValue", 0, 0, 255));
-            addParameter(_maxValue.set("maxValue", 100, 0, 255));
+            // addParameter(_soundAnalyserId);
             addParameter(_threshold.set("threshold", .1, 0, 1));
             addParameter(_peakEnergyDebounceTime.set("debounce", 300, 30, 500));
-            addParameter(_minDistance.set("minDistance", 12, 1, KLS_LIGHTBULBSCOUNT));
+            addParameter(_minValue.set("minValue", 0, 0, 255));
+            addParameter(_maxValue.set("maxValue", 100, 0, 255));
             
+            _config.setName("config");
+            _config.add(_minDistance.set("minDistance", 12, 1, KLS_LIGHTBULBSCOUNT));
+            _parameters.add(_config);
+
             _meters.setName("meters");
             _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
             _parameters.add(_meters);
@@ -75,10 +78,12 @@ namespace clips {
         
         ofParameter<float> _threshold;
         ofParameter<int> _peakEnergyDebounceTime;
-        ofParameter<int> _minDistance;
 
         ofParameterGroup _meters;
         ofParameter<float> _peakEnergy;
+
+        ofParameterGroup _config;
+        ofParameter<int> _minDistance;
         
         u_int64_t _timestamp;
         std::vector<u_int64_t> _timestamps;

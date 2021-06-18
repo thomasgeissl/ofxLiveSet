@@ -17,6 +17,18 @@ audio reactive dmx live set for klinglichtstrom performance.
 * install dependencies: `./scripts/install_dependencies.sh`
 * if your ide/make system cannot handle ofxMidi as a local_addon then move it to the global addons, adapt `addons.make` and rerun the project generator
 
+## packing list
+
+* case: interfaces
+* case: dimmers, spotlight
+* case: lamps, light bulbs
+* bag: base
+* bag: base
+* box: strobe light
+* box: adapters
+* box: dmx, powercon
+* bag: dmx, powercon, multicore
+
 
 ## TODO:
 * 2x klinke -> xlr male

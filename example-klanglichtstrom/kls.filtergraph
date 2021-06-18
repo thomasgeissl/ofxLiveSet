@@ -12,7 +12,7 @@
         <BUS index="0" layout="disabled"/>
       </INPUTS>
       <OUTPUTS>
-        <BUS index="0" layout="disabled"/>
+        <BUS index="0" layout="L R"/>
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
@@ -34,7 +34,7 @@
   <FILTER uid="3" x="0.5" y="0.9">
     <PLUGIN name="Audio Output" descriptiveName="" format="Internal" category="I/O devices"
             manufacturer="JUCE" version="1.0" file="" uid="724248cb" isInstrument="0"
-            fileTime="0" infoUpdateTime="0" numInputs="0" numOutputs="0"
+            fileTime="0" infoUpdateTime="0" numInputs="2" numOutputs="0"
             isShell="0"/>
     <STATE>0.</STATE>
     <LAYOUT>
@@ -62,10 +62,10 @@
     </LAYOUT>
   </FILTER>
   <FILTER uid="5" x="0.51875" y="0.3173076923076923" uiLastX_Normal="95"
-          uiLastY_Normal="151" uiopen_Normal="1">
+          uiLastY_Normal="151" uiopen_Normal="0">
     <PLUGIN name="Sound Analyser" format="AudioUnit" category="Effect" manufacturer="Adam Stark"
             version="256.3.0" file="AudioUnit:Effects/aufx,Snda,Asta" uid="73687678"
-            isInstrument="0" fileTime="0" infoUpdateTime="17a07b41739" numInputs="2"
+            isInstrument="0" fileTime="0" infoUpdateTime="17a16b3aecb" numInputs="2"
             numOutputs="2" isShell="0"/>
     <STATE>475.hAGaoMGcv.C1AHv.DTfAGfPBJrvDTTgEWvUag4VclE1XzUmbkIGUjEFcgwUYrUVak4Fcs3VXsU1UyUmXzkGbkckckI2bo8laTQWdvU1WP7fZ0MVYPwVcmklaSQWXzUFUtEVakIQPyQWX.IMCM3PDQESTxD8CPDELUkjavUGcQ+fDV8TczAWczIwTtQVXP.fDgUmY38DDqa0PxDh3....77CdswFH1Ulbyk1at0iHw3BLh.RYtM1ajklam0iHUQkQsfiH+3CH7L0a04FYA4VXrk2bkIGHA4VXrk2bkIWRj0iHwHBHBUmYlUlbSkldk0iHw.iLzHBHP8lbz0iH3.CLvHBHIAUPjQlbkM2b8HRLxbiKv3BLtDiH9vCTkE1ZE4VYxcVdfLUYtQVOhDiHf.EauQWOhDiHf3TXsUVOh.UYgsFHE4VYxcVdh7hO7.UZzMFZfLUYtQVOhDiHf.EauQWOh.iHf3TXsUVOh.UZzMFZh7hO77xTuUmajEjagwVdyUlb9..VU4FcoQGakQF.H.PF.XB.q..N..D.HAPS.7E.jAPZ.nF.uAPb.LG.1A.d.3G.AB.h.zH.OB.kAHH.......f.A..........F..................P.KB</STATE>
     <LAYOUT>
@@ -78,10 +78,10 @@
     </LAYOUT>
   </FILTER>
   <FILTER uid="6" x="0.6575" y="0.3173076923076923" uiLastX_Normal="728"
-          uiLastY_Normal="249" uiopen_Normal="1">
+          uiLastY_Normal="249" uiopen_Normal="0">
     <PLUGIN name="Sound Analyser" format="AudioUnit" category="Effect" manufacturer="Adam Stark"
             version="256.3.0" file="AudioUnit:Effects/aufx,Snda,Asta" uid="73687678"
-            isInstrument="0" fileTime="0" infoUpdateTime="17a07b41739" numInputs="2"
+            isInstrument="0" fileTime="0" infoUpdateTime="17a16b3aecb" numInputs="2"
             numOutputs="2" isShell="0"/>
     <STATE>436.hAGaoMGcv.C1AHv.DTfAGfPBJrvDTTgEWvUag4VclE1XzUmbkIGUjEFcgwUYrUVak4Fcs3VXsU1UyUmXzkGbkckckI2bo8laTQWdvU1WP7fZ0MVYPwVcmklaSQWXzUFUtEVakIQPyQWX.IMCM3PDQESTxD8CPDELUkjavUGcQ+fDV8TczAWczIwTtQVXP.fDgUmY38DDDa0PxDxt....77CdswFH1Ulbyk1at0iHw3BLh.RYtM1ajklam0iHUQkQsfiH+3CH7L0a04FYA4VXrk2bkIGHA4VXrk2bkIWRj0iHxHBHBUmYlUlbSkldk0iHw.iLzHBHP8lbz0iH3.CLvHBHIAUPjQlbkM2b8HRLxbiKv3BLtDiH9vCTkE1ZE4VYxcVdfLUYtQVOhDiHf.EauQWOhDiHf3TXsUVOh.UYgsFHE4VYxcVdh7hO77xTuUmajEjagwVdyUlb9..VU4FcoQGakQF.H.PF.XB.q..N..D.HAPS.7E.jAPZ.nF.uAPb.LG.1A.d.3G.AB.h.zH.OB.kArE.......f.A..........F..................P.jA</STATE>
     <LAYOUT>
@@ -93,6 +93,8 @@
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
+  <CONNECTION srcFilter="1" srcChannel="0" dstFilter="5" dstChannel="0"/>
+  <CONNECTION srcFilter="1" srcChannel="1" dstFilter="6" dstChannel="0"/>
   <CONNECTION srcFilter="5" srcChannel="0" dstFilter="3" dstChannel="0"/>
   <CONNECTION srcFilter="6" srcChannel="0" dstFilter="3" dstChannel="1"/>
 </FILTERGRAPH>

@@ -19,14 +19,15 @@ namespace clips
         {
             _name = "lichtung";
             _active.setName(_name);
-            addParameter(_soundAnalyserId);
-            addParameter(_rightSoundAnalyserId.set("right analyser", 2, 0, 32));
+            // addParameter(_soundAnalyserId);
+            // addParameter(_rightSoundAnalyserId.set("right analyser", 2, 0, 32));
             // addParameter(_static.set("static", false));
             // addParameter(_minValueChimes.set("minValueChimes", 0, 0, 255));
             // addParameter(_maxValueChimes.set("maxValueChimes", 0, 0, 255));
+            addParameter(_threshold.set("threshold", 0.8, 0, 1));
+            addParameter(_debounceTime.set("debounceTime", 150, 0, 1000));
             addParameter(_minValue.set("minValue", 0, 0, 255));
             addParameter(_maxValue.set("maxValue", 255, 0, 255));
-            // addParameter(_speedChimes.set("speedChimes", .1, 0, 1));
 
             _positions.setName("config");
             _positions.add(_innerLeftLight.set("innerLeftLight", 10, 0, 16));
@@ -35,8 +36,6 @@ namespace clips
             _positions.add(_innerRightLight.set("innerRightLight", 7, 0, 16));
             _positions.add(_middleRightLight.set("middleRightLight", 0, 0, 16));
             _positions.add(_outerRightLight.set("outerRightLight", 6, 0, 16));
-            addParameter(_debounceTime.set("debounceTime", 150, 0, 1000));
-            addParameter(_threshold.set("threshold", 0.8, 0, 1));
             addParameter(_peakFactor.set("peakFactor", 1.3, 1, 2));
             addParameter(_pingPong.set("pingPong", false));
             addParameter(_pingPongTime.set("pingPongTime", 500, 0, 1000));
