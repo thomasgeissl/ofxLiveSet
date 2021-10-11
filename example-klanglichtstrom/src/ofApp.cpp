@@ -32,7 +32,7 @@ void ofApp::setup()
     _visualisation.setup(&_dmx);
 
     auto lightBulbsTrack = ofxLiveSet::track::dmx::create("light bulbs");
-    auto spotTrack = ofxLiveSet::track::dmx::create("spot");
+    auto rainMakerTrack = ofxLiveSet::track::dmx::create("rainmaker");
     auto strobeTrack = ofxLiveSet::track::dmx::create("strobe");
     auto chimesTrack = ofxLiveSet::track::dmx::create("chimes");
     auto mqttTrack = ofxLiveSet::track::mqtt::create("vgig");
@@ -48,7 +48,7 @@ void ofApp::setup()
 
     strobeTrack->addClip(clips::strobe::create(21, 22), 3)->setup();
 
-    spotTrack->addClip(clips::spot::create())->setup();
+    rainMakerTrack->addClip(clips::spot::create())->setup();
 
     chimesTrack->addClip(clips::chimes::create(), 5)->setup();
 
@@ -59,7 +59,7 @@ void ofApp::setup()
     utilsTrack->mute();
 
     _session->addTrack(lightBulbsTrack);
-    _session->addTrack(spotTrack);
+    _session->addTrack(rainMakerTrack);
     _session->addTrack(strobeTrack);
     _session->addTrack(chimesTrack);
     _session->addTrack(mqttTrack);
