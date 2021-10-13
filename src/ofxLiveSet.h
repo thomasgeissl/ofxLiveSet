@@ -4,11 +4,13 @@
 #include "./session.h"
 #include "./tracks/base.h"
 #include "./tracks/midi.h"
+#include "./tracks/osc.h"
 #include "./clips/base.h"
 // #include "./clips/midi.h"
 #include "./clips/null.h"
 #include "./clips/soundReactive.h"
 #include "./clips/midiReactive.h"
+#include "./clips/osc.h"
 
 #if OFXLIVESET_USE_GRAPHICS
 #include "./tracks/graphic.h"

@@ -14,6 +14,7 @@
 #include "./clips/dmx/utils/still.h"
 #include "./clips/dmx/utils/midi2dmx.h"
 #include "./clips/dmx/utils/spares.h"
+#include "./clips/osc/organDrone.h"
 
 ofApp::ofApp() : _project(ofxLiveSet::project::create())
 {
@@ -33,10 +34,12 @@ void ofApp::setup()
 
     auto lightBulbsTrack = ofxLiveSet::track::dmx::create("light bulbs");
     auto rainMakerTrack = ofxLiveSet::track::dmx::create("rainmaker");
+    auto organTrack = ofxLiveSet::track::osc::create("organ");
     auto strobeTrack = ofxLiveSet::track::dmx::create("strobe");
     auto chimesTrack = ofxLiveSet::track::dmx::create("chimes");
     auto mqttTrack = ofxLiveSet::track::mqtt::create("vgig");
     auto utilsTrack = ofxLiveSet::track::dmx::create("utils");
+
 
     lightBulbsTrack->addClip(clips::within::create())->setup();
     lightBulbsTrack->addClip(clips::anchor::create())->setup();
@@ -50,6 +53,8 @@ void ofApp::setup()
 
     rainMakerTrack->addClip(clips::spot::create())->setup();
 
+    organTrack->addClip(clips::organDrone::create())->setup();
+
     chimesTrack->addClip(clips::chimes::create(), 5)->setup();
 
     utilsTrack->addClip(clips::spares::create(), 3)->setup();
@@ -60,6 +65,7 @@ void ofApp::setup()
 
     _session->addTrack(lightBulbsTrack);
     _session->addTrack(rainMakerTrack);
+    _session->addTrack(organTrack);
     _session->addTrack(strobeTrack);
     _session->addTrack(chimesTrack);
     _session->addTrack(mqttTrack);
@@ -72,6 +78,7 @@ void ofApp::setup()
             dmxTrack->setup(&_dmx);
         }
     }
+    organTrack->setup(8010);
 
     _session->setup();
     _session->openOscControlInPort(9000);
