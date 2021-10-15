@@ -117,8 +117,9 @@ void ofApp::exit()
 
 void ofApp::update()
 {
-    _visualisation.update();
+    _session->update();
     _session->setPreview(_visualisation.getFbo());
+    _visualisation.update();
 #ifdef SENDDMX
     _dmx.update();
 #endif
