@@ -190,6 +190,16 @@ public:
                 auto p = parameters.getRectangle(i);
                 // add(p);
             }
+            else if (type == typeid(ofParameter<std::string>).name())
+            {
+                auto p = parameters.get<std::string>(i);
+                char value[128];
+                strcpy(value, p.get().c_str());
+                if (ImGui::InputText("input text", value, IM_ARRAYSIZE(value)))
+                {
+                    p = std::string(value);
+                }
+            }
             else if (parameters[i].valueType() == typeid(string).name())
             {
                 if (parameters[i].isReadOnly())

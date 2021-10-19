@@ -38,7 +38,6 @@ public:
     void onActiveChange(bool & value) {
         bool valueToBeNotified = true;
         if(value){
-        ofLogNotice() << "clip on active change " << _name;
             ofNotifyEvent(_started, valueToBeNotified, this);
             onStart();
         } else {
@@ -55,6 +54,10 @@ public:
 
     std::string getName(){
         return _name;
+    }
+    void setName(std::string value, bool applyToActiveParameter = true){
+        _name = value;
+        _active.setName(value);
     }
 
     bool isActive(){

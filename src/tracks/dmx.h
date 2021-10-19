@@ -16,7 +16,7 @@ namespace ofxLiveSet
             {
                 return std::make_shared<dmx>(name);
             }
-            dmx(std::string name = "") : base(name)
+            dmx(std::string name = "") : base("OFXLIVESET_TRACK_DMX", name)
             {
             }
             void setup(ofxDmx *dmx){

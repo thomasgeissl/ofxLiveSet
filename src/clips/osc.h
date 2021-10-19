@@ -18,11 +18,12 @@ namespace ofxLiveSet
             osc(std::string name = "") : base(name)
             {
             }
-            void sendOscMessage(ofxOscMessage & message){
-		    _oscMessageEvent.notify(message);
+            void sendOscMessage(ofxOscMessage &message)
+            {
+                _oscMessageEvent.notify(message);
             }
 
             ofEvent<ofxOscMessage> _oscMessageEvent;
         };
     }; // namespace clip
-}; // namespace ofxLiveSet
+};     // namespace ofxLiveSet

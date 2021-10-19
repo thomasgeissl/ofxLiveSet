@@ -15,7 +15,7 @@ namespace ofxLiveSet
             {
                 return std::make_shared<base>(name);
             }
-            base(std::string name = "") : _clip(nullptr), _focused(false)
+            base(std::string type, std::string name = "") : _type(type), _clip(nullptr), _focused(false)
             {
                 _parameters.setName(name);
                 _name.set("name", name);
@@ -31,7 +31,7 @@ namespace ofxLiveSet
                 _controls.add(_mute);
                 _controls.add(_gain);
                 _parameters.add(_controls);
-                
+
                 auto ioName = name == "" ? "IO" : name + " IO";
                 _ioParameters.setName(ioName);
                 _parameters.add(_ioParameters);
@@ -40,7 +40,6 @@ namespace ofxLiveSet
                 _parameters.add(_clipTriggers);
 
                 _stop.addListener(this, &base::onStop);
-
             }
 
             virtual void setup() {}
@@ -89,7 +88,8 @@ namespace ofxLiveSet
             clip::base::pointer insertClip(clip::base::pointer clip, int index)
             {
                 auto it = _clips.begin();
-                for(auto i = 0; i < index; i++){
+                for (auto i = 0; i < index; i++)
+                {
                     it++;
                 }
                 _clips.insert(it, clip);
@@ -103,8 +103,8 @@ namespace ofxLiveSet
                     auto nullClip = clip::nullClip::create();
                     _clipTriggers.add(nullClip->_active);
                     _clips.push_back(nullClip);
-                ofAddListener(nullClip->_started, this, &base::onClipStarted);
-                ofAddListener(nullClip->_stopped, this, &base::onClipStopped);
+                    ofAddListener(nullClip->_started, this, &base::onClipStarted);
+                    ofAddListener(nullClip->_stopped, this, &base::onClipStopped);
                 }
                 _clips.push_back(clip);
                 _clipTriggers.add(clip->_active);
@@ -136,6 +136,10 @@ namespace ofxLiveSet
                 }
             }
 
+            void setName(std::string value)
+            {
+                _name = value;
+            }
             void mute(bool value = true)
             {
                 _mute = value;
@@ -185,14 +189,17 @@ namespace ofxLiveSet
                 return _clip;
             }
 
-            clip::base::pointer getClip(int index){
-                if(index < 0 || index >= _clips.size()){
+            clip::base::pointer getClip(int index)
+            {
+                if (index < 0 || index >= _clips.size())
+                {
                     return nullptr;
                 }
                 return _clips[index];
             }
 
-            std::string getName() {
+            std::string getName()
+            {
                 return _name;
             }
 
@@ -205,7 +212,7 @@ namespace ofxLiveSet
                 return _solo;
             }
 
-
+            std::string _type;
             std::vector<clip::base::pointer> _clips;
             clip::base::pointer _clip;
             ofParameterGroup _parameters;

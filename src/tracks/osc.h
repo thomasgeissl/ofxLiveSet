@@ -16,29 +16,45 @@ namespace ofxLiveSet
             {
                 return std::make_shared<osc>(name);
             }
-            osc(std::string name = "") : base(name)
+            osc(std::string name = "") : base("OFXLIVESET_TRACK_OSC", name)
             {
-        	// _ioParameters.add(_shape);
+                _ioParameters.add(_host.set("host", "localhost"));
+                _ioParameters.add(_port.set("port", 8011, 8001, 12000));
+
+                _host.addListener(this, &osc::onHostChange);
+                _port.addListener(this, &osc::onPortChange);
             }
-	    void setup(int port = 8000, std::string host = "localhost")
-	    {
-		    _oscSender.setup(host, port);
-		                    for(auto clip : _clips){
+            void setup(int port = 8000, std::string host = "localhost")
+            {
+                _oscSender.setup(host, port);
+                for (auto clip : _clips)
+                {
                     auto oscClip = dynamic_pointer_cast<ofxLiveSet::clip::osc>(clip);
-                    if (oscClip != nullptr){
+                    if (oscClip != nullptr)
+                    {
                         ofAddListener(oscClip->_oscMessageEvent, this, &ofxLiveSet::track::osc::onOscMessageEvent);
                     }
-                    }
-	    }
-	void onOscMessageEvent(ofxOscMessage &value){
-                if(!_mute){
-			// ofLogNotice() << "sending osc message";
-			_oscSender.sendMessage(value);
                 }
             }
-	protected:
-		ofxOscSender _oscSender;
+            void onOscMessageEvent(ofxOscMessage &value)
+            {
+                if (!_mute)
+                {
+                    _oscSender.sendMessage(value);
+                }
+            }
+            void onHostChange(std::string &value){
+                _oscSender.setup(_host, _port);
+            }
+            void onPortChange(int &value){
+                _oscSender.setup(_host, _port);
+            }
+
+
+        protected:
+            ofxOscSender _oscSender;
+            ofParameter<std::string> _host;
+            ofParameter<int> _port;
         };
     }; // namespace track
-}; // namespace ofxLiveSet
-
+};     // namespace ofxLiveSet

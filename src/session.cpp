@@ -15,17 +15,13 @@ ofxLiveSet::session::session() : _fps(ofxMovingAverage<float>(60))
 #endif
 {
     ofSetEscapeQuitsApp(false);
-    ofAddListener(ofEvents().update, this, &ofxLiveSet::session::onUpdate, OF_EVENT_ORDER_AFTER_APP);
-    ofAddListener(ofEvents().draw, this, &ofxLiveSet::session::onDraw, OF_EVENT_ORDER_BEFORE_APP);
-    ofAddListener(ofEvents().exit, this, &ofxLiveSet::session::onExit, OF_EVENT_ORDER_AFTER_APP);
+    // ofAddListener(ofEvents().update, this, &ofxLiveSet::session::onUpdate, OF_EVENT_ORDER_AFTER_APP);
+    // ofAddListener(ofEvents().draw, this, &ofxLiveSet::session::onDraw, OF_EVENT_ORDER_BEFORE_APP);
+    // ofAddListener(ofEvents().exit, this, &ofxLiveSet::session::onExit, OF_EVENT_ORDER_AFTER_APP);
     // ofAddListener(ofEvents().keyPressed, this, &ofxLiveSet::session::onKeyPressed, OF_EVENT_ORDER_AFTER_APP);
 
-    _gui.setup(nullptr, ImGuiConfigFlags_DockingEnable);
-    // ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    ImGui::GetIO().MouseDrawCursor = false;
-    _gui.setTheme(new Theme());
 
-    _defaultKeyMappingEnabled.set("defaultKeyMappingEnabled", true);
+    _defaultKeyMappingEnabled.set("defaultKeyMappingEnabled", false);
     _oscControlEnabled.addListener(this, &ofxLiveSet::session::onOscControlEnabledChange);
     _oscControlEnabled.set("oscControlEnabled", false);
     _autoResizeGraphicTracksEnabled.set("autoResizeGraphicTracksEnabled", true);
@@ -38,6 +34,12 @@ ofxLiveSet::session::session() : _fps(ofxMovingAverage<float>(60))
 }
 void ofxLiveSet::session::setup()
 {
+    _gui.setup(nullptr, ImGuiConfigFlags_DockingEnable);
+    // ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    ImGui::GetIO().MouseDrawCursor = false;
+    _gui.setTheme(new Theme());
+
+
     // inputs
     _soundAnalyser.addListener(this);
 
@@ -139,9 +141,10 @@ void ofxLiveSet::session::setup()
     _fullscreen = ofGetWidth() == ofGetScreenWidth() && ofGetHeight() == ofGetScreenHeight();
 }
 
-void ofxLiveSet::session::setupAudioEngine(int id, int inChannels, int outChannels)
+void ofxLiveSet::session::setupAudioEngine(int inputId, int outputId, int inChannels, int outChannels)
 {
-    _engine.setDeviceID(id);
+    _engine.setInputDeviceID(inputId);
+    _engine.setOutputDeviceID(outputId);
     _engine.setChannels(inChannels, outChannels);
     _engine.setup(44100, 512, 3);
 

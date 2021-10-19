@@ -14,7 +14,7 @@ namespace clips
         organDrone() : osc()
         {
             setName("drone");
-            addParameter(_speed.set("speed", 50, 50, 5000));
+            addParameter(_interval.set("interval", 520, 50, 5000));
             addParameter(_trigger.set("trigger"));
             addParameter(_duration.set("duration", 50, 0, 5000));
             addParameter(_note.set("note", 60, 0, 127));
@@ -89,7 +89,7 @@ namespace clips
         ofParameter<int> _velocity;
         ofParameter<int> _channel;
         ofParameter<int> _duration;
-        ofParameter<int> _speed;
+        ofParameter<int> _interval;
         ofParameter<void> _blackout;
 
         u_int64_t _timestamps[127];

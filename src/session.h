@@ -38,7 +38,7 @@ namespace ofxLiveSet
                 session();
 
                 void setup();
-                void setupAudioEngine(int id, int inChannels = 2, int outChannels = 2);
+                void setupAudioEngine(int inputId, int outputId, int inChannels = 2, int outChannels = 2);
                 void openMidiInPort(int index);
                 void openVirtualMidiInPort(std::string name);
                 void openMidiMapperInPort(int index);
