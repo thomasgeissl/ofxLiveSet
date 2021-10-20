@@ -23,11 +23,11 @@ public:
     void setNoteOn(int note, int velocity)
     {
         ofLogNotice("midi2dmx") << "note on " << note << ", " << velocity;
-        setValue(note - _channelOffset, velocity * 2);
+        setDmxValue(note - _channelOffset, velocity * 2);
     }
     void setNoteOff(int note, int velocity)
     {
-        setValue(note - _channelOffset, 0);
+        setDmxValue(note - _channelOffset, 0);
     }
     ofParameter<int> _channelOffset;
 };

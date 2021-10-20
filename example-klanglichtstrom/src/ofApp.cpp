@@ -106,6 +106,7 @@ void ofApp::setup()
 
 void ofApp::exit()
 {
+    _session->exit();
     for (auto i = 1; i <= 24; i++)
     {
         _dmx.setLevel(i, 0);

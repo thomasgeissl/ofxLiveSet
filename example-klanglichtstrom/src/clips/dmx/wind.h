@@ -58,10 +58,10 @@ namespace clips
             {
                 auto value = ofMap(timestamp - _timestamps[i], 0, 500, _maxValue, _minValue, true);
                 _values[i] = value;
-                setValue(i + 1, value);
+                setDmxValue(i + 1, value);
             }
-            setValue(_middleLeftLight, ofMap(_leftPeakEnergyMovingAverage.avg() * 4, 0, 2, _minValue, _maxValue));
-            setValue(_middleRightLight, ofMap(_rightPeakEnergyMovingAverage.avg() * 4, 0, 2, _minValue, _maxValue));
+            setDmxValue(_middleLeftLight, ofMap(_leftPeakEnergyMovingAverage.avg() * 4, 0, 2, _minValue, _maxValue));
+            setDmxValue(_middleRightLight, ofMap(_rightPeakEnergyMovingAverage.avg() * 4, 0, 2, _minValue, _maxValue));
             if (_leftPeakEnergy > _leftPeakEnergyMovingAverage.avg() * _peakFactor)
             {
                 peak(true);

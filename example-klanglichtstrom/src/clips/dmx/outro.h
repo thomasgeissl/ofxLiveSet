@@ -52,14 +52,14 @@ namespace clips
             }
             for (auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++)
             {
-                setValue(i + 1, _values[i]);
+                setDmxValue(i + 1, _values[i]);
             }
         }
         void stop()
         {
             for (auto i = 1; i <= KLS_LIGHTBULBSCOUNT; i++)
             {
-                setValue(i, 0);
+                setDmxValue(i, 0);
             }
             base::stop();
         }

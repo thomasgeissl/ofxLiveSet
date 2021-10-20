@@ -19,7 +19,7 @@ namespace clips
             _name = "rainmaker";
             _active.setName("rainmaker");
 
-            addParameter(_value.set("value", 0, 0, 255));
+            addParameter(_value.set("spot", 0, 0, 255));
             addParameter(_speed.set("speed", 0, 0, 255));
             addParameter(_fadeout.set("fadeout", false));
             addParameter(_fadeoutTime.set("fadeoutTime", 30, 1, 120));
@@ -54,22 +54,22 @@ namespace clips
         {
             if (value)
             {
-                setValue(KLS_SPOTLIGHT_CHANNEL, _value);
-                setValue(KLS_RAINMAKERMOTORCHANNEL, _speed);
+                setDmxValue(KLS_SPOTLIGHT_CHANNEL, _value);
+                setDmxValue(KLS_RAINMAKERMOTORCHANNEL, _speed);
             }
             else
             {
-                setValue(KLS_SPOTLIGHT_CHANNEL, 0);
-                setValue(KLS_RAINMAKERMOTORCHANNEL, 0);
+                setDmxValue(KLS_SPOTLIGHT_CHANNEL, 0);
+                setDmxValue(KLS_RAINMAKERMOTORCHANNEL, 0);
             }
         }
         void onValueChange(int &value)
         {
-            setValue(KLS_SPOTLIGHT_CHANNEL, _value);
+            setDmxValue(KLS_SPOTLIGHT_CHANNEL, _value);
         }
         void onSpeedChange(int &value)
         {
-            setValue(KLS_RAINMAKERMOTORCHANNEL, _speed);
+            setDmxValue(KLS_RAINMAKERMOTORCHANNEL, _speed);
         }
 
         ofParameter<int> _value;

@@ -38,17 +38,17 @@ namespace clips {
         }
         void onActiveChange(bool & value){
             if(value){
-                setValue(_frequencyChannel, _frequency);
-                setValue(_velocityChannel, _velocity);
+                setDmxValue(_frequencyChannel, _frequency);
+                setDmxValue(_velocityChannel, _velocity);
             }else{
-                setValue(_frequencyChannel, 0);
-                setValue(_velocityChannel, 0);
+                setDmxValue(_frequencyChannel, 0);
+                setDmxValue(_velocityChannel, 0);
             }
         }
         void onValueChange(int & value){
             if(!_active) return;
-            setValue(_frequencyChannel, _frequency);
-            setValue(_velocityChannel, _velocity);
+            setDmxValue(_frequencyChannel, _frequency);
+            setDmxValue(_velocityChannel, _velocity);
         }
         void onSingleShot(){
             _singleShotTimestamp = ofGetElapsedTimeMillis();

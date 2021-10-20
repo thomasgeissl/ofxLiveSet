@@ -49,7 +49,7 @@ namespace clips {
                 auto timestamp = ofGetElapsedTimeMillis();
                 if(timestamp - _climaxTimestamp < duration){
                     for(auto i = 0; i < _amount; i++){
-                        setValue(i + 1, ofMap(timestamp - _climaxTimestamp, 0, duration, 255, 0));
+                        setDmxValue(i + 1, ofMap(timestamp - _climaxTimestamp, 0, duration, 255, 0));
                     }
                 }else{
                     _climax = false;

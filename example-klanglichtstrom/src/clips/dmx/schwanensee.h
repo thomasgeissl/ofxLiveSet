@@ -61,16 +61,16 @@ namespace clips {
             for(auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++) {
                 if(timestamp - _timestamps[i] < _fadeOutTime){
                     _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + _fadeOutTime, _maxValue, _minValue);
-                    setValue(i+1, _values[i]);
+                    setDmxValue(i+1, _values[i]);
                 }
             }
             if(_staticLight){
-                setValue(_staticLightIndex, _staticLightValue);
+                setDmxValue(_staticLightIndex, _staticLightValue);
             }
         }
         void stop(){
             for(auto i = 1; i <= KLS_LIGHTBULBSCOUNT; i++){
-                setValue(i, 0);
+                setDmxValue(i, 0);
             }
             base::stop();
         }
@@ -84,7 +84,7 @@ namespace clips {
         }
         void onStaticLightChange(bool & value){
             if(!value){
-                setValue(5, 0);
+                setDmxValue(5, 0);
             }
         }
         

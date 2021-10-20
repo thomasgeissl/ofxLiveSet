@@ -41,13 +41,13 @@ namespace clips {
             for(auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++) {
                 if(timestamp - _timestamps[i] < 1000){
                     _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + 1000, _maxValue, _minValue);
-                    setValue(i+1, _values[i]);
+                    setDmxValue(i+1, _values[i]);
                 }
             }
         }
         void stop(){
             for(auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++){
-                setValue(i+1, 0);
+                setDmxValue(i+1, 0);
             }
             base::stop();
         }

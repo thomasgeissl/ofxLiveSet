@@ -34,21 +34,21 @@ namespace clips
         {
             if (_blackout)
             {
-                setValue(KLS_CHIMESLIGHTBULBCHANNEL, 0);
+                setDmxValue(KLS_CHIMESLIGHTBULBCHANNEL, 0);
             }
             else
             {
                 if(_static){
-                    setValue(KLS_CHIMESLIGHTBULBCHANNEL, _maxValue);
+                    setDmxValue(KLS_CHIMESLIGHTBULBCHANNEL, _maxValue);
                 }else{
-                    setValue(KLS_CHIMESLIGHTBULBCHANNEL, ofMap(std::abs(std::sin(ofGetElapsedTimef() * 10 * _speed)), 0, 1, _minValue, _maxValue));
+                    setDmxValue(KLS_CHIMESLIGHTBULBCHANNEL, ofMap(std::abs(std::sin(ofGetElapsedTimef() * 10 * _speed)), 0, 1, _minValue, _maxValue));
                 }
             }
         }
         void onBlackoutTriggered()
         {
             _blackout = true;
-            setValue(KLS_CHIMESLIGHTBULBCHANNEL, 0);
+            setDmxValue(KLS_CHIMESLIGHTBULBCHANNEL, 0);
         }
         void onActiveChange(bool &value)
         {

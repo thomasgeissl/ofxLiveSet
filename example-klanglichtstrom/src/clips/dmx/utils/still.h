@@ -30,17 +30,17 @@ namespace clips
         {
             for (auto i = 0; i < _values.size(); i++)
             {
-                setValue(i + 1, _values[i]);
+                setDmxValue(i + 1, _values[i]);
             }
-            setValue(KLS_SPOTLIGHT_CHANNEL, _spotValue);
+            setDmxValue(KLS_SPOTLIGHT_CHANNEL, _spotValue);
         }
         void stop()
         {
             for (auto i = 1; i <= KLS_LIGHTBULBSCOUNT; i++)
             {
-                setValue(i, 0);
+                setDmxValue(i, 0);
             }
-            setValue(KLS_SPOTLIGHT_CHANNEL, 0);
+            setDmxValue(KLS_SPOTLIGHT_CHANNEL, 0);
             base::stop();
         }
 

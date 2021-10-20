@@ -29,7 +29,7 @@ namespace clips
         {
             for (auto i = 0; i < _values.size(); i++)
             {
-                setValue(KLS_CHIMESLIGHTBULBCHANNEL + i + 1, _values[i]);
+                setDmxValue(KLS_CHIMESLIGHTBULBCHANNEL + i + 1, _values[i]);
             }
         }
         void stop()
