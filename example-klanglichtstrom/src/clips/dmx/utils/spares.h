@@ -16,7 +16,7 @@ namespace clips
         {
             _name = "spare sockets";
             _active.setName(_name);
-            _values.resize(3);
+            _values.resize(2);
             for (auto i = 0; i < _values.size(); i++)
             {
                 _parameters.add(_values[i].set(ofToString(i), 0, 0, 255));
@@ -29,7 +29,7 @@ namespace clips
         {
             for (auto i = 0; i < _values.size(); i++)
             {
-                setDmxValue(KLS_CHIMESLIGHTBULBCHANNEL + i + 1, _values[i]);
+                setDmxValue(KLS_CHIMESLIGHTBULBCHANNEL + i + 2, _values[i]);
             }
         }
         void stop()

@@ -399,14 +399,26 @@ void ofxLiveSet::session::drawMenuGui()
             ImGui::EndMenu();
         }
 
+        ImGui::SameLine();
+        std::string timeString = " | ";
+        timeString += ofToString(ofGetHours());
+        timeString += ":";
+        timeString += ofToString(ofGetMinutes());
+        timeString += " | ";
+        ImGui::Text(timeString.c_str());
+
+
         if (_active)
         {
             ImGui::SameLine();
-            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (float)24);
             auto time = ofGetElapsedTimeMillis() - _startedTimestamp;
-            std::string text = ofToString(time / 1000) + +":" + ofToString((int)(time - time / 100));
+            std::string text = ofToString(time / 1000) + +":" + ofToString((int)(time - time / 100), 2);
             ImGui::Text(text.c_str());
         }
+
+
+
+
         ImGui::SameLine(ImGui::GetWindowWidth() - 200);
         ImGui::Button("Key");
         ImGui::SameLine();

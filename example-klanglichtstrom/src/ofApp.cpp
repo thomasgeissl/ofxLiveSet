@@ -68,7 +68,7 @@ void ofApp::setup()
     _session->addTrack(organTrack);
     _session->addTrack(strobeTrack);
     _session->addTrack(chimesTrack);
-    _session->addTrack(mqttTrack);
+    // _session->addTrack(mqttTrack);
     _session->addTrack(utilsTrack);
 
     for (auto track : _session->getTracks())
@@ -98,10 +98,6 @@ void ofApp::setup()
         _session->renameScene(i, "");
     }
     _session->fillWithNullClips();
-
-    ofLogNotice() << ofGetWindowMode();
-    ofLogNotice() << OF_WINDOW;
-    ofLogNotice() << OF_FULLSCREEN;
 }
 
 void ofApp::exit()
