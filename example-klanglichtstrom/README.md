@@ -24,10 +24,10 @@ audio reactive dmx live set for klinglichtstrom performance.
 * case: lamps, light bulbs
 * bag: base
 * bag: base
+* bag: dmx, power
+* bag: dmx, powercon, multicore
 * box: strobe light
 * box: adapters
-* box: dmx, powercon
-* bag: dmx, powercon, multicore
 
 
 ## TODO:
