@@ -18,6 +18,8 @@ namespace clips
             _active.setName(_name);
             _values.resize(KLS_LIGHTBULBSCOUNT);
             addParameter(_spotValue.set("spot", 0, 0, 255));
+            addParameter(_chimesValue.set("chimes", 0, 0, 255));
+            addParameter(_rainMakerSpeedValue.set("rainMaker", 0, 0, 255));
             for (auto i = 0; i < _values.size(); i++)
             {
                 _parameters.add(_values[i].set(ofToString(i), 0, 0, 255));
@@ -33,6 +35,8 @@ namespace clips
                 setDmxValue(i + 1, _values[i]);
             }
             setDmxValue(KLS_SPOTLIGHT_CHANNEL, _spotValue);
+            setDmxValue(KLS_CHIMESLIGHTBULBCHANNEL, _chimesValue);
+            setDmxValue(KLS_RAINMAKERMOTORCHANNEL, _rainMakerSpeedValue);
         }
         void stop()
         {
@@ -41,6 +45,8 @@ namespace clips
                 setDmxValue(i, 0);
             }
             setDmxValue(KLS_SPOTLIGHT_CHANNEL, 0);
+            setDmxValue(KLS_CHIMESLIGHTBULBCHANNEL, 0);
+            setDmxValue(KLS_RAINMAKERMOTORCHANNEL, 0);
             base::stop();
         }
 
@@ -55,5 +61,7 @@ namespace clips
         std::vector<ofParameter<int>> _values;
         ofParameter<int> _masterValue;
         ofParameter<int> _spotValue;
+        ofParameter<int> _chimesValue;
+        ofParameter<int> _rainMakerSpeedValue;
     };
 };
