@@ -25,12 +25,14 @@ namespace clips {
             addParameter(_maxValue.set("maxValue", 0, 0, 255));
             addParameter(_addPeakEnergy.set("addPeakEnergy", false));
             addParameter(_staticLight.set("staticLight", false));
-            _staticLightIndex.set("staticLightIndex", 20, 1, KLS_LIGHTBULBSCOUNT);
             addParameter(_staticLightValue.set("staticLightValue", 100, 0, 255));
             _meters.setName("meters");
             _meters.add(_pitch.set("pitch", 0, 0, 127));
             _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
             _meters.add(_onsetDetected.set("onset", false));
+            _config.setName("config");
+            _config.add(_staticLightIndex.set("staticLightIndex", 20, 1, KLS_LIGHTBULBSCOUNT));
+            _parameters.add(_config);
             _parameters.add(_meters);
 
             _values.resize(KLS_LIGHTBULBSCOUNT);
@@ -84,7 +86,7 @@ namespace clips {
         }
         void onStaticLightChange(bool & value){
             if(!value){
-                setDmxValue(5, 0);
+                setDmxValue(_staticLightIndex, 0);
             }
         }
         
@@ -101,6 +103,7 @@ namespace clips {
         ofParameter<float> _pitch;
         ofParameter<float> _peakEnergy;
         ofParameter<bool> _onsetDetected;
+        ofParameterGroup _config;
 
         u_int64_t _timestamp;
         std::vector<u_int64_t> _timestamps;
