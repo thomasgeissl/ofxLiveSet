@@ -32,9 +32,9 @@ namespace clips
             auto timestamp = ofGetElapsedTimeMillis();
             for (auto note = 0; note <= 127; note++)
             {
-                if (_timestamps[note] > 0 && _timestamps[note] + _duration > timestamp)
+                if (_noteOnTimestamps[note] > 0 && _noteOnTimestamps[note] + _duration < timestamp)
                 {
-                    _timestamps[note] = -1;
+                    _noteOnTimestamps[note] = -1;
                     ofxOscMessage message;
                     // /ofOSC2MIDI 1 144 60 127
                     message.setAddress("/ofOSC2MIDI");
@@ -45,11 +45,17 @@ namespace clips
                     sendOscMessage(message);
                 }
             }
+
+            if (_lastTriggerTimestamp + _interval < timestamp){
+                onTrigger();
+            }
+
         }
         void onActiveChange(bool &value)
         {
             if (value)
             {
+                _lastTriggerTimestamp = ofGetElapsedTimeMillis();
             }
             else
             {
@@ -67,7 +73,8 @@ namespace clips
             message.addIntArg(MidiStatus::MIDI_NOTE_ON);
             message.addIntArg(_note);
             message.addIntArg(_velocity);
-            _timestamps[_note] = ofGetElapsedTimeMillis();
+            _noteOnTimestamps[_note] = ofGetElapsedTimeMillis();
+            _lastTriggerTimestamp = ofGetElapsedTimeMillis();
             sendOscMessage(message);
         }
         void onBlackout()
@@ -92,6 +99,7 @@ namespace clips
         ofParameter<int> _interval;
         ofParameter<void> _blackout;
 
-        u_int64_t _timestamps[127];
+        u_int64_t _noteOnTimestamps[127];
+        u_int64_t _lastTriggerTimestamp;
     };
 };

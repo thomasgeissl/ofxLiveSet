@@ -78,7 +78,7 @@ void ofApp::setup()
             dmxTrack->setup(&_dmx);
         }
     }
-    organTrack->setup(8010);
+    organTrack->setup(8010, "192.168.2.130");
 
     _session->setup();
     _session->openOscControlInPort(9000);
