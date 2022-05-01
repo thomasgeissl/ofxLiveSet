@@ -6,7 +6,7 @@
 #include "ofxOsc.h"
 #include "ofxLiveSet.h"
 #include "./tracks/mqtt.h"
-#include "./visualisation.h"
+#include "./visualisations/blaueNacht2022.h"
 
 // out comment if you dont have an enttec usb interface connected
 #define SENDDMX
