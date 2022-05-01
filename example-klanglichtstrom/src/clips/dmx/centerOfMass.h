@@ -4,7 +4,7 @@
 
 namespace clips
 {
-class newClip : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive
+class newClip : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::hasSoundAnalyserInput
 {
 public:
     typedef std::shared_ptr<newClip> pointer;
@@ -12,7 +12,7 @@ public:
     {
         return std::make_shared<newClip>();
     }
-    newClip() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive(), _beatAudioAnalyserId(2)
+    newClip() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::hasSoundAnalyserInput(), _beatAudioAnalyserId(2)
     {
         _name = "com";
         _active.setName(_name);
@@ -21,11 +21,11 @@ public:
 
 
         // addParameter(_soundAnalyserId);
-        addParameter(_maxPeakEnergy.set("maxPeakEnergy", 0.6, 0, 1));
+        addParameter(_maxPeakEnergy.set("maxPeakEnergy", 0.1, 0, 1));
         addParameter(_speed.set("speed", .2, 0, 1));
         addParameter(_minValue.set("minValue", 0, 0, 255));
         addParameter(_maxValue.set("maxValue", 168, 0, 255));
-        addParameter(_compressor.set("compressor", false));
+        addParameter(_compressor.set("compressor", true));
         addParameter(_motion.set("motion", false));
         addParameter(_motionSpeed.set("motionSpeed", 0.1, 0, 1));
 

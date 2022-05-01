@@ -985,7 +985,6 @@ void ofxLiveSet::session::triggerScene(int index)
     }
     if (index < _sceneInformation.size())
     {
-        // _infoPanel.setInfo(_sceneInformation[index]);
     }
 }
 
@@ -1236,7 +1235,7 @@ void ofxLiveSet::session::newMidiMessage(ofxMidiMessage &message)
 {
     for (auto &track : _tracks)
     {
-        auto clip = dynamic_pointer_cast<ofxLiveSet::clip::midiReactive>(track->_clip);
+        auto clip = dynamic_pointer_cast<ofxLiveSet::clip::hasMidiInput>(track->_clip);
         if (clip != nullptr)
         {
             auto status = message.status;

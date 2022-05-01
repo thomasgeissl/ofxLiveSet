@@ -4,14 +4,14 @@
 #include "../../dmx.config.h"
 
 namespace clips {
-    class schwanensee : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive {
+    class schwanensee : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::hasSoundAnalyserInput {
     public:
         typedef std::shared_ptr<schwanensee> pointer;
         static pointer create()
         {
             return std::make_shared<schwanensee>();
         }
-        schwanensee() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
+        schwanensee() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::hasSoundAnalyserInput() {
             _name = "schwanensee";
             _minValue.set("minValue", 0, 0, 255);
 

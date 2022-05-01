@@ -1,6 +1,6 @@
 #pragma once
 #include "clips/dmx.h"
-#include "../../dmx.config.h"
+#include "../../../dmx.config.h"
 
 // strobe clip for stairville ps1500dmx
 // https://images.thomann.de/pics/atg/atgdata/document/manual/168875_c_168875_de_online.pdf

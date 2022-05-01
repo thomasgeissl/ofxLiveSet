@@ -5,7 +5,7 @@
 
 namespace clips
 {
-    class wind : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive
+    class wind : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::hasSoundAnalyserInput
     {
     public:
         typedef std::shared_ptr<wind> pointer;
@@ -13,7 +13,7 @@ namespace clips
         {
             return std::make_shared<wind>();
         }
-        wind() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive(),
+        wind() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::hasSoundAnalyserInput(),
                  _leftPeakEnergyMovingAverage(ofxMovingAverage<float>(100)),
                  _rightPeakEnergyMovingAverage(ofxMovingAverage<float>(100))
         {

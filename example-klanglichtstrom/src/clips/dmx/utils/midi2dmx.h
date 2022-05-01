@@ -3,7 +3,7 @@
 
 namespace clips
 {
-class midi2dmx : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::midiReactive
+class midi2dmx : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::hasMidiInput
 {
 public:
     typedef std::shared_ptr<midi2dmx> pointer;
@@ -11,7 +11,7 @@ public:
     {
         return std::make_shared<midi2dmx>();
     }
-    midi2dmx() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::midiReactive()
+    midi2dmx() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::hasMidiInput()
     {
         _name = "midi2dmx";
         _active.setName(_name);

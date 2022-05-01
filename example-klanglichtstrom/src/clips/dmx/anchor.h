@@ -3,14 +3,14 @@
 #include "../../dmx.config.h"
 
 namespace clips {
-    class anchor : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive {
+    class anchor : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::hasSoundAnalyserInput {
     public:
         typedef std::shared_ptr<anchor> pointer;
         static pointer create()
         {
             return std::make_shared<anchor>();
         }
-        anchor() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
+        anchor() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::hasSoundAnalyserInput() {
             _name = "anchor";
             _pitchChangeTriggerSoundAnalyserId.set("pitchChangeTrigger", 2, 0, 8);
             _channel.set("channel", 1, 1, 512);

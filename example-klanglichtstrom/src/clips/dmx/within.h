@@ -3,14 +3,14 @@
 #include "../../dmx.config.h"
 
 namespace clips {
-    class within : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive{
+    class within : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::hasSoundAnalyserInput{
     public:
         typedef std::shared_ptr<within> pointer;
         static pointer create()
         {
             return std::make_shared<within>();
         }
-        within() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive() {
+        within() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::hasSoundAnalyserInput() {
             _name = "within";
             _channel.set("channel", 1, 1, 512);
             _active.setName(_name);
@@ -26,7 +26,7 @@ namespace clips {
             addParameter(_addPeakEnergy.set("addPeakEnergy", false));
 
             _config.setName("config");
-            _config.add(_start.set("start", 12, 1, KLS_LIGHTBULBSCOUNT));
+            _config.add(_start.set("start", 13, 1, KLS_LIGHTBULBSCOUNT));
             _parameters.add(_config);
 
             _meters.setName("meters");

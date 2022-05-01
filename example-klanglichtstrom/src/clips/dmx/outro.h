@@ -4,7 +4,7 @@
 
 namespace clips
 {
-    class outro : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::soundReactive
+    class outro : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::hasSoundAnalyserInput
     {
     public:
         typedef std::shared_ptr<outro> pointer;
@@ -12,7 +12,7 @@ namespace clips
         {
             return std::make_shared<outro>();
         }
-        outro() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::soundReactive()
+        outro() : ofxLiveSet::clip::dmx(), ofxLiveSet::clip::hasSoundAnalyserInput()
         {
             _name = "rain";
             _active.setName(_name);

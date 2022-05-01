@@ -2,9 +2,9 @@
 #include "./base.h"
 namespace ofxLiveSet {
 namespace clip {
-    class midiReactive{
+    class hasMidiInput{
     public:
-        midiReactive(){
+        hasMidiInput(){
             _channel.set("channel", 1, 1, 16);
         }
         virtual void setNoteOn(int note, int velocity){}

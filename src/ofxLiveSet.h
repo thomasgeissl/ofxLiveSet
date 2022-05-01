@@ -8,9 +8,10 @@
 #include "./clips/base.h"
 // #include "./clips/midi.h"
 #include "./clips/null.h"
-#include "./clips/soundReactive.h"
-#include "./clips/midiReactive.h"
 #include "./clips/osc.h"
+#include "./clips/inputs/hasMidiInput.h""
+#include "./clips/inputs/hasOscInput.h""
+#include "./clips/inputs/hasSoundAnalyserInput.h"
 
 #if OFXLIVESET_USE_GRAPHICS
 #include "./tracks/graphic.h"

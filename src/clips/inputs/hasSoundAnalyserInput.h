@@ -4,10 +4,10 @@ namespace ofxLiveSet
 {
     namespace clip
     {
-        class soundReactive
+        class hasSoundAnalyserInput
         {
         public:
-            soundReactive()
+            hasSoundAnalyserInput()
             {
                 _soundAnalyserId.set("analyserId", 1, 1, 8);
             }

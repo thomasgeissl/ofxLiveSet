@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include "./defines.h"
 #include "./dmx.config.h"
 
 #include "./clips/dmx/within.h"
@@ -7,9 +8,11 @@
 #include "./clips/dmx/firn.h"
 #include "./clips/dmx/wind.h"
 #include "./clips/dmx/centerOfMass.h"
-#include "./clips/dmx/strobe.h"
+#include "./clips/dmx/strobe/strobe.h"
+#include "./clips/dmx/strobe/generator.h"
 #include "./clips/dmx/spot.h"
 #include "./clips/dmx/chimes.h"
+#include "./clips/dmx/generator.h"
 #include "./clips/dmx/outro.h"
 #include "./clips/dmx/utils/still.h"
 #include "./clips/dmx/utils/midi2dmx.h"
@@ -40,16 +43,17 @@ void ofApp::setup()
     auto mqttTrack = ofxLiveSet::track::mqtt::create("vgig");
     auto utilsTrack = ofxLiveSet::track::dmx::create("utils");
 
-
     lightBulbsTrack->addClip(clips::within::create())->setup();
     lightBulbsTrack->addClip(clips::anchor::create())->setup();
     lightBulbsTrack->addClip(clips::schwanensee::create())->setup();
     lightBulbsTrack->addClip(clips::firn::create())->setup();
     lightBulbsTrack->addClip(clips::newClip::create())->setup();
     lightBulbsTrack->addClip(clips::wind::create())->setup();
+    lightBulbsTrack->addClip(clips::generator::create())->setup();
     lightBulbsTrack->addClip(clips::outro::create())->setup();
 
     strobeTrack->addClip(clips::strobe::create(21, 22), 3)->setup();
+    strobeTrack->addClip(clips::generatorStrobe::create(21, 22), 6)->setup();
 
     rainMakerTrack->addClip(clips::spot::create())->setup();
 
@@ -92,12 +96,16 @@ void ofApp::setup()
     _session->renameScene(3, "firn");
     _session->renameScene(4, "com");
     _session->renameScene(5, "lichtung");
-    _session->renameScene(6, "outro");
-    for (auto i = 7; i <= 8; i++)
+    _session->renameScene(6, "generator");
+    _session->renameScene(7, "outro");
+    for (auto i = 8; i <= 9; i++)
     {
         _session->renameScene(i, "");
     }
     _session->fillWithNullClips();
+
+    _generatorOscInput.setup(KLS_GENERATOR_OSCINPORT);
+    _midi2oscInput.setup(KLS_MIDI2OSC_OSCINPORT);
 }
 
 void ofApp::exit()
@@ -120,6 +128,35 @@ void ofApp::update()
 #ifdef SENDDMX
     _dmx.update();
 #endif
+
+    std::vector<std::shared_ptr<ofxLiveSet::clip::hasOscInput>> clipsWithOscInput;
+    for (auto &track : _session->getTracks())
+    {
+        auto clip = dynamic_pointer_cast<ofxLiveSet::clip::hasOscInput>(track->_clip);
+        if (clip != nullptr)
+        {
+            clipsWithOscInput.push_back(clip);
+        }
+    }
+    // ofLogNotice() << clipsWithOscInput.size() << " active osc input clips";
+
+    while (_generatorOscInput.hasWaitingMessages())
+    {
+        ofxOscMessage m;
+        _generatorOscInput.getNextMessage(m);
+        for(auto clip : clipsWithOscInput){
+            clip->onOscMessage(m);
+        }
+    }
+    while (_midi2oscInput.hasWaitingMessages())
+    {
+        ofxOscMessage m;
+        _generatorOscInput.getNextMessage(m);
+        for (auto clip : clipsWithOscInput)
+        {
+            clip->onOscMessage(m);
+        }
+    }
 }
 
 void ofApp::draw()

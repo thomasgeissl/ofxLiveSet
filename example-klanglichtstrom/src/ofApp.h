@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxApp.h"
 #include "ofxDmx.h"
+#include "ofxOsc.h"
 #include "ofxLiveSet.h"
 #include "./tracks/mqtt.h"
 #include "./visualisation.h"
@@ -35,5 +36,7 @@ public:
     ofxLiveSet::session::pointer _session;
 
     ofxDmx _dmx;
+    ofxOscReceiver _generatorOscInput;
+    ofxOscReceiver _midi2oscInput;
     visualisation _visualisation;
 };

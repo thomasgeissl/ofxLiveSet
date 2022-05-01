@@ -13,8 +13,9 @@
 #include "./tracks/base.h"
 #include "./tracks/audio.h"
 #include "./tracks/graphic.h"
-#include "./clips/soundReactive.h"
-#include "./clips/midiReactive.h"
+#include "./clips/inputs/hasMidiInput.h"
+#include "./clips/inputs/hasOscInput.h"
+#include "./clips/inputs/hasSoundAnalyserInput.h""
 #include "./gui/infoPanel.h"
 
 #if OFXLIVESET_USE_SOUNDANALYSER
