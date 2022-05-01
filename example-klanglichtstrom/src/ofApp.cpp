@@ -151,7 +151,7 @@ void ofApp::update()
     while (_midi2oscInput.hasWaitingMessages())
     {
         ofxOscMessage m;
-        _generatorOscInput.getNextMessage(m);
+        _midi2oscInput.getNextMessage(m);
         for (auto clip : clipsWithOscInput)
         {
             clip->onOscMessage(m);
