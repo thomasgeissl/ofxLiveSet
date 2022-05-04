@@ -2,6 +2,8 @@
 #include "ofxLiveSet.h"
 #include "../../dmx.config.h"
 
+#define KLS_NUMBEROFLIGHTBULBSPERSECTOR 3
+
 namespace clips
 {
     class generator : public ofxLiveSet::clip::dmx, public ofxLiveSet::clip::hasOscInput
@@ -20,7 +22,11 @@ namespace clips
             addParameter(_sector.set("sector", 0, 0, 7));
             addParameter(_minValue.set("minValue", 0, 0, 255));
             addParameter(_maxValue.set("maxValue", 100, 0, 255));
+            addParameter(_speed.set("speed", 0, 0, 1));
 
+            _config.setName("config");
+            _config.add(_stillIntensityThreshold.set("still intensity", 8, 0, 127));
+            _parameters.add(_config);
             _values.resize(KLS_LIGHTBULBSCOUNT);
         }
 
@@ -28,13 +34,21 @@ namespace clips
         {
             auto timestamp = ofGetElapsedTimeMillis();
 
-            for (auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++)
+            auto startChannel = _sector * KLS_NUMBEROFLIGHTBULBSPERSECTOR;
+            if (_intensity < _stillIntensityThreshold)
             {
-                // if (timestamp - _timestamps[i] < 1000)
-                // {
-                //     _values[i] = ofMap(timestamp, _timestamps[i], _timestamps[i] + 1000, _maxValue, _minValue);
-                //     setDmxValue(i + 1, _values[i]);
-                // }
+                // TODO: maybe rain clip, or any other subtle clip
+            }
+            else
+            {
+                for (auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++)
+                {
+                    setDmxValue(i + 1, 0);
+                }
+                for (auto i = startChannel; i < startChannel + KLS_NUMBEROFLIGHTBULBSPERSECTOR; i++)
+                {
+                    setDmxValue(i + 1, std::abs(std::sin((1 + i) * ofGetElapsedTimef() / (10 + _speed * 13))) * _maxValue);
+                }
             }
         }
         void stop()
@@ -45,7 +59,6 @@ namespace clips
             }
             base::stop();
         }
-     
 
         void onOscMessage(ofxOscMessage message)
         {
@@ -61,7 +74,7 @@ namespace clips
                     int note;
                     if (message.getArgType(2) == OFXOSC_TYPE_INT32)
                     {
-                    note = message.getArgAsInt32(2);
+                        note = message.getArgAsInt32(2);
                     }
                     else if (message.getArgType(2) == OFXOSC_TYPE_FLOAT)
                     {
@@ -75,8 +88,11 @@ namespace clips
         std::vector<int> _values;
         ofParameter<int> _minValue;
         ofParameter<int> _maxValue;
+        ofParameter<float> _speed;
 
         ofParameter<float> _intensity;
         ofParameter<int> _sector;
+        ofParameterGroup _config;
+        ofParameter<int> _stillIntensityThreshold;
     };
 };
