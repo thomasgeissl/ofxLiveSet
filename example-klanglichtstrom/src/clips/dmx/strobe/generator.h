@@ -19,6 +19,8 @@ namespace clips
             _config.setName("config");
             _config.add(_treshold.set("treshold", 100, 0, 127));
             _parameters.add(_config);
+
+            _velocity = 255;
         }
 
         void onOscMessage(ofxOscMessage message)

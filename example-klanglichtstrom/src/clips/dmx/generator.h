@@ -24,7 +24,9 @@ namespace clips
             addParameter(_maxValue.set("maxValue", 255, 0, 255));
             addParameter(_stillMaxValue.set("stillMaxValue", 64, 0, 255));
             addParameter(_speed.set("speed", 0, 0, 1));
+            addParameter(_stillSpeed.set("still speed", 0.5, 0, 1));
             addParameter(_stillIntensityThreshold.set("still intensity threshold", 8, 0, 127));
+            addParameter(_peakIntensityThreshold.set("peak intensity threshold", 96, 0, 127));
 
             _meters.setName("meters");
             _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
@@ -43,7 +45,20 @@ namespace clips
                 // TODO: maybe rain clip, or any other subtle clip
                 for (auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++)
                 {
-                    setDmxValue(i + 1, std::abs(std::sin((i + 1) * ofGetElapsedTimef() / 64)) * _stillMaxValue);
+                    setDmxValue(i + 1, std::abs(std::sin((i + 1) * ofGetElapsedTimef() / ofMap(_stillSpeed, 0, 1, 64, 1))) * _stillMaxValue);
+                }
+            }
+            else if (_intensity < _peakIntensityThreshold)
+            {
+                for (auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++)
+                {
+                    setDmxValue(i + 1, 0);
+                }
+                for (auto i = startChannel; i < startChannel + KLS_NUMBEROFLIGHTBULBSPERSECTOR; i++)
+                {
+                    auto value = std::abs(std::sin((1 + i) * ofGetElapsedTimef() / (ofMap(_intensity, 0, 127, 15, 1))));
+                    value += ofMap(_peakEnergy, 0, 10, 0, 1);
+                    setDmxValue(i + 1, ofMap(value, 0, 2, _minValue, _maxValue));
                 }
             }
             else
@@ -52,11 +67,14 @@ namespace clips
                 {
                     setDmxValue(i + 1, 0);
                 }
-                for (auto i = startChannel; i < startChannel + KLS_NUMBEROFLIGHTBULBSPERSECTOR; i++)
+                for (auto i = startChannel; i < startChannel + KLS_NUMBEROFLIGHTBULBSPERSECTOR * 2; i++)
                 {
-                    auto value =  std::abs(std::sin((1 + i) * ofGetElapsedTimef() / (ofMap(_intensity, 0, 127, 15, 1))));
-                    value += ofMap(_peakEnergy, 0, 10, 0, 1);
-                    setDmxValue(i + 1, ofMap(value, 0, 2, _minValue, _maxValue));
+                    if (i < KLS_LIGHTBULBSCOUNT)
+                    {
+                        auto value = std::abs(std::sin((1 + i) * ofGetElapsedTimef() / (ofMap(_intensity, 0, 127, 15, 1))));
+                        value += ofMap(_peakEnergy, 0, 10, 0, 1);
+                        setDmxValue(i + 1, ofMap(value, 0, 2, _minValue, _maxValue));
+                    }
                 }
             }
         }
@@ -104,6 +122,8 @@ namespace clips
         ofParameter<int> _sector;
         ofParameterGroup _config;
         ofParameter<int> _stillIntensityThreshold;
+        ofParameter<int> _peakIntensityThreshold;
+        ofParameter<float> _stillSpeed;
 
         ofParameterGroup _meters;
         ofParameter<float> _peakEnergy;

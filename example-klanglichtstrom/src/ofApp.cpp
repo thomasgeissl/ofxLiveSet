@@ -17,6 +17,7 @@
 #include "./clips/dmx/utils/still.h"
 #include "./clips/dmx/utils/midi2dmx.h"
 #include "./clips/dmx/utils/spares.h"
+#include "./clips/dmx/utils/crankConfig.h"
 #include "./clips/osc/organDrone.h"
 
 ofApp::ofApp() : _project(ofxLiveSet::project::create())
@@ -62,10 +63,11 @@ void ofApp::setup()
     chimesTrack->addClip(clips::chimes::create(), 5)->setup();
 
     utilsTrack->addClip(clips::spares::create(), 3)->setup();
+    utilsTrack->addClip(clips::crankConfig::create(), 6)->setup();
     utilsTrack->addClip(clips::still::create(), 7)->setup();
     utilsTrack->addClip(clips::midi2dmx::create())->setup();
 
-    utilsTrack->mute();
+    // utilsTrack->mute();
 
     _session->addTrack(lightBulbsTrack);
     _session->addTrack(rainMakerTrack);
