@@ -21,12 +21,15 @@ namespace clips
             addParameter(_intensity.set("intensity", 0, 0, 127));
             addParameter(_sector.set("sector", 0, 0, 7));
             addParameter(_minValue.set("minValue", 0, 0, 255));
-            addParameter(_maxValue.set("maxValue", 100, 0, 255));
+            addParameter(_maxValue.set("maxValue", 255, 0, 255));
+            addParameter(_stillMaxValue.set("stillMaxValue", 64, 0, 255));
             addParameter(_speed.set("speed", 0, 0, 1));
+            addParameter(_stillIntensityThreshold.set("still intensity threshold", 8, 0, 127));
 
-            _config.setName("config");
-            _config.add(_stillIntensityThreshold.set("still intensity", 8, 0, 127));
-            _parameters.add(_config);
+            _meters.setName("meters");
+            _meters.add(_peakEnergy.set("peakEnergy", 0, 0, 5));
+            _parameters.add(_meters);
+
             _values.resize(KLS_LIGHTBULBSCOUNT);
         }
 
@@ -38,6 +41,10 @@ namespace clips
             if (_intensity < _stillIntensityThreshold)
             {
                 // TODO: maybe rain clip, or any other subtle clip
+                for (auto i = 0; i < KLS_LIGHTBULBSCOUNT; i++)
+                {
+                    setDmxValue(i + 1, std::abs(std::sin((i + 1) * ofGetElapsedTimef() / 64)) * _stillMaxValue);
+                }
             }
             else
             {
@@ -47,7 +54,9 @@ namespace clips
                 }
                 for (auto i = startChannel; i < startChannel + KLS_NUMBEROFLIGHTBULBSPERSECTOR; i++)
                 {
-                    setDmxValue(i + 1, std::abs(std::sin((1 + i) * ofGetElapsedTimef() / (10 + _speed * 13))) * _maxValue);
+                    auto value =  std::abs(std::sin((1 + i) * ofGetElapsedTimef() / (ofMap(_intensity, 0, 127, 15, 1))));
+                    value += ofMap(_peakEnergy, 0, 10, 0, 1);
+                    setDmxValue(i + 1, ofMap(value, 0, 2, _minValue, _maxValue));
                 }
             }
         }
@@ -88,11 +97,15 @@ namespace clips
         std::vector<int> _values;
         ofParameter<int> _minValue;
         ofParameter<int> _maxValue;
+        ofParameter<int> _stillMaxValue;
         ofParameter<float> _speed;
 
         ofParameter<float> _intensity;
         ofParameter<int> _sector;
         ofParameterGroup _config;
         ofParameter<int> _stillIntensityThreshold;
+
+        ofParameterGroup _meters;
+        ofParameter<float> _peakEnergy;
     };
 };
